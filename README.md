@@ -2,6 +2,24 @@
 
 # 算法
 
+**刷刷题，做做笔记只是为了我自己身心愉悦**
+
+## 双指针
+
+设置两个指针（变量）不断进行单向移动来解决问题的算法。
+
+原本两个指针是有 n<sup>2</sup>种组合，因此时间复杂度是 O(n<sup>2</sup>) 。
+而双指针算法就是运用单调性使得指针只能单向移动，因此总的时间复杂度只有 O(n)。
+
+之所以双指针可以实现 O(n) 的时间复杂度是因为指针只能单向移动，没有指针的回溯，而且每一步都会有指针移动。
+
+而朴素的 O(n<sup>2</sup>) 算法的问题就在于指针经常**回溯到之前的位置**。
+
+相关题目：
+
+* [移除元素](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/RemoveElement.java)
+* [删除有序数组中的重复项](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/RemoveDuplicatesFromSortedArray.java)
+
 ## 二分查找
 
 二分查找也称折半查找（Binary Search），它是一种效率较高的查找方法。但是，折半查找要求线性表必须采用顺序存储结构，而且表中元素按关键字有序排列。
