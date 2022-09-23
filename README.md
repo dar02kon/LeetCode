@@ -1,10 +1,30 @@
 # LeetCode刷题记录
 
-# 算法
-
 **刷刷题，做做笔记只是为了我自己身心愉悦**
 
-## 双指针
+## 已刷算法题
+
+### 简单
+
+* [二进制求和](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/AddBinary.java)
+* [最后一个单词的长度](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/LengthOfLastWord.java)
+* [最长公共前缀](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/LongestCommonPrefix.java)
+* [合并两个有序链表](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/MergeTwoSortedLists.java)
+* [回文数](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/PalindromeNumber.java)
+* [加一](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/PlusOne.java)
+* [删除有序数组中的重复项](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/RemoveDuplicatesFromSortedArray.java)
+* [移除元素](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/RemoveElement.java)
+* [罗马数字转整数](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/RomanToInteger.java)
+* [搜索插入位置](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/SearchInsertPosition.java)
+* [有效的括号](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ValidParentheses.java)
+
+### 中等
+
+### 困难
+
+## 算法
+
+### 双指针
 
 设置两个指针（变量）不断进行单向移动来解决问题的算法。
 
@@ -20,7 +40,7 @@
 * [移除元素](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/RemoveElement.java)
 * [删除有序数组中的重复项](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/RemoveDuplicatesFromSortedArray.java)
 
-## 二分查找
+### 二分查找
 
 二分查找也称折半查找（Binary Search），它是一种效率较高的查找方法。但是，折半查找要求线性表必须采用顺序存储结构，而且表中元素按关键字有序排列。
 
