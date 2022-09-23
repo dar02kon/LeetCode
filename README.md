@@ -17,6 +17,7 @@
 * [罗马数字转整数](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/RomanToInteger.java)
 * [搜索插入位置](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/SearchInsertPosition.java)
 * [有效的括号](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ValidParentheses.java)
+* [x 的平方根](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/Sqrtx.java)
 
 ### 中等
 
@@ -71,4 +72,5 @@
 
 相关题目：
 
-[搜索插入位置](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/SearchInsertPosition.java)
+* [搜索插入位置](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/SearchInsertPosition.java)
+* [x 的平方根](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/Sqrtx.java)
