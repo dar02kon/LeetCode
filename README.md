@@ -20,6 +20,8 @@
 * [x 的平方根](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/Sqrtx.java)
 * [删除排序链表中的重复元素](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/RemoveDuplicatesFromSortedList.java)
 * [爬楼梯](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ClimbingStairs.java)
+* [合并两个有序数组](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/MergeSortedArray.java)
+* [二叉树的中序遍历](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/BinaryTreeInorderTraversal.java)
 
 ### 中等
 
@@ -42,6 +44,7 @@
 
 * [移除元素](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/RemoveElement.java)
 * [删除有序数组中的重复项](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/RemoveDuplicatesFromSortedArray.java)
+* [合并两个有序数组](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/MergeSortedArray.java)
 
 ### 二分查找
 
