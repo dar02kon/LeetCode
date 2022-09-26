@@ -22,6 +22,8 @@
 * [爬楼梯](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ClimbingStairs.java)
 * [合并两个有序数组](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/MergeSortedArray.java)
 * [二叉树的中序遍历](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/BinaryTreeInorderTraversal.java)
+* [相同的树](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/SameTree.java)
+* [对称二叉树](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/SymmetricTree.java)
 
 ### 中等
 
