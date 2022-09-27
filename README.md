@@ -24,6 +24,8 @@
 * [二叉树的中序遍历](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/BinaryTreeInorderTraversal.java)
 * [相同的树](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/SameTree.java)
 * [对称二叉树](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/SymmetricTree.java)
+* [二叉树的最大深度](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/MaximumDepthOfBinaryTree.java)
+* [验证回文串](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ValidPalindrome.java)
 
 ### 中等
 
@@ -47,6 +49,7 @@
 * [移除元素](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/RemoveElement.java)
 * [删除有序数组中的重复项](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/RemoveDuplicatesFromSortedArray.java)
 * [合并两个有序数组](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/MergeSortedArray.java)
+* [验证回文串](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ValidPalindrome.java)
 
 ### 二分查找
 
