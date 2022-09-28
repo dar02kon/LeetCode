@@ -25,6 +25,8 @@
 * [相同的树](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/SameTree.java)
 * [对称二叉树](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/SymmetricTree.java)
 * [二叉树的最大深度](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/MaximumDepthOfBinaryTree.java)
+* [平衡二叉树](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/BalancedBinaryTree.java)
+* [将有序数组转换为二叉搜索树](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ConvertSortedArrayToBinarySearchTree.java)
 * [验证回文串](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ValidPalindrome.java)
 
 ### 中等
