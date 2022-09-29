@@ -28,6 +28,8 @@
 * [平衡二叉树](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/BalancedBinaryTree.java)
 * [将有序数组转换为二叉搜索树](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ConvertSortedArrayToBinarySearchTree.java)
 * [验证回文串](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ValidPalindrome.java)
+* [路径总和](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/PathSum.java)
+* [二叉树的最小深度](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/MinimumDepthOfBinaryTree.java)
 
 ### 中等
 
