@@ -30,6 +30,8 @@
 * [验证回文串](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ValidPalindrome.java)
 * [路径总和](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/PathSum.java)
 * [二叉树的最小深度](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/MinimumDepthOfBinaryTree.java)
+* [杨辉三角](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/PascalsTriangle.java)
+* [杨辉三角 II](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/PascalsTriangleIi.java)
 
 ### 中等
 
