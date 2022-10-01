@@ -32,6 +32,8 @@
 * [二叉树的最小深度](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/MinimumDepthOfBinaryTree.java)
 * [杨辉三角](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/PascalsTriangle.java)
 * [杨辉三角 II](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/PascalsTriangleIi.java)
+* [买卖股票的最佳时机](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/BestTimeToBuyAndSellStock.java)
+* [只出现一次的数字](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/SingleNumber.java)
 
 ### 中等
 
