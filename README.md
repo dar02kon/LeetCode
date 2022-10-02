@@ -34,6 +34,9 @@
 * [杨辉三角 II](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/PascalsTriangleIi.java)
 * [买卖股票的最佳时机](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/BestTimeToBuyAndSellStock.java)
 * [只出现一次的数字](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/SingleNumber.java)
+* [环形链表](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/LinkedListCycle.java)
+* [二叉树的前序遍历](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/BinaryTreePreorderTraversal.java)
+* [二叉树的后序遍历](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/BinaryTreePostorderTraversal.java)
 
 ### 中等
 
