@@ -37,6 +37,8 @@
 * [环形链表](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/LinkedListCycle.java)
 * [二叉树的前序遍历](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/BinaryTreePreorderTraversal.java)
 * [二叉树的后序遍历](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/BinaryTreePostorderTraversal.java)
+* [Excel表列名称](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ExcelSheetColumnTitle.java)
+* [相交链表](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/IntersectionOfTwoLinkedLists.java)
 
 ### 中等
 
@@ -61,6 +63,7 @@
 * [删除有序数组中的重复项](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/RemoveDuplicatesFromSortedArray.java)
 * [合并两个有序数组](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/MergeSortedArray.java)
 * [验证回文串](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ValidPalindrome.java)
+* [相交链表](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/IntersectionOfTwoLinkedLists.java)
 
 ### 二分查找
 
