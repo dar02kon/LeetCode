@@ -39,6 +39,8 @@
 * [二叉树的后序遍历](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/BinaryTreePostorderTraversal.java)
 * [Excel表列名称](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ExcelSheetColumnTitle.java)
 * [相交链表](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/IntersectionOfTwoLinkedLists.java)
+* [多数元素](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/MajorityElement.java)
+* [Excel 表列序号](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ExcelSheetColumnNumber.java)
 
 ### 中等
 
