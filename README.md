@@ -41,6 +41,8 @@
 * [相交链表](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/IntersectionOfTwoLinkedLists.java)
 * [多数元素](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/MajorityElement.java)
 * [Excel 表列序号](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ExcelSheetColumnNumber.java)
+* [颠倒二进制位](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ReverseBits.java)
+* [位1的个数](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/NumberOf1Bits.java)
 
 ### 中等
 
