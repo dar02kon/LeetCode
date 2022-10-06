@@ -43,6 +43,8 @@
 * [Excel 表列序号](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ExcelSheetColumnNumber.java)
 * [颠倒二进制位](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ReverseBits.java)
 * [位1的个数](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/NumberOf1Bits.java)
+* [移除链表元素](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/RemoveLinkedListElements.java)
+* [快乐数](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/HappyNumber.java)
 
 ### 中等
 
@@ -132,6 +134,7 @@
 相关题目：
 
 * [环形链表](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/LinkedListCycle.java)
+* [快乐数](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/HappyNumber.java)
 
 ### 双指针
 
