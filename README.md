@@ -45,6 +45,8 @@
 * [位1的个数](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/NumberOf1Bits.java)
 * [移除链表元素](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/RemoveLinkedListElements.java)
 * [快乐数](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/HappyNumber.java)
+* [反转链表](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ReverseLinkedList.java)
+* [同构字符串](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/IsomorphicStrings.java)
 
 ### 中等
 
