@@ -47,6 +47,8 @@
 * [快乐数](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/HappyNumber.java)
 * [反转链表](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ReverseLinkedList.java)
 * [同构字符串](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/IsomorphicStrings.java)
+* [存在重复元素](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ContainsDuplicate.java)
+* [存在重复元素 II](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ContainsDuplicateII.java)
 
 ### 中等
 
