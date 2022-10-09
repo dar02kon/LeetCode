@@ -49,6 +49,8 @@
 * [同构字符串](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/IsomorphicStrings.java)
 * [存在重复元素](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ContainsDuplicate.java)
 * [存在重复元素 II](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ContainsDuplicateII.java)
+* [翻转二叉树](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/InvertBinaryTree.java)
+* [用队列实现栈](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ImplementStackUsingQueues.java)
 
 ### 中等
 
