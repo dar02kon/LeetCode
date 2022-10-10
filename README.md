@@ -54,6 +54,9 @@
 
 ### 中等
 
+* [两数相加](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/AddTwoNumbers.java)
+* [无重复字符的最长子串](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/LongestSubstringWithoutRepeatingCharacters.java)
+
 ### 困难
 
 ## 算法
@@ -86,6 +89,7 @@ TCP利用滑动窗口实现流量控制（流量控制就是让发送方的发�
 相关题目：
 
 * [存在重复元素 II](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ContainsDuplicateII.java)
+* [无重复字符的最长子串](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/LongestSubstringWithoutRepeatingCharacters.java)
 
 
 
