@@ -57,6 +57,7 @@
 * [两数相加](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/AddTwoNumbers.java)
 * [无重复字符的最长子串](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/LongestSubstringWithoutRepeatingCharacters.java)
 * [最长回文子串](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/LongestPalindromicSubstring.java)
+* [Z 字形变换](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/ZigzagConversion.java)
 
 ### 困难
 
