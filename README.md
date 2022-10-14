@@ -59,6 +59,7 @@
 * [最长回文子串](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/LongestPalindromicSubstring.java)
 * [Z 字形变换](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/ZigzagConversion.java)
 * [整数反转](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/ReverseInteger.java)
+* [字符串转换整数 (atoi)](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/StringToIntegerAtoi.java)
 
 ### 困难
 
