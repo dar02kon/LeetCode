@@ -67,6 +67,7 @@
 * [电话号码的字母组合](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/LetterCombinationsOfAPhoneNumber.java)
 * [四数之和](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/FourSum.java)
 * [删除链表的倒数第 N 个结点](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/RemoveNthNodeFromEndOfList.java)
+* [括号生成](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/GenerateParentheses.java)
 
 ### 困难
 
