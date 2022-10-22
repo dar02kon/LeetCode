@@ -246,3 +246,14 @@ TCP利用滑动窗口实现流量控制（流量控制就是让发送方的发�
 
 * [搜索插入位置](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/SearchInsertPosition.java)
 * [x 的平方根](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/Sqrtx.java)
+
+### 递归回溯
+
+递归是一个过程或函数在其定义或说明中有直接或间接调用自身的一种方法，它通常把一个大型复杂的问题层层转化为一个与原问题相似的规模较小的问题来求解。因此递归过程，最重要的就是查看能不能讲原本的问题分解为更小的**子问题**，这是使用递归的关键。
+
+如果是**线型递归**，子问题直接回到父问题不需要回溯，但是如果是**树型递归**，父问题有很多分支，我需要从子问题回到父问题，进入另一个子问题。因此**回溯**是指在递归过程中，从某一分支的子问题回到父问题进入父问题的另一子问题分支，因为有时候进入第一个子问题的时候修改过一些变量，因此回溯的时候会要求改回父问题时的样子才能进入第二子问题分支。
+
+相关题目：
+
+* [括号生成](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/GenerateParentheses.java)
+* [电话号码的字母组合](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/LetterCombinationsOfAPhoneNumber.java)
