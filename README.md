@@ -70,6 +70,7 @@
 * [括号生成](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/GenerateParentheses.java)
 * [两两交换链表中的节点](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/SwapNodesInPairs.java)
 * [找出字符串中第一个匹配项的下标](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/FindTheIndexOfTheFirstOccurrenceInAString.java)
+* [两数相除](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/DivideTwoIntegers.java)
 
 ### 困难
 
@@ -367,6 +368,74 @@ A，B字符串匹配的步骤（主串与模式串的匹配步骤）
 相关题目：
 
 * [找出字符串中第一个匹配项的下标](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/FindTheIndexOfTheFirstOccurrenceInAString.java)
+
+### 倍增思想——使用加法来模拟整数乘法
+
+在不使用乘法、除法和 mod 运算符的情况下，使用加法去计算**6*5**的积
+
+最先想到的就是写一个循环“把 6 加 5 次”
+
+```
+0+6=6
+6+6=12
+12+6=18
+18+6=24
+24+6=30
+```
+
+那有没有更快的做法吗？
+
+数字5表示的是多少个6进行相加，或者说是相加的次数，我们可以控制次数与数据同时进行倍增，再设置一个变量来记录结果
+
+可以使用二进制数来帮助我们控制倍增
+
+如5的二进制数为**1 0 1**，每次循环我们取末尾的值（循环结束前进行移位），为1表示前面的计算是有效的我们将记录结果的变量加上前面计算的结果，为0则不需要改变结果，它只表示位数递增；每次循环都需要将次数的值右移一位（相当于除以2），同时数值翻倍（相当于乘以2）
+
+所以对于**6 * 5**有
+
+```
+设置记录结果的变量为 result，初始为0，次数为count，值为5，相加数据为num,值为6
+5对应的二进制位为： 1 0 1
+
+二进制第一位为1 
+	result = result + num = 0 + 6 = 6
+	num = num + num = 6 + 6 = 12
+二进制第二位为0 
+	result = result = 6
+	num = num + num = 12 + 12 = 24
+二进制第三位为1 
+	result = result + num = 6 + 24 = 30
+	num = num + num = 24 + 24 = 48
+结束    
+```
+
+对于二进制位为0不需要改变result的值可能有些疑惑
+
+举个例子：**10 * 8**
+
+**8的二进制数为1 0 0 0，从右往左抵达1时，10已经进行了三次倍增 8相当于进行了反向三次倍增  ，即10+10，20+20，40+40（是在原有的基础上倍增，不是10+10+10）8/2，4/2，2/2，抵达1时，这个1代表前面的计算结果有效，需要进行记录，如果是0 0 0 0 再怎么叠加，结果都没有意义**
+
+反过来说就是 1每次乘以2到8 与 10每次乘以2到80的次数是相同的，都需要三次
+
+```java
+long mul(long num, long count) {
+        long result = 0;
+        while (count > 0) {
+            if ((count & 1) == 1) result += num;
+            count >>= 1;
+            num += num;
+        }
+        return result;
+    }
+```
+
+
+
+相关题目：
+
+* [两数相除](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/DivideTwoIntegers.java)
+
+
 
 
 
