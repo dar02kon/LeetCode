@@ -71,6 +71,7 @@
 * [两两交换链表中的节点](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/SwapNodesInPairs.java)
 * [找出字符串中第一个匹配项的下标](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/FindTheIndexOfTheFirstOccurrenceInAString.java)
 * [两数相除](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/DivideTwoIntegers.java)
+* [下一个排列](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/NextPermutation.java)
 
 ### 困难
 
