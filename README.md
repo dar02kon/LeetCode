@@ -72,6 +72,7 @@
 * [找出字符串中第一个匹配项的下标](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/FindTheIndexOfTheFirstOccurrenceInAString.java)
 * [两数相除](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/DivideTwoIntegers.java)
 * [下一个排列](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/NextPermutation.java)
+* [搜索旋转排序数组](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/SearchInRotatedSortedArray.java)
 
 ### 困难
 
@@ -250,6 +251,7 @@ TCP利用滑动窗口实现流量控制（流量控制就是让发送方的发�
 
 * [搜索插入位置](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/SearchInsertPosition.java)
 * [x 的平方根](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/Sqrtx.java)
+* [搜索旋转排序数组](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/SearchInRotatedSortedArray.java)
 
 ### 递归回溯
 
