@@ -75,6 +75,7 @@
 * [搜索旋转排序数组](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/SearchInRotatedSortedArray.java)
 * [在排序数组中查找元素的第一个和最后一个位置](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/FindFirstAndLastPositionOfElementInSortedArray.java)
 * [有效的数独](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/ValidSudoku.java)
+* [外观数列](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/CountAndSay.java)
 
 ### 困难
 
