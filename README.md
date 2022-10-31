@@ -76,6 +76,7 @@
 * [在排序数组中查找元素的第一个和最后一个位置](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/FindFirstAndLastPositionOfElementInSortedArray.java)
 * [有效的数独](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/ValidSudoku.java)
 * [外观数列](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/CountAndSay.java)
+* [组合总和](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/CombinationSum.java)
 
 ### 困难
 
@@ -267,6 +268,7 @@ TCP利用滑动窗口实现流量控制（流量控制就是让发送方的发�
 
 * [括号生成](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/GenerateParentheses.java)
 * [电话号码的字母组合](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/LetterCombinationsOfAPhoneNumber.java)
+* [组合总和](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/CombinationSum.java)
 
 ### KMP算法——字符串匹配问题
 
