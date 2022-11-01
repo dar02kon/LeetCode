@@ -26,6 +26,7 @@ public class CombinationSumIi {
      * 找到所有的组合并不难，递归回溯就可以找到
      * 关键是去重，可以先将数组进行排序，回溯移除集合元素后循环，判断下一个要添加的元素是否与移除的相同，相同则继续循环
      * 提前将目标值减去当前元素，如果小于0则直接跳出循环，因为后面的元素都比前面的大，已经不可能满足条件了
+     *
      * @param candidates
      * @param target
      * @return
@@ -35,6 +36,7 @@ public class CombinationSumIi {
         getRecord(candidates, target, 0);
         return list;
     }
+
     public void getRecord(int[] candidates, int target, int index) {
         if (target == 0) {//找到了，添加集合
             list.add(new ArrayList<>(record));
