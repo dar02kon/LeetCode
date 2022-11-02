@@ -78,6 +78,7 @@
 * [外观数列](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/CountAndSay.java)
 * [组合总和](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/CombinationSum.java)
 * [组合总和 II](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/CombinationSumIi.java)
+* [字符串相乘](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/MultiplyStrings.java)
 
 ### 困难
 
