@@ -80,6 +80,7 @@
 * [组合总和 II](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/CombinationSumIi.java)
 * [字符串相乘](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/MultiplyStrings.java)
 * [跳跃游戏 II](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/GumpGameIi.java)
+* [全排列](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/Permutations.java)
 
 ### 困难
 
@@ -273,6 +274,7 @@ TCP利用滑动窗口实现流量控制（流量控制就是让发送方的发�
 * [电话号码的字母组合](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/LetterCombinationsOfAPhoneNumber.java)
 * [组合总和](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/CombinationSum.java)
 * [组合总和 II](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/CombinationSumIi.java)
+* [全排列](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/Permutations.java)
 
 ### KMP算法——字符串匹配问题
 
