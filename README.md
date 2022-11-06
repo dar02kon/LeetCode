@@ -82,6 +82,7 @@
 * [跳跃游戏 II](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/GumpGameIi.java)
 * [全排列](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/Permutations.java)
 * [组合总和 II](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/CombinationSumIi.java)
+* [旋转图像](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/RotateImage.java)
 
 ### 困难
 
