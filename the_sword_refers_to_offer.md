@@ -107,3 +107,187 @@ public int findRepeatNumber3(int[] nums) {
 时间复杂度 O(N)： 遍历数组需要O(N)，每轮遍历的判断和交换操作只需要O(1) 。
 空间复杂度 O(1)： 使用常数复杂度的额外空间。
 
+
+
+## 剑指 Offer 04. 二维数组中的查找
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/description/)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/LookupInATwoDimensionalArray.java)
+
+在一个 n * m 的二维数组中，每一行都按照从左到右 **非递减** 的顺序排序，每一列都按照从上到下 **非递减** 的顺序排序。请完成一个高效的函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。
+
+ 
+
+**示例:**
+
+现有矩阵 matrix 如下：
+
+```
+[
+  [1,   4,  7, 11, 15],
+  [2,   5,  8, 12, 19],
+  [3,   6,  9, 16, 22],
+  [10, 13, 14, 17, 24],
+  [18, 21, 23, 26, 30]
+]
+```
+
+给定 target = `5`，返回 `true`。
+
+给定 target = `20`，返回 `false`。
+
+ 
+
+**限制：**
+
+```
+0 <= n <= 1000
+0 <= m <= 1000
+```
+
+ 
+
+### 题解
+
+#### 二分查找
+
+根据题目描述可知，每一行，每一列都按照从左到右 **非递减** 的顺序排序。
+
+**确定需要进行搜索的行**
+
+可以先用二分查找对第一列进行搜索找到第一个小于或者等于目标值的下标，设为n
+
+再利用二分查找对最后一列进行搜索寻找第一个大于或者等于目标值的下标，设为m
+
+则如果m<=n，则说明有存在的行可能找到目标值
+
+对于矩阵（查找5）
+
+```
+[
+  [1,   4,  7, 11, 15],
+  [2,   5,  8, 12, 19],
+  [3,   6,  9, 16, 22],
+  [10, 13, 14, 17, 24],
+  [18, 21, 23, 26, 30]
+]
+```
+
+m = 0，n = 2，在0-2行可能存在目标值
+
+**再对范围内的每一行进行二分查找**
+
+同样去寻找第一个大于或者等于目标值的下标，如果这个下标对应的数恰好为目标值则直接返回true，否则缩短下一行查找范围，即右边界更换为这个下标，这个下标对应的下侧数值肯定不比它小，没必要再往右边寻找（越往右就越大）
+
+同样对于矩阵（查找5）：
+
+```
+[
+  [1,   4,  7, 11, 15],
+  [2,   5,  8, 12, 19],
+  [3,   6,  9, 16, 22],
+  [10, 13, 14, 17, 24],
+  [18, 21, 23, 26, 30]
+]
+```
+
+第一行搜索结束后可以将下一行的右边界缩短到 2（第一行位于第3列的数字7是第一个大于或者等于目标值5的数字）
+
+```java
+ public boolean findNumberIn2DArray(int[][] matrix, int target) {
+        if (matrix == null || matrix.length == 0) {
+            return false;
+        }
+        // 寻找矩阵第一列第一个小于或者等于目标值的下标n
+        // 从0-n行从首部来看可能存在目标值
+        int left = -1;
+        int right = matrix.length - 1;
+        while (left < right) {
+            int mid = (left + right + 1) / 2;
+            if (matrix[mid][0] <= target) {
+                left = mid;
+            } else {
+                right = mid - 1;
+            }
+        }
+        int n = left;// 上界
+        // 寻找矩阵最后一列第一个大于或者等于目标值的下标m
+        // 从m-matrix.length-1行从尾部来看可能存在目标值
+        left = 0;
+        right = matrix.length;
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (matrix[mid][matrix[0].length - 1] >= target) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        int m = right;// 下界
+        if (n < m) {// 不存在目标值
+            return false;
+        }
+        // 以m为起始行依次二分查找至第n行
+        // 寻找每一行行中第一个大于或者等于目标值的下标，
+        // 若等于则返回true，大于缩小下次查找的右边界
+        int len = matrix[0].length;//列数
+        for (int i = m; i <= n; i++) {
+            left = 0;
+            right = len;
+            while (left < right) {
+                int mid = (left + right) / 2;
+                if (matrix[i][mid] >= target) {
+                    right = mid;
+                } else {
+                    left = mid + 1;
+                }
+            }
+            if (matrix[i][right] == target) {//找到目标值
+                return true;
+            }
+            len = right;//缩小右边界
+        }
+        return false;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度 ： 对一行使用二分查找的时间复杂度为*O*(log*m*)，对多对n行进行查找，对一列使用二分查找的时间复杂度为*O*(log*n*)，需要对2列进行查找，综合一下最坏情况下的时间复杂度为 *nO*(log*m*) + *2O*(log*n*)，其中m为行数，n为列数。均摊下来时间复杂度还是比较乐观的。
+空间复杂度 O(1)： 使用常数复杂度的额外空间。
+
+#### 根据特点进行搜索
+
+上面这种搜索仍然未充分利用矩阵的特性，每一次二分搜索差不多都是独立的，没有充分利用上一次搜索获得的有效信息，但同样要利用这些信息又需要额外编写代码来记录和使用这些信息（就是上面缩短右边界一样）
+
+观察矩阵右上角那一点，可以发现如果将它的位置往左移动它会变小，往下移动会变大，类似于二叉搜索树。如果将这一点对应的数值与目标值进行比较，它只有三种行为，等于目标值返回true，大于目标值往左移动来减小数值（不能往上移动，因为我们就是从那来的），小于目标值往下移动来增大数值（同样不能往右移动）。
+
+这样所走的每一步都是从前面一点一滴积累过来的，充分利用了已知信息。
+
+```java
+    public boolean findNumberIn2DArray2(int[][] matrix, int target) {
+        int row = 0;//对应行数
+        int column = matrix[0].length-1;//对应列数
+        while (row<matrix.length&&column>=0){
+            if(matrix[row][column]==target){
+                return true;
+            }
+            if(matrix[row][column]>target){
+                column--;//列数减一，向左移动
+            } else {
+                row++;//行数加一，向下移动
+            }
+        }
+        return false;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(n+m)。在搜索的过程中，如果我们没有找到 target，那么我们要么将 column 减少 1，要么将 row 增加 1。由于 (row,column) 的初始值分别为 (0,m−1)，因此 column 最多能被减少 m 次，row 最多能被增加 n 次，总搜索次数为 n+m。在这之后，row 和 column 就会超出矩阵的边界。
+
+空间复杂度：O(1)。
+
