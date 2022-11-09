@@ -291,3 +291,141 @@ m = 0，n = 2，在0-2行可能存在目标值
 
 空间复杂度：O(1)。
 
+## 剑指 Offer 05. 替换空格
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/ti-huan-kong-ge-lcof/description/)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/ReplaceSpaces.java)
+
+请实现一个函数，把字符串 `s` 中的每个空格替换成"%20"。
+
+ 
+
+**示例 1：**
+
+```
+输入：s = "We are happy."
+输出："We%20are%20happy."
+```
+
+ 
+
+**限制：**
+
+```
+0 <= s 的长度 <= 10000
+```
+
+### 题解
+
+#### 使用数组存储
+
+直接的想法就是遍历字符串中的每一个字符，如果是空格就往数组中添加三个字符，即"%20"；如果不为空格则添加该字符。
+
+最坏的情况下字符串全是空格，所以我们申请的空间必须为`3*s.length()`，即三倍字符串长度，虽然可能会造成空间浪费，但是Java并不支持动态申请空间，而且字符串String底层使用的是final修饰的char/byte数组（如果允许修改那为什么不直接对字符串进行扩容呢）
+
+```java
+ public String replaceSpace(String s) {
+        char[] result = new char[s.length()*3];//初始化
+        int index = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if(c==' '){
+                result[index++] = '%';
+                result[index++] = '2';
+                result[index++] = '0';
+            } else {
+                result[index++] = c;
+            }
+        }
+        return new String(result,0,index);
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度 O(n)：遍历了字符串一边
+空间复杂度 O(n)：使用了大小为`s.length()*3`的数组
+
+#### 使用StringBuilder
+
+直接使用`s.length()*3`大小的数组可能会造成空间的浪费，我们可以使用StringBuffer来进行字符串的拼接，StringBuffer同样也是使用数组来保存数据，与String不同的是它允许修改，并且空间不够时会进行“扩容”（其实还是重新初始化一个数组，不过调用的是本地方法，速度可能快一些），所以我们可以尝试初始化一个合适大小的StringBuffer对象，尽量不需要“扩容”，这个大小需要对数据进行分析。
+
+```java
+    public String replaceSpace2(String s) {
+        StringBuilder result = new StringBuilder(s.length());//初始化，最初的大小可以根据数据来进行估算以减少重新申请空间的次数
+        for (int i = 0; i < s.length() ; i++) {
+            if(s.charAt(i)==' '){
+                result.append("%20");
+            } else {
+                result.append(s.charAt(i));
+            }
+        }
+        return result.toString();
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度 O(n)：遍历了字符串一边，“扩容”的时间可以忽略
+空间复杂度 O(n)：最少使用`s.length()`大小的空间，最多使用`s.length()*3`大小的空间，“扩容”可能会导致使用的空间翻倍。
+
+## 剑指 Offer 06. 从尾到头打印链表
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/PrintALinkedListFromEndToEnd.java)
+
+输入一个链表的头节点，从尾到头反过来返回每个节点的值（用数组返回）。
+
+ 
+
+**示例 1：**
+
+```
+输入：head = [1,3,2]
+输出：[2,3,1]
+```
+
+ 
+
+**限制：**
+
+```
+0 <= 链表长度 <= 10000
+```
+
+### 题解
+
+#### 二次遍历
+
+逆向输出链表，第一想法就是先获取链表长度，根据长度初始化数组，然后再遍历链表从后往前来填充数组
+
+```java
+    public int[] reversePrint(ListNode head) {
+        int len = 0;//记录链表长度，同样也是填充数组时的下标
+        ListNode p = head;
+        while (p!=null){//获取链表长度
+            len ++;
+            p = p.next;
+        }
+        int[] result = new int[len];
+        p = head;
+        len = 0;
+        while (p!=null){//填充数组
+            result[len++] = p.val;
+            p = p.next;
+        }
+        return result;
+    }
+}
+```
+
+**复杂度分析：**
+
+时间复杂度 O(n)：遍历两次链表
+空间复杂度 O(n)：保存结果的数组，这个是无法避免的，如果不考虑返回结果的占用空间，空间复杂度就是O(1)
