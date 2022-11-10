@@ -70,6 +70,7 @@ public int findRepeatNumber2(int[] nums) {
 **复杂度分析：**
 
 时间复杂度 O(N)： 遍历数组为 O(N) ，HashSet 添加与查找元素皆为 O(1)。
+
 空间复杂度 O(N)： HashSet 占用 O(N)大小的额外空间。
 
 #### 映射（交换位置）
@@ -105,6 +106,7 @@ public int findRepeatNumber3(int[] nums) {
 **复杂度分析：**
 
 时间复杂度 O(N)： 遍历数组需要O(N)，每轮遍历的判断和交换操作只需要O(1) 。
+
 空间复杂度 O(1)： 使用常数复杂度的额外空间。
 
 
@@ -257,6 +259,7 @@ m = 0，n = 2，在0-2行可能存在目标值
 **复杂度分析：**
 
 时间复杂度 ： 对一行使用二分查找的时间复杂度为*O*(log*m*)，对多对n行进行查找，对一列使用二分查找的时间复杂度为*O*(log*n*)，需要对2列进行查找，综合一下最坏情况下的时间复杂度为 *nO*(log*m*) + *2O*(log*n*)，其中m为行数，n为列数。均摊下来时间复杂度还是比较乐观的。
+
 空间复杂度 O(1)： 使用常数复杂度的额外空间。
 
 #### 根据特点进行搜索
@@ -347,6 +350,7 @@ m = 0，n = 2，在0-2行可能存在目标值
 **复杂度分析：**
 
 时间复杂度 O(n)：遍历了字符串一边
+
 空间复杂度 O(n)：使用了大小为`s.length()*3`的数组
 
 #### 使用StringBuilder
@@ -370,6 +374,7 @@ m = 0，n = 2，在0-2行可能存在目标值
 **复杂度分析：**
 
 时间复杂度 O(n)：遍历了字符串一边，“扩容”的时间可以忽略
+
 空间复杂度 O(n)：最少使用`s.length()`大小的空间，最多使用`s.length()*3`大小的空间，“扩容”可能会导致使用的空间翻倍。
 
 ## 剑指 Offer 06. 从尾到头打印链表
@@ -428,4 +433,215 @@ m = 0，n = 2，在0-2行可能存在目标值
 **复杂度分析：**
 
 时间复杂度 O(n)：遍历两次链表
+
 空间复杂度 O(n)：保存结果的数组，这个是无法避免的，如果不考虑返回结果的占用空间，空间复杂度就是O(1)
+
+## 剑指 Offer 07. 重建二叉树
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/zhong-jian-er-cha-shu-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/RebuildTheBinaryTree.java)
+
+输入某二叉树的前序遍历和中序遍历的结果，请构建该二叉树并返回其根节点。
+
+假设输入的前序遍历和中序遍历的结果中都不含重复的数字。
+
+ 
+
+**示例 1:**
+
+![img](https://assets.leetcode.com/uploads/2021/02/19/tree.jpg)
+
+```
+Input: preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
+Output: [3,9,20,null,null,15,7]
+```
+
+**示例 2:**
+
+```
+Input: preorder = [-1], inorder = [-1]
+Output: [-1]
+```
+
+ 
+
+**限制：**
+
+```
+0 <= 节点个数 <= 5000
+```
+
+
+
+### 题解
+
+#### 递归遍历
+
+**先序遍历：**
+
+* 访问根节点
+* 先序遍历左子树
+* 先序遍历右子树
+
+**中序遍历：**
+
+* 中序遍历左子树
+* 访问根节点
+* 中序遍历右子树
+
+所以我们可以用先序序列来切分中序序列
+
+对于先序序列`[3,9,20,15,7]`，中序序列`[9,3,15,20,7]`，先序序列的第一元素3即为根节点可以将中序序列分为 `[左子树,3,右子树]`，对于先序序列后面的元素同样可以将中序序列对应部分的左子树或右子树再次分割
+
+![](D:\学习历程\Java\刷题\img\剑指offer\Snipaste_2022-11-10_20-12-47.png)
+
+只要我们在中序遍历中定位到根节点，那么我们就可以分别知道左子树和右子树中的节点数目。由于同一颗子树的前序遍历和中序遍历的长度显然是相同的，因此我们就可以对应到前序遍历的结果寻找需要的根节点。
+
+```java
+    /**
+     * 递归构建
+     * @param preorder 前序
+     * @param inorder 中序
+     * @return
+     */
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        if (preorder.length == 0) {
+            return null;
+        }
+        TreeNode head = new TreeNode();
+        addNode2(head, preorder, inorder, 0, 0, preorder.length - 1);
+        return head;
+    }
+
+
+    /**
+     * 递归函数
+     * @param head 根节点
+     * @param preorder 前序序列
+     * @param inorder 中序序列
+     * @param index 前序序列下标
+     * @param start 对应子树开始位置的下标（中序）
+     * @param end 对应子树结束位置的下标（中序）
+     */
+    public void addNode(TreeNode head, int[] preorder, int[] inorder, int index, int start, int end) {
+        for (int i = index; i < preorder.length; i++) {
+            for (int j = start; j <= end; j++) {//寻找对应的根节点
+                if (inorder[j] == preorder[i]) {
+                    head.val = (preorder[i]);//添加节点
+                    if (i + 1 == preorder.length) {//前序序列已经抵达边界
+                        return;
+                    }
+                    if (start <= j - 1) {
+                        head.left = new TreeNode();//添加左节点
+                        addNode(head.left, preorder, inorder, i + 1, start, j - 1);//递归构建左子树
+                    }
+                    if (j + 1 <= end) {
+                        head.right = new TreeNode();//添加右节点
+                        addNode(head.right, preorder, inorder, i + 1, j + 1, end);//递归构建右子树
+                    }
+                    return;
+                }
+            }
+        }
+    }
+```
+
+上面这种写法当然可以找到结果，但是在搜索根节点时需要用到两重循环，一次是从前序序列中找我们需要的根节点，一次是根据找到的根节点在中序序列中进行定位，对于后者我们可以实现利用hash表存储中序序列来做到快速定位根节点所在位置，对于寻找我们需要的根节点我们可以利用已知信息以及前序序列的特点直接定位，
+
+右子树：下一次的根节点下标 = 上一次根节点的下标+其左子树节点数+1，访问根节点后会先去访问左子树，左子树访问后再去访问右子树根节点
+
+左子树：下一次的根节点下标 = 上一次根节点的下标+1，访问根节点后马上就会去访问其左子树的根节点（如果有的话）
+
+```java
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        if (preorder.length == 0) {
+            return null;
+        }
+        for (int i = 0; i < inorder.length; i++) {//创建中序序列hash表
+            map.put(inorder[i], i);
+        }
+        TreeNode head = new TreeNode();
+        addNode2(head, preorder, inorder, 0, 0, preorder.length - 1);
+        return head;
+    }
+    
+    public void addNode2(TreeNode head, int[] preorder, int[] inorder, int index, int start, int end) {
+        if (index == preorder.length) {
+            return;
+        }
+        Integer j = map.get(preorder[index]);//定位根节点位置
+        head.val = (preorder[index]);//添加根节点的值
+        if (start <= j - 1) {
+            head.left = new TreeNode();
+            addNode2(head.left, preorder, inorder, index + 1, start, j - 1);//递归创建左子树
+        }
+        if (j + 1 <= end) {
+            head.right = new TreeNode();
+            addNode2(head.right, preorder, inorder, index + j - start + 1, j + 1, end);//递归创建右子树
+        }
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度 O(n)：n为节点个数
+
+空间复杂度 O(n)：除去保存结果需要的 O(n)空间之外，我们还需要使用 O(n) 的空间存储哈希映射，以及 O(h)（其中 h 是树的高度）的空间表示递归时栈空间。这里 h<n，所以总空间复杂度为 O(n)。
+
+#### 迭代
+
+对于前序遍历中的任意两个连续节点 u 和 v，根据前序遍历的流程，我们可以知道 u和 v 只有两种可能的关系：
+
+* v 是 u 的左儿子。这是因为在遍历到 u 之后，下一个遍历的节点就是 u 的左儿子，即 v；
+* u 没有左儿子，并且 v 是 u 的某个祖先节点（或者 u 本身）的右儿子。如果 u 没有左儿子，那么下一个遍历的节点就是 u 的右儿子。如果 u 没有右儿子，我们就会向上回溯，直到遇到第一个有右儿子（且 u 不在它的右儿子的子树中）的节点 p，则v就是p的右儿子
+
+**算法流程：**
+
+* 我们用一个栈和一个指针辅助进行二叉树的构造。初始时栈中存放了根节点（前序遍历的第一个节点），指针指向中序遍历的第一个节点；
+* 我们依次枚举前序遍历中除了第一个节点以外的每个节点。如果 index 恰好指向栈顶节点，那么我们不断地弹出栈顶节点并向右移动 index，并将当前节点作为最后一个弹出的节点的右儿子；如果 index 和栈顶节点不同，我们将当前节点作为栈顶节点的左儿子；
+* 无论是哪一种情况，我们最后都将当前的节点入栈。
+
+```java
+    /**
+     * 迭代构建
+     * @param preorder 前序
+     * @param inorder 后序
+     * @return
+     */
+    public TreeNode buildTree2(int[] preorder, int[] inorder) {
+        if (preorder == null || preorder.length == 0) {
+            return null;
+        }
+        TreeNode root = new TreeNode(preorder[0]);
+        Deque<TreeNode> stack = new LinkedList<TreeNode>();//创建栈
+        stack.push(root);//添加根节点
+        int inorderIndex = 0;
+        for (int i = 1; i < preorder.length; i++) {//遍历前序（不包含根节点）
+            int preorderVal = preorder[i];
+            TreeNode node = stack.peek();
+            if (node.val != inorder[inorderIndex]) {//中序序列当前节点与栈顶节点不同
+                node.left = new TreeNode(preorderVal);//添加为栈顶节点的左儿子
+                stack.push(node.left);
+            } else {//相同
+                while (!stack.isEmpty() && stack.peek().val == inorder[inorderIndex]) {//找父亲
+                    node = stack.pop();
+                    inorderIndex++;
+                }
+                node.right = new TreeNode(preorderVal);//添加为右儿子
+                stack.push(node.right);
+            }
+        }
+        return root;
+    }
+
+```
+
+**复杂度分析：**
+
+时间复杂度：O(n)，其中 n 是树中的节点个数。
+
+空间复杂度：O(n)，除去返回的答案需要的 O(n) 空间之外，我们还需要使用 O(h)（其中 h 是树的高度）的空间存储栈。这里 h<n，所以（在最坏情况下）总空间复杂度为 O(n)
+
