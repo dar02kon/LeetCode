@@ -645,3 +645,137 @@ Output: [-1]
 
 空间复杂度：O(n)，除去返回的答案需要的 O(n) 空间之外，我们还需要使用 O(h)（其中 h 是树的高度）的空间存储栈。这里 h<n，所以（在最坏情况下）总空间复杂度为 O(n)
 
+## 剑指 Offer 09. 用两个栈实现队列
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/yong-liang-ge-zhan-shi-xian-dui-lie-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/TheQueueIsImplementedWithTwoStacks.java)
+
+用两个栈实现一个队列。队列的声明如下，请实现它的两个函数 `appendTail` 和 `deleteHead` ，分别完成在队列尾部插入整数和在队列头部删除整数的功能。(若队列中没有元素，`deleteHead` 操作返回 -1 )
+
+ 
+
+**示例 1：**
+
+```
+输入：
+["CQueue","appendTail","deleteHead","deleteHead","deleteHead"]
+[[],[3],[],[],[]]
+输出：[null,null,3,-1,-1]
+```
+
+**示例 2：**
+
+```
+输入：
+["CQueue","deleteHead","appendTail","appendTail","deleteHead","deleteHead"]
+[[],[],[5],[2],[],[]]
+输出：[null,-1,null,null,5,2]
+```
+
+**提示：**
+
+- `1 <= values <= 10000`
+- 最多会对` appendTail、deleteHead `进行` 10000` 次调用
+
+### 题解
+
+#### 双栈
+
+使用栈来模拟队列时，每次取队头元素都是在对栈地元素做处理，所以我们可以用另一个栈来存储倒置的元素来达到先进先出
+
+具体做法就是使用两个栈IN与OUT，使用IN来添加元素，OUT用于取元素
+
+我们需要将IN中的元素倒置存储在OUT中来达到先进先出，选择在OUT为空时将IN中的元素从栈顶依次取出存入OUT（如果IN不为空的话），如果OUT中存在元素时添加IN中的元素则会覆盖之前的结果
+
+```java
+/**
+ * 使用两个栈，一个输出栈，一个输入栈
+ */
+class CQueue1 {
+    private final Stack<Integer> stack;//输出栈
+    private final Stack<Integer> target;//输入栈
+
+    public CQueue1() {
+        this.stack = new Stack<>();
+        this.target = new Stack<>();
+    }
+
+    public void appendTail(int value) {
+        target.push(value);//添加元素
+    }
+
+    public int deleteHead() {
+        if (stack.empty()) {//输出栈为空
+            if (target.isEmpty()) {//输入栈为空
+                return -1;
+            }
+            while (!target.isEmpty()) {//将输入栈中元素依次取出存入输出栈中
+                stack.push(target.pop());
+            }
+        }
+        return stack.pop();//弹出栈顶
+    }
+}
+```
+
+**复杂度分析：**
+
+时间复杂度 ：appendTail 为 O(1)，deleteHead 为均摊 O(1)。对于每个元素，至多入栈和出栈各两次，故均摊复杂度为 O(1)。
+
+空间复杂度 O(n)：其中 n 是操作总数。对于有 n 次 appendTail 操作的情况，队列中会有 n 个元素，故空间复杂度为 O(n)。
+
+#### 《一个栈》
+
+Java中栈的底层是使用数组进行存储的，所以存在一些额外的操作，如删除数组第一个元素并返回，删除第一个元素的代码也很有意思
+
+```java
+    public synchronized E remove(int index) {
+        modCount++;
+        if (index >= elementCount)
+            throw new ArrayIndexOutOfBoundsException(index);
+        E oldValue = elementData(index);
+
+        int numMoved = elementCount - index - 1;
+        if (numMoved > 0)
+            System.arraycopy(elementData, index+1, elementData, index,
+                             numMoved);
+        elementData[--elementCount] = null; // Let gc do its work
+
+        return oldValue;
+    }
+```
+
+直观来看删除第一个元素的时间复杂度为O(1)
+
+```java
+/**
+ * 一个栈（数组）
+ */
+class CQueue2 {
+    private final Stack<Integer> stack;
+
+    public CQueue2() {
+        this.stack = new Stack<>();
+    }
+
+    public void appendTail(int value) {
+        stack.push(value);
+    }
+
+    public int deleteHead() {
+        if (stack.isEmpty()) {
+            return -1;
+        }
+        return stack.remove(0);
+    }
+}
+```
+
+**复杂度分析：**
+
+时间复杂度 ：appendTail 为 O(1)，deleteHead 基本为 O(1)。
+
+空间复杂度 O(n)：需要用一个栈来保存元素，n为栈的元素个数。
