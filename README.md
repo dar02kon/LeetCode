@@ -4,6 +4,10 @@
 
 ## 已刷算法题
 
+### 剑指offer
+
+[笔记链接](https://github.com/dar02kon/LeetCode/blob/master/the_sword_refers_to_offer.md)
+
 ### 简单
 
 * [二进制求和](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/AddBinary.java)
