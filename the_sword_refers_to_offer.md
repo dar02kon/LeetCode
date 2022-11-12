@@ -779,3 +779,157 @@ class CQueue2 {
 时间复杂度 ：appendTail 为 O(1)，deleteHead 基本为 O(1)。
 
 空间复杂度 O(n)：需要用一个栈来保存元素，n为栈的元素个数。
+
+## 剑指 Offer 10- I. 斐波那契数列
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/fei-bo-na-qi-shu-lie-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/TheFibonacciSequence.java)
+
+写一个函数，输入 `n` ，求斐波那契（Fibonacci）数列的第 `n` 项（即 `F(N)`）。斐波那契数列的定义如下：
+
+```
+F(0) = 0,   F(1) = 1
+F(N) = F(N - 1) + F(N - 2), 其中 N > 1.
+```
+
+斐波那契数列由 0 和 1 开始，之后的斐波那契数就是由之前的两数相加而得出。
+
+答案需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。
+
+ 
+
+**示例 1：**
+
+```
+输入：n = 2
+输出：1
+```
+
+**示例 2：**
+
+```
+输入：n = 5
+输出：5
+```
+
+ 
+
+**提示：**
+
+- `0 <= n <= 100`
+
+### 题解
+
+#### 常规思路
+
+斐波那契数列由 0 和 1 开始，之后的斐波那契数就是由之前的两数相加而得出。根据这个规律进行循环即可，但因为计算结果可能比较大，使用int类型会越界，所以结果需要取模 1e9+7（题目要求）
+
+```java
+    public int fib(int n) {
+        if (n <= 1)
+            return n;
+        int a = 0;
+        int b = 1;
+        int sum;
+        for (int i = 2; i <= n; i++) {
+            sum = (a + b) % 1000000007;//对结果取模
+            a = b;
+            b = sum;
+        }
+        return b;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度O(n) 
+
+空间复杂度 O(1)
+
+#### 矩阵快速幂
+
+我们可以使用快速幂来模拟乘法运算，相比一个数慢慢加，快速幂要快很多。
+
+同样我们可以使用矩阵快速幂的方法来求解斐波那契数以达到降低时间复杂度的目的
+
+对于
+
+![](https://dar-1305869431.cos.ap-shanghai.myqcloud.com/algorithm/Snipaste_2022-11-12_20-31-31.png)
+
+我们需要找到一个矩阵M时一下等式成立
+
+![](https://dar-1305869431.cos.ap-shanghai.myqcloud.com/algorithm/Snipaste_2022-11-12_20-31-39.png)
+
+根据定义设M为（对M求幂的结果矩阵应与M的阶数相同）
+
+![](https://dar-1305869431.cos.ap-shanghai.myqcloud.com/algorithm/Snipaste_2022-11-12_20-30-14.png)
+
+求解
+
+```
+a*F(n) + b*F(n-1) = F(n+1)
+c*F(n) + d*F(n-1) = F(n)
+```
+
+解得M为
+
+![](https://dar-1305869431.cos.ap-shanghai.myqcloud.com/algorithm/Snipaste_2022-11-12_20-33-07.png)
+
+所以有
+
+![](https://dar-1305869431.cos.ap-shanghai.myqcloud.com/algorithm/Snipaste_2022-11-12_20-36-01.png)
+
+![](https://dar-1305869431.cos.ap-shanghai.myqcloud.com/algorithm/Snipaste_2022-11-12_20-39-22.png)
+
+只要我们能快速计算矩阵 M 的 n 次幂，就可以得到 F(n) 的值。如果直接求取 M的n次方 ，时间复杂度是 O(n)，可以定义矩阵乘法，然后用快速幂算法来加速这里 M的n次幂的求取。因为我们只需要知道F(n)的值，所以求M的n-1次方即可。
+
+因为M求幂后还是二阶矩阵，并且有
+
+![](https://dar-1305869431.cos.ap-shanghai.myqcloud.com/algorithm/Snipaste_2022-11-12_20-47-28.png)
+
+所以M的n-1次方后得到的二阶矩阵，其`(0,0)`位置即为F(n)
+
+```java
+    static final int MOD = (int) (1e9) + 7;
+
+    public int fib2(int n) {
+        if (n <= 1)
+            return n;
+        int[][] num = {{1, 1}, {1, 0}};
+        int[][] pow = pow(num, n - 1);
+        return pow[0][0];
+    }
+
+    // 矩阵快速幂算法
+    public int[][] pow(int[][] a, int n) {
+        int[][] sum = {{1, 0}, {1, 0}};//初始化，相当于普通数字1
+        while (n > 0) {
+            if ((n & 1) == 1) {
+                sum = multiply(sum, a);
+            }
+            a = multiply(a, a);
+            n >>= 1;
+        }
+        return sum;
+    }
+
+    // 矩阵乘法
+    public int[][] multiply(int[][] a, int[][] b) {
+        int[][] result = new int[2][2];
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < b.length; j++) {
+                result[i][j] = (int) ((((long) a[i][0] * b[0][j]) + (long) a[i][1] * b[1][j]) % MOD);//a的一行乘以b的一列
+            }
+        }
+        return result;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度O(log⁡*n*) 
+
+空间复杂度 O(1)：使用的矩阵大小都是确定的，只有四个元素
