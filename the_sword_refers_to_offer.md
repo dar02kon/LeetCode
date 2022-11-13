@@ -933,3 +933,120 @@ c*F(n) + d*F(n-1) = F(n)
 时间复杂度O(log⁡*n*) 
 
 空间复杂度 O(1)：使用的矩阵大小都是确定的，只有四个元素
+
+## 剑指 Offer 10- II. 青蛙跳台阶问题
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/qing-wa-tiao-tai-jie-wen-ti-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/FrogJumpingSteps.java)
+
+一只青蛙一次可以跳上1级台阶，也可以跳上2级台阶。求该青蛙跳上一个 `n` 级的台阶总共有多少种跳法。
+
+答案需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。
+
+**示例 1：**
+
+```
+输入：n = 2
+输出：2
+```
+
+**示例 2：**
+
+```
+输入：n = 7
+输出：21
+```
+
+**示例 3：**
+
+```
+输入：n = 0
+输出：1
+```
+
+**提示：**
+
+- `0 <= n <= 100`
+
+### 题解
+
+#### 动态规划
+
+我们从后往前看，青蛙如果想要跳到第三个台阶，只有两种方式：从第一个台阶跳到第三个台阶或者从第二个台阶跳到第三台阶（一只青蛙一次可以跳上1级台阶，也可以跳上2级台阶。）
+
+跳到第三个台阶的跳法与跳到第一个台阶的跳法以及跳到第二个台阶的跳法有关，即`F(3) = F(2)+F(1)`，推广至n，即`F(n)=F(n-1)+F(n-2) n>=2`，递推公式与斐波那契数列相同，不过F(0) = 1。
+
+```java
+    static final int MOD = 1000000007;
+    public int numWays(int n) {
+        if (n <= 1)
+            return 1;
+        int a = 1;
+        int b = 1;
+        int sum;
+        for (int i = 2; i <= n; i++) {
+            sum = (a + b) % MOD;//取余
+            a = b;
+            b = sum;
+        }
+        return b;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度O(n) 
+
+空间复杂度 O(1)
+
+#### 矩阵快速幂
+
+与斐波那契数列的思路相同，使用快速幂算法来计算M矩阵的n-1次方就能得到结果矩阵N，`F(n) =(N[0,0]+N[0,1])%MOD`，因为F(0) = 1。
+
+```java
+    static final int MOD = 1000000007;
+
+    /**
+     * 矩阵快速幂
+     * @param n
+     * @return
+     */
+    public int numWays2(int n) {
+        int[][] nums = {{1, 1}, {1, 0}};
+        int[][] pow = pow(nums, n - 1);
+        System.out.println(Arrays.deepToString(pow));
+        return (pow[0][0] + pow[0][1]) % MOD;
+    }
+
+    //矩阵快速幂
+    public int[][] pow(int[][] nums, int n) {
+        int[][] sum = {{1, 0}, {0, 1}};//初始化，使用{{1,0},{1,0}}也可以，结果的第一行是相同的
+        while (n > 0) {
+            if ((n & 1) == 1) {
+                sum = multiply(sum, nums);
+            }
+            nums = multiply(nums, nums);
+            n >>= 1;
+        }
+        return sum;
+    }
+    //矩阵乘法
+    public int[][] multiply(int[][] a, int[][] b) {
+        int[][] c = new int[2][2];
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < b.length; j++) {
+                c[i][j] = (int) (((long) a[i][0] * b[0][j] + (long) a[i][1] * b[1][j]) % MOD);
+            }
+        }
+        return c;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度O(log⁡*n*) 
+
+空间复杂度 O(1)：使用的矩阵大小都是确定的，只有四个元素
