@@ -1050,3 +1050,94 @@ c*F(n) + d*F(n-1) = F(n)
 时间复杂度O(log⁡*n*) 
 
 空间复杂度 O(1)：使用的矩阵大小都是确定的，只有四个元素
+
+## 剑指 Offer 11. 旋转数组的最小数字
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/xuan-zhuan-shu-zu-de-zui-xiao-shu-zi-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/RotateTheSmallestNumberOfAnArray.java)
+
+把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。
+
+给你一个可能存在 **重复** 元素值的数组 `numbers` ，它原来是一个升序排列的数组，并按上述情形进行了一次旋转。请返回旋转数组的**最小元素**。例如，数组 `[3,4,5,1,2]` 为 `[1,2,3,4,5]` 的一次旋转，该数组的最小值为 1。 
+
+注意，数组 `[a[0], a[1], a[2], ..., a[n-1]]` 旋转一次 的结果为数组 `[a[n-1], a[0], a[1], a[2], ..., a[n-2]]` 。
+
+ 
+
+**示例 1：**
+
+```
+输入：numbers = [3,4,5,1,2]
+输出：1
+```
+
+**示例 2：**
+
+```
+输入：numbers = [2,2,2,0,1]
+输出：0
+```
+
+ 
+
+**提示：**
+
+- `n == numbers.length`
+- `1 <= n <= 5000`
+- `-5000 <= numbers[i] <= 5000`
+- `numbers` 原来是一个升序排序的数组，并进行了 `1` 至 `n` 次旋转
+
+### 题解
+
+#### 二分查找
+
+对于旋转后的数组可以分为两种基本情况：
+
+一是没有旋转（测试用例中就有这种情况）
+
+二是将前面n位移到后面
+
+例如[1,2,3,4,5,6]旋转后的结果可为[1,2,3,4,5,6]与[4,5,6,1,2,3]等
+
+我们可以以最后一个元素为基准，设为right，在最小值的右侧的一定都小于或等于right；在最小值的左侧都大于或者等于right
+
+如果我们以第一个元素为基准，设为left，则可能出现冲突：对于[4,5,6,1,2,3]，最小值右侧都是小于或者等于left；但对于[1,2,3,4,5,6]，最小值右侧都是大于或者等于left。所以会出现冲突
+
+最终，我们以靠近右侧的元素为基准进行二分查找
+
+设左指针为left，右指针为right，中间点为mid = (left + right) / 2
+
+进行值比较存在三种情况：
+
+* `numbers[mid]<numbers[right]`，则可以确定右侧区域都是大于最小值的，可以舍弃，right = mid（这个mid可能对应最小值，不能盲目mid-1）
+* `numbers[mid]>numbers[right]`，则可以确定左侧区域都是大于最小值的，可以舍弃，left = mid + 1（这个mid肯定不会对应最小值，因为都已经有大于的值了）
+* `numbers[mid]==numbers[right]`，这个我们无法判断舍弃哪个区域，所以就都不舍弃了，直接将右指针左移一位，因为`numbers[right]`存在替代品`numbers[mid]`
+
+最终左指针与右指针指向同一个位置，返回其对应的值即可
+
+```java
+    public int minArray(int[] numbers) {
+        int left = 0;//左指针
+        int right = numbers.length - 1;//右指针
+        while (left < right) {
+            int mid = left + (right - left) / 2;//中间点
+            if (numbers[mid] < numbers[right]) {
+                right = mid;//mid可能就是需要找的位置
+            } else if (numbers[mid] > numbers[right]) {
+                left = mid + 1;//这个mid肯定不是要找的位置，因为numbers[mid]>numbers[right]
+            } else {
+                right--;//左移一位继续试探
+            }
+        }
+        return numbers[left];//返回numbers[right]也可以
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：平均时间复杂度为 O(logn)，其中 n 是数组 numbers 的长度。如果数组是随机生成的，那么数组中包含相同元素的概率很低，在二分查找的过程中，大部分情况都会忽略一半的区间。而在最坏情况下，如果数组中的元素完全相同，那么 while 循环就需要执行 n 次，每次忽略区间的右端点，时间复杂度为 O(n)。
+
+空间复杂度：O(1)。
