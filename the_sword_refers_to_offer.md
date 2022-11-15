@@ -1141,3 +1141,94 @@ c*F(n) + d*F(n-1) = F(n)
 时间复杂度：平均时间复杂度为 O(logn)，其中 n 是数组 numbers 的长度。如果数组是随机生成的，那么数组中包含相同元素的概率很低，在二分查找的过程中，大部分情况都会忽略一半的区间。而在最坏情况下，如果数组中的元素完全相同，那么 while 循环就需要执行 n 次，每次忽略区间的右端点，时间复杂度为 O(n)。
 
 空间复杂度：O(1)。
+
+## 剑指 Offer 12. 矩阵中的路径
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/ju-zhen-zhong-de-lu-jing-lcof/description/)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/PathInAMatrix.java)
+
+给定一个 `m x n` 二维字符网格 `board` 和一个字符串单词 `word` 。如果 `word` 存在于网格中，返回 `true` ；否则，返回 `false` 。
+
+单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
+
+ 
+
+例如，在下面的 3×4 的矩阵中包含单词 "ABCCED"（单词中的字母已标出）。
+
+![img](https://assets.leetcode.com/uploads/2020/11/04/word2.jpg)
+
+ 
+
+**示例 1：**
+
+```
+输入：board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCCED"
+输出：true
+```
+
+**示例 2：**
+
+```
+输入：board = [["a","b"],["c","d"]], word = "abcd"
+输出：false
+```
+
+ 
+
+**提示：**
+
+- `m == board.length`
+- `n = board[i].length`
+- `1 <= m, n <= 6`
+- `1 <= word.length <= 15`
+- `board `和` word `仅由大小写英文字母组成
+
+### 题解
+
+#### 回溯
+
+以每一个位置为起点进行递归回溯
+
+如以`board[i][j]`为起点，首先判断`board[i][j]`与`word.charAt(0)`是否相同，如果相同则继续向前遍历。理论上`board[i][j]`的下一个位置有四处，分别为`board[i-1][j]`、`board[i][j-1]`、`board[i+1][j]`、`board[i][j+1]`，可以按顺序判断与`word.charAt(1)`是否相同，如果相同则继续递归，不同返回递归下一处，四处均不符合要求则回溯到上一步去递归上一步的下一处
+
+由于同一个单元格内的字母不允许被重复使用，所以需要用一个数组来标记哪些位置访问过，访问过的不能再次访问，并且在回溯后需要清除标记
+
+```java
+    boolean[][] visited;//标记数组
+    boolean flag = false;//最终结果
+    public boolean exist(char[][] board, String word) {
+        visited = new boolean[board.length][board[0].length];
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                route(board, i, j, word, 0);//以每一个元素为起点去深搜
+            }
+        }
+        return flag;
+    }
+
+    public void route(char[][] board, int x, int y, String word, int index) {
+        if (index == word.length()) {//找到了字符串
+            flag = true;
+            return;
+        }
+        if (x < 0 || x >= board.length || y < 0 || y >= board[0].length || visited[x][y] || board[x][y] != word.charAt(index)) {//不符合要求的情况
+            return;
+        }
+        visited[x][y] = true;//标记访问
+        route(board, x + 1, y, word, index + 1);//下移，继续递归
+        route(board, x, y + 1, word, index + 1);//右移，继续递归
+        route(board, x - 1, y, word, index + 1);//上移，继续递归
+        route(board, x, y - 1, word, index + 1);//左移，继续递归
+        visited[x][y] = false;//清除标记
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：一个非常宽松的上界为 O(MN⋅3^L)，其中M, N为网格的长度与宽度，L 为字符串 word 的长度。在每次调用函数route时，除了第一次可以进入4个分支以外，其余时间我们最多会进入3个分支（因为每个位置只能使用一次，所以走过来的分支没法走回去）。由于单词长为 L，故 `route(board, i, j, word, 0)` 的时间复杂度为 O(3^L)，而我们要执行O(MN) 次检查。然而，由于剪枝的存在，我们在遇到不匹配或已访问的字符时会提前退出，终止递归流程。因此，实际的时间复杂度会远远小于 O(MN⋅3^L)
+
+空间复杂度：O(MN)。我们额外开辟了O(MN) 的 visited 数组，同时栈的深度最大为 O(min(L,MN))。
+
