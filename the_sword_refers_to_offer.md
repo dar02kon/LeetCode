@@ -1578,3 +1578,79 @@ c*F(n) + d*F(n-1) = F(n)
 时间复杂度：O(log⁡n)。循环次数等于 n 的二进制位中 1 的个数，最坏情况下 n 的二进制位全部为 1。
 
 空间复杂度：O(1)，我们只需要常数的空间保存若干变量。
+
+## 剑指 Offer 16. 数值的整数次方
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/TheNumberToTheIntegerPower.java)
+
+实现 [pow(*x*, *n*)](https://www.cplusplus.com/reference/valarray/pow/) ，即计算 x 的 n 次幂函数（即，xn）。不得使用库函数，同时不需要考虑大数问题。
+
+ 
+
+**示例 1：**
+
+```
+输入：x = 2.00000, n = 10
+输出：1024.00000
+```
+
+**示例 2：**
+
+```
+输入：x = 2.10000, n = 3
+输出：9.26100
+```
+
+**示例 3：**
+
+```
+输入：x = 2.00000, n = -2
+输出：0.25000
+解释：2-2 = 1/22 = 1/4 = 0.25
+```
+
+ 
+
+**提示：**
+
+- `-100.0 < x < 100.0`
+- `-231 <= n <= 231-1`
+- `-104 <= xn <= 104`
+
+### 题解
+
+#### 快速幂
+
+对于x^n，如果一个一个的去乘，则需要循环n次，我们可以使用n的二进制数来帮助我们完成乘法，从左往右去遍历这个二进制串，每次循环x*=x，如果对应位为1，则记录一次，result *= x
+
+当n为负数时，可以通过将x=1/x将n转换为-n，需要注意当n==Integer.MIN_VALUE，-n会越界
+
+```java
+    public double myPow(double x, int n) {
+        if(n==Integer.MIN_VALUE&&x>1){
+            return 0;
+        }
+        if(n<0){
+            x = 1/x;
+            n = -n;
+        }
+        double result = 1.0;
+        while (n>0){
+            if((n&1)==1){
+                result *= x;
+            }
+            x *= x;
+            n >>= 1;
+        }
+        return result;
+    }
+```
+
+**复杂度分析：**
+
+- 时间复杂度：O(log⁡n)，即为对 n进行二进制拆分的时间复杂度。
+- 空间复杂度：O(1)。
