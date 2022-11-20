@@ -1,4 +1,4 @@
-# 剑指offer
+# 剑指offer（一）
 
 ## 数组中重复的数字
 
@@ -1654,3 +1654,51 @@ c*F(n) + d*F(n-1) = F(n)
 
 - 时间复杂度：O(log⁡n)，即为对 n进行二进制拆分的时间复杂度。
 - 空间复杂度：O(1)。
+
+## 剑指 Offer 17. 打印从1到最大的n位数
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/da-yin-cong-1dao-zui-da-de-nwei-shu-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/PrintFromOneToTheLargestNumberOfNDigits.java)
+
+输入数字 `n`，按顺序打印出从 1 到最大的 n 位十进制数。比如输入 3，则打印出 1、2、3 一直到最大的 3 位数 999。
+
+**示例 1:**
+
+```
+输入: n = 1
+输出: [1,2,3,4,5,6,7,8,9]
+```
+
+ 
+
+说明：
+
+- 用返回一个整数列表来代替打印
+- n 为正整数
+
+### 题解
+
+#### 普通解法
+
+先求出最大边界，然后遍历赋值即可（如果数字特别大，则可以考虑字符排列或者字符串加减法，当然最后结果也不可能返回int类型的数组）
+
+```java
+    public int[] printNumbers(int n) {
+        int len = (int) Math.pow(10,n);
+        int[] result = new int[len-1];
+        for (int i = 0; i <= (len-1)/2; i++) {//分两半进行填充
+            result[i]=i+1;
+            result[len-2-i]=len-i-1;
+        }
+        return result;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度 O(10^n)： 生成长度为 10^n的列表需使用 O(10^n)时间
+
+空间复杂度 O(1)： 建立列表需使用 O(1) 大小的额外空间（ 列表作为返回结果，不计入额外空间 ）
