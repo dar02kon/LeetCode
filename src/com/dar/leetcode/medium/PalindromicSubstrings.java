@@ -1,4 +1,4 @@
-package com.dar.leetcode.simple;
+package com.dar.leetcode.medium;
 
 /**
  * @author :wx
