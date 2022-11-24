@@ -569,3 +569,53 @@ p = "mis*is*p*."
 时间复杂度：O(n)，其中 n 为数组 nums 的长度。只需遍历 nums 一次。
 
 空间复杂度：O(1)。结果不计入空间复杂度。
+
+## 剑指 Offer 22. 链表中倒数第k个节点
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/TheKTHLastNodeInTheList.java)
+
+输入一个链表，输出该链表中倒数第k个节点。为了符合大多数人的习惯，本题从1开始计数，即链表的尾节点是倒数第1个节点。
+
+例如，一个链表有 `6` 个节点，从头节点开始，它们的值依次是 `1、2、3、4、5、6`。这个链表的倒数第 `3` 个节点是值为 `4` 的节点。
+
+ 
+
+**示例：**
+
+```
+给定一个链表: 1->2->3->4->5, 和 k = 2.
+
+返回链表 4->5.
+```
+
+### 题解
+
+#### 快慢指针
+
+可以定义两个指针，快指针先跑K个单位，然后快慢指针一起跑，这样快指针始终领先满指针K个单位，当快指针到达终点时，满指针就到达了倒数第K个单位上
+
+```java
+    public ListNode getKthFromEnd(ListNode head, int k) {
+        ListNode left = head;
+        ListNode right = head;
+        while (k>0){//快指针先跑
+            right = right.next;
+            k--;
+        }
+        while (right!=null){//快慢指针一起跑
+            left = left.next;
+            right = right.next;
+        }
+        return left;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(n)，其中 n 为链表的长度。我们使用快慢指针，只需要一次遍历即可，复杂度为 O(n)。
+
+空间复杂度：O(1)。
