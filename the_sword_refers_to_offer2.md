@@ -619,3 +619,82 @@ p = "mis*is*p*."
 时间复杂度：O(n)，其中 n 为链表的长度。我们使用快慢指针，只需要一次遍历即可，复杂度为 O(n)。
 
 空间复杂度：O(1)。
+
+## 剑指 Offer 24. 反转链表
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/fan-zhuan-lian-biao-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/ReverseLinkedList.java)
+
+定义一个函数，输入一个链表的头节点，反转该链表并输出反转后链表的头节点。
+
+ 
+
+**示例:**
+
+```
+输入: 1->2->3->4->5->NULL
+输出: 5->4->3->2->1->NULL
+```
+
+ 
+
+**限制：**
+
+```
+0 <= 节点个数 <= 5000
+```
+
+ 
+
+### 题解
+
+#### 迭代遍历
+
+从左往右依次反转链表，需要设置两个指针来辅助进行反转（需要记录前一个节点与后一个节点的位置），并且之前的头节点的next指针需要指向null（否则会出现环）
+
+```java
+    public ListNode reverseList(ListNode head) {
+        ListNode left = null;//反转后之前头节点的next指针需要指向null
+        ListNode right;
+        while (head != null) {
+            right = head.next;//先记录下一个位置
+            head.next = left;//反转
+            //指针后移
+            left = head;
+            head = right;
+        }
+        return left;//返回反转后的头节点
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(n)，其中 n 是链表的长度。需要遍历链表一次
+
+空间复杂度：O(1)
+
+#### 递归
+
+使用递归相当于从后往前反转链表，先找到尾节点即反转后的头节点，尾节点返回的过程中依次进行反转
+
+```java
+    public ListNode reverseList2(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;//返回新的头节点
+        }
+        ListNode newHead = reverseList2(head.next);
+        //反转
+        head.next.next = head;
+        head.next = null;//主要是为了使之前的头节点的next指针指向null，其它位置都会被覆盖
+        return newHead;//返回头节点
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(n)，其中 n 是链表的长度。需要对链表的每个节点进行反转操作。
+
+空间复杂度：O(n)，其中 n 是链表的长度。空间复杂度主要取决于递归调用的栈空间，最多为 n 层
