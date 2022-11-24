@@ -698,3 +698,87 @@ p = "mis*is*p*."
 时间复杂度：O(n)，其中 n 是链表的长度。需要对链表的每个节点进行反转操作。
 
 空间复杂度：O(n)，其中 n 是链表的长度。空间复杂度主要取决于递归调用的栈空间，最多为 n 层
+
+## 剑指 Offer 25. 合并两个排序的链表
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/he-bing-liang-ge-pai-xu-de-lian-biao-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/MergeTwoSortedLinkedLists.java)
+
+输入两个递增排序的链表，合并这两个链表并使新链表中的节点仍然是递增排序的。
+
+**示例1：**
+
+```
+输入：1->2->4, 1->3->4
+输出：1->1->2->3->4->4
+```
+
+**限制：**
+
+```
+0 <= 链表长度 <= 1000
+```
+
+### 题解
+
+#### 迭代
+
+先设置一个空的头节点来记录头节点的位置，再设置两个指针分别指向两个链表的头节点，比较两指针所对应的节点值，先添加较小的节点，并将对应的指针后移。当两指针有一方为空时，直接将另一方连接到新链表的尾部
+
+```java
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        ListNode head = new ListNode();
+        ListNode p = head;
+        while (l1!=null&&l2!=null){
+            if(l1.val<l2.val){//先添加比较小的节点
+                p.next = l1;
+                l1 = l1.next;
+            } else {
+                p.next = l2;
+                l2 = l2.next;
+            }
+            p = p.next;
+        }
+        p.next = l1==null?l2:l1;//不为空的直接与尾部连接
+        return head.next;//返回头节点
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(n+m)，其中 n 和 m 分别为两个链表的长度。因为每次循环迭代中，l1 和 l2 只有一个元素会被放进合并链表中， 因此 while 循环的次数不会超过两个链表的长度之和。所有其他操作的时间复杂度都是常数级别的，因此总的时间复杂度为 O(n+m)。
+
+空间复杂度：O(1)。我们只需要常数的空间存放若干变量
+
+
+
+#### 递归
+
+上面的思路也可以用递归来实现，都是寻找两链表中最小的节点加入到合并链表中然后继续去寻找剩下节点中的最小节点
+
+如果 l1 或者 l2 一开始就是空链表 ，那么没有任何操作需要合并，只需要返回非空链表。否则，要判断 l1 和 l2 哪一个链表的头节点的值更小，然后递归地决定下一个添加到结果里的节点。如果两个链表有一个为空，递归结束。
+
+```java
+    public ListNode mergeTwoLists2(ListNode l1, ListNode l2) {
+       if(l1==null){//l1为空，返回l2
+           return l2;
+       } else if(l2==null){//l2为空返回l1
+           return l1;
+       } else if(l1.val<l2.val){//都不为空则先添加比较小的节点
+           l1.next = mergeTwoLists2(l1.next,l2);//l1头节点后移，继续寻找最小节点
+           return l1;
+       } else {
+           l2.next = mergeTwoLists2(l1,l2.next);//l2头节点后移，继续寻找最小节点
+           return l2;
+       }
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(n+m)，其中 n 和 m 分别为两个链表的长度。因为每次调用递归都会去掉 l1 或者 l2 的头节点（直到至少有一个链表为空），函数 mergeTwoList 至多只会递归调用每个节点一次。因此，时间复杂度取决于合并后的链表长度，即 O(n+m)。
+
+空间复杂度：O(n+m)，其中 n 和 m 分别为两个链表的长度。递归调用 mergeTwoLists 函数时需要消耗栈空间，栈空间的大小取决于递归调用的深度。结束递归调用时 mergeTwoLists 函数最多调用 n+m 次，因此空间复杂度为 O(n+m)。
