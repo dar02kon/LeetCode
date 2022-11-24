@@ -55,6 +55,8 @@
 * [存在重复元素 II](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ContainsDuplicateII.java)
 * [翻转二叉树](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/InvertBinaryTree.java)
 * [用队列实现栈](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ImplementStackUsingQueues.java)
+* [有效的字母异位词](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/ValidAnagram.java)
+* [最长回文串](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/LongestPalindrome.java)
 
 ### 中等
 
@@ -87,6 +89,7 @@
 * [全排列](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/Permutations.java)
 * [组合总和 II](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/CombinationSumIi.java)
 * [旋转图像](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/RotateImage.java)
+* [回文子串](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/PalindromicSubstrings.java)
 
 ### 困难
 
