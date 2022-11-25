@@ -398,7 +398,7 @@ p = "mis*is*p*."
 
 采用官方题解的图
 
-![](D:\学习历程\Java\刷题\img\剑指offer\Snipaste_2022-11-23_18-59-26.png)
+![](https://dar-1305869431.cos.ap-shanghai.myqcloud.com/algorithm/Snipaste_2022-11-23_18-59-26.png)
 
 根据上面的思路写出代码即可，初始状态设为0，即起始空格，可以用Map类型的一维数组来确定状态转移，2，3，5，8，9是可以数值的状态
 
