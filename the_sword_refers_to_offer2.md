@@ -782,3 +782,64 @@ p = "mis*is*p*."
 时间复杂度：O(n+m)，其中 n 和 m 分别为两个链表的长度。因为每次调用递归都会去掉 l1 或者 l2 的头节点（直到至少有一个链表为空），函数 mergeTwoList 至多只会递归调用每个节点一次。因此，时间复杂度取决于合并后的链表长度，即 O(n+m)。
 
 空间复杂度：O(n+m)，其中 n 和 m 分别为两个链表的长度。递归调用 mergeTwoLists 函数时需要消耗栈空间，栈空间的大小取决于递归调用的深度。结束递归调用时 mergeTwoLists 函数最多调用 n+m 次，因此空间复杂度为 O(n+m)。
+
+## 剑指 Offer 26. 树的子结构
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/shu-de-zi-jie-gou-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/TheSubstructureOfATree.java)
+
+输入两棵二叉树A和B，判断B是不是A的子结构。(约定空树不是任意一个树的子结构)
+
+B是A的子结构， 即 A中有出现和B相同的结构和节点值。
+
+**示例 1：**
+
+```
+输入：A = [1,2,3], B = [3,1]
+输出：false
+```
+
+**示例 2：**
+
+```
+输入：A = [3,4,5,1,2], B = [4,1]
+输出：true
+```
+
+**限制：**
+
+```
+0 <= 节点个数 <= 10000
+```
+
+### 题解
+
+#### 递归
+
+可以先序遍历A树的每一个节点`An`，再将以`An`为根节点的子树与B进行比较
+
+```java
+    public boolean isSubStructure(TreeNode A, TreeNode B) {
+        //先序遍历A的每一个节点，并将以此节点为根节点的子树与B进行比较
+        return (A != null && B != null) && (traversal(A, B) || isSubStructure(A.left, B) || isSubStructure(A.right, B));
+    }
+
+    public boolean traversal(TreeNode A, TreeNode B) {//依次比较每个节点
+        if (B == null) {//B为空说明B是A的子结构（B已经比较完了）
+            return true;
+        }
+        if (A == null || A.val != B.val) {//A为空或节点值不相等
+            return false;
+        }
+        return traversal(A.left, B.left) && traversal(A.right, B.right);//递归比较左子树与右子树是否相同
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度： O(MN)，其中 M,N 分别为树 A 和 树 B 的节点数量；先序遍历树 A 占用 O(M) ，每次调用 traversal(A, B) 判断占用 O(N)
+
+空间复杂度：O(M)： 当树 A 和树 B 都退化为链表时，递归调用深度最大。当 M<=N时，遍历树 A 与递归判断的总递归深度为 M ；当 M>N 时，最差情况为遍历至树 A 叶子节点，此时总递归深度为 M
