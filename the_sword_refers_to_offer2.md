@@ -843,3 +843,94 @@ B是A的子结构， 即 A中有出现和B相同的结构和节点值。
 时间复杂度： O(MN)，其中 M,N 分别为树 A 和 树 B 的节点数量；先序遍历树 A 占用 O(M) ，每次调用 traversal(A, B) 判断占用 O(N)
 
 空间复杂度：O(M)： 当树 A 和树 B 都退化为链表时，递归调用深度最大。当 M<=N时，遍历树 A 与递归判断的总递归深度为 M ；当 M>N 时，最差情况为遍历至树 A 叶子节点，此时总递归深度为 M
+
+
+
+## 剑指 Offer 27. 二叉树的镜像
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/er-cha-shu-de-jing-xiang-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/TheMirrorImageOfABinaryTree.java)
+
+请完成一个函数，输入一个二叉树，该函数输出它的镜像。
+
+![](https://dar-1305869431.cos.ap-shanghai.myqcloud.com/algorithm/Snipaste_2022-11-27_16-31-41.png)
+
+**示例 1：**
+
+```
+输入：root = [4,2,7,1,3,6,9]
+输出：[4,7,2,9,6,3,1]
+```
+
+ 
+
+**限制：**
+
+```
+0 <= 节点个数 <= 1000
+```
+
+### 题解
+
+#### 递归
+
+我们从根节点开始，递归地对树进行遍历，并从叶子节点先开始翻转得到镜像。如果当前遍历到的节点 root 的左右两棵子树都已经翻转得到镜像，那么我们只需要交换两棵子树的位置，即可得到以 root 为根节点的整棵子树的镜像。
+
+递归交换是一个从下往上的过程
+
+```java
+    public TreeNode mirrorTree2(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+        TreeNode left = mirrorTree2(root.left);//去反转左子树
+        TreeNode right = mirrorTree2(root.right);//去反转右子树
+        //交换反转后的左右子树，得到以 root 为根节点的整棵子树的镜像
+        root.left = right;
+        root.right = left;
+        return root;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(N)，其中 N 为二叉树节点的数目。我们会遍历二叉树中的每一个节点，对每个节点而言，我们在常数时间内交换其两棵子树
+
+空间复杂度：O(N)。使用的空间由递归栈的深度决定，它等于当前节点在二叉树中的高度。在平均情况下，二叉树的高度与节点个数为对数关系，即 O(log⁡N)。而在最坏情况下，树形成链状，空间复杂度为 O(N)
+
+#### 辅助队列
+
+递归是一个从下往上的过程，我们可以使用一个队列（栈）来存储每一层的节点，从上往下的进行反转
+
+```java
+    public TreeNode mirrorTree(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();//使用队列来存储节点
+        TreeNode p = root;
+        while (p != null) {
+            if (p.left != null) {
+                queue.add(p.left);
+            }
+            if (p.right != null) {
+                queue.add(p.right);
+            }
+            //交换左子树与右子树
+            TreeNode target = p.right;
+            p.right = p.left;
+            p.left = target;
+            if (queue.isEmpty()) {//队列为空说明每一个节点都访问了，退出循环
+                break;
+            }
+            p = queue.poll();//出队，一层一层的遍历
+        }
+        return root;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度 ：O(N)， 其中 N 为二叉树的节点数量，建立二叉树镜像需要遍历树的所有节点，占用 O(N) 时间。
+空间复杂度 ：O(N)，使用队列来存储每一层的节点
+
