@@ -932,5 +932,107 @@ B是A的子结构， 即 A中有出现和B相同的结构和节点值。
 **复杂度分析：**
 
 时间复杂度 ：O(N)， 其中 N 为二叉树的节点数量，建立二叉树镜像需要遍历树的所有节点，占用 O(N) 时间。
+
 空间复杂度 ：O(N)，使用队列来存储每一层的节点
 
+## 剑指 Offer 28. 对称的二叉树
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/dui-cheng-de-er-cha-shu-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/SymmetricBinaryTree.java)
+
+请实现一个函数，用来判断一棵二叉树是不是对称的。如果一棵二叉树和它的镜像一样，那么它是对称的。
+
+**示例 1：**
+
+```
+输入：root = [1,2,2,3,4,4,3]
+输出：true
+```
+
+**示例 2：**
+
+```
+输入：root = [1,2,2,null,3,null,3]
+输出：false
+```
+
+ 
+
+**限制：**
+
+```
+0 <= 节点个数 <= 1000
+```
+
+### 题解
+
+#### 递归
+
+两个树互为镜像则它们的两个根结点具有相同的值且每个树的右子树都与另一个树的左子树镜像对称
+
+我们可以定义两个指针p，q都指向root，将p的左子树与q的右子树比较，p的右子树与q的左子树比较，每一个节点都会与对应的位置进行比较
+
+```java
+    public boolean isSymmetric(TreeNode root){
+        return check(root,root);
+    }
+
+    public boolean check(TreeNode p, TreeNode q){
+        if(p==null&&q==null){//同时为null
+            return true;
+        }
+        if(p==null||q==null){//只有一个为null肯定不符合条件
+            return false;
+        }
+
+        //比较节点的值，p的左子树与q的右子树，p的右子树与q的左子树
+        return p.val==q.val&&check(p.left,q.right)&&check(p.right,q.left);
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(n)，需要遍历整棵树，渐进时间复杂度为 O(n)
+
+空间复杂度：O(n)，这里的空间复杂度和递归使用的栈空间有关，这里递归层数不超过 n，故渐进空间复杂度为 O(n)
+
+#### 辅助队列
+
+同样不使用递归，也可以使用队列来进行辅助遍历
+
+```java
+    public boolean isSymmetric2(TreeNode root){
+        Queue<TreeNode> queue = new LinkedList<>();//队列
+        TreeNode p = root;
+        TreeNode q = root;
+        //先将根节点入队
+        queue.offer(p);
+        queue.offer(q);
+        while (!queue.isEmpty()){
+            //出队
+            p = queue.poll();
+            q = queue.poll();
+            if(p==null&&q==null){//为空则跳过本轮循环
+                continue;
+            }
+            if(p==null||q==null||p.val!=q.val){//值不相同或只有一方为空，返回false
+                return false;
+            }
+            //p的左子树对应q的右子树；p的右子树对应q的左子树
+            queue.offer(p.left);
+            queue.offer(q.right);
+            queue.offer(p.right);
+            queue.offer(q.left);
+        }
+        return true;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(n)
+
+空间复杂度：O(n)，这里需要用一个队列来维护节点，每个节点最多进队一次，出队一次，队列中最多不会超过 n 个点，故渐进空间复杂度为 O(n)
