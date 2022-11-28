@@ -1135,3 +1135,84 @@ B是A的子结构， 即 A中有出现和B相同的结构和节点值。
 时间复杂度：O(m*n)，需要遍历数组的每一个元素
 
 空间复杂度：O(1)，除了返回的数组只需要使用若干变量
+
+## 剑指 Offer 30. 包含min函数的栈
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/bao-han-minhan-shu-de-zhan-lcof/)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/TheStackContainingTheMinFunction.java)
+
+定义栈的数据结构，请在该类型中实现一个能够得到栈的最小元素的 min 函数在该栈中，调用 min、push 及 pop 的时间复杂度都是 O(1)。
+
+ 
+
+**示例:**
+
+```
+MinStack minStack = new MinStack();
+minStack.push(-2);
+minStack.push(0);
+minStack.push(-3);
+minStack.min();   --> 返回 -3.
+minStack.pop();
+minStack.top();      --> 返回 0.
+minStack.min();   --> 返回 -2.
+```
+
+ 
+
+### 题解
+
+与普通的栈不同我们需要提供获取栈最小值的函数。最小值有可能会因为出栈和入栈而发生改变，所以我们需要开辟额外的空间来存储每一阶段的最小值
+
+```java
+class MinStack {
+    private final List<Integer> list;
+    private final List<Integer> min;
+
+    /** initialize your data structure here. */
+    public MinStack() {
+        list = new ArrayList<>();//存储栈元素
+        min = new ArrayList<>();//存储每一阶段最小值
+    }
+
+    public void push(int x) {//入栈
+        list.add(x);//添加元素
+        //添加这一阶段最小值
+        if(min.size()==0){
+            min.add(x);
+        } else {
+            min.add(Math.min(min.get(min.size()-1),x));
+        }
+    }
+
+    public void pop() {//弹栈
+        if(list.size()>0){
+            //删除栈元素的同时需要删除这一阶段的最小值
+            Integer remove = list.remove(list.size() - 1);
+            min.remove(min.size()-1);
+        }
+    }
+
+    public int top() {//获取栈顶元素
+        if(list.size()>0){
+            return list.get(list.size()-1);
+        } else {
+            return -1;
+        }
+    }
+
+    public int min() {//获取最小值
+        return min.get(min.size()-1);
+    }
+}
+```
+
+**复杂度分析：**
+
+时间复杂度：O(1)
+
+空间复杂度：O(n)
+
