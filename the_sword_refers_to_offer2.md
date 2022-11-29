@@ -1216,3 +1216,71 @@ class MinStack {
 
 空间复杂度：O(n)
 
+## 剑指 Offer 31. 栈的压入、弹出序列
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/zhan-de-ya-ru-dan-chu-xu-lie-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/ThePushAndPopSequenceOfTheStack.java)
+
+输入两个整数序列，第一个序列表示栈的压入顺序，请判断第二个序列是否为该栈的弹出顺序。假设压入栈的所有数字均不相等。例如，序列 {1,2,3,4,5} 是某栈的压栈序列，序列 {4,5,3,2,1} 是该压栈序列对应的一个弹出序列，但 {4,3,5,1,2} 就不可能是该压栈序列的弹出序列。
+
+ 
+
+**示例 1：**
+
+```
+输入：pushed = [1,2,3,4,5], popped = [4,5,3,2,1]
+输出：true
+解释：我们可以按以下顺序执行：
+push(1), push(2), push(3), push(4), pop() -> 4,
+push(5), pop() -> 5, pop() -> 3, pop() -> 2, pop() -> 1
+```
+
+**示例 2：**
+
+```
+输入：pushed = [1,2,3,4,5], popped = [4,3,5,1,2]
+输出：false
+解释：1 不能在 2 之前弹出。
+```
+
+ 
+
+**提示：**
+
+1. `0 <= pushed.length == popped.length <= 1000`
+2. `0 <= pushed[i], popped[i] < 1000`
+3. `pushed` 是 `popped` 的排列。
+
+### 题解
+
+#### 模拟
+
+`pushed`是入栈序列，`popped`是出栈序列。只有栈顶元素才能出栈，同一元素入栈和出栈都只有一次机会。所有元素都出栈后栈就为空。
+
+我们可以模拟`pushed`入栈，并判断栈顶元素是否需要出栈（因为压入栈的所有数字均不相等，所以可以根据`popped`来进行判断）
+
+最后如果栈空则说明按照所给的序列进行入栈和出栈所有的元素都完成了入栈和出栈的操作，返回true
+
+```java
+    public boolean validateStackSequences(int[] pushed, int[] popped) {
+        Stack<Integer> stack = new Stack<>();
+        int index = 0;
+        for (int num : pushed) {
+            stack.push(num);//入栈
+            while (!stack.isEmpty() && stack.peek() == popped[index]) {//判断是否可以出栈
+                stack.pop();
+                index++;
+            }
+        }
+        return stack.isEmpty();//若栈空则符合要求
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(n)，其中 n 是数组 pushed 和 popped 的长度。需要遍历数组 pushed 和 popped 各一次，判断两个数组是否为有效的栈操作序列。
+
+空间复杂度：O(n)，其中 n 是数组 pushed 的长度。空间复杂度主要取决于栈空间，栈内元素个数不超过 n。
