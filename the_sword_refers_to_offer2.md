@@ -1284,3 +1284,180 @@ push(5), pop() -> 5, pop() -> 3, pop() -> 2, pop() -> 1
 时间复杂度：O(n)，其中 n 是数组 pushed 和 popped 的长度。需要遍历数组 pushed 和 popped 各一次，判断两个数组是否为有效的栈操作序列。
 
 空间复杂度：O(n)，其中 n 是数组 pushed 的长度。空间复杂度主要取决于栈空间，栈内元素个数不超过 n。
+
+## 剑指 Offer 32 - I. 从上到下打印二叉树
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/cong-shang-dao-xia-da-yin-er-cha-shu-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/PrintABinaryTreeFromTopToBottom.java)
+
+从上到下打印出二叉树的每个节点，同一层的节点按照从左到右的顺序打印。
+
+ 
+
+例如:
+给定二叉树: `[3,9,20,null,null,15,7]`,
+
+```
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+
+返回：
+
+```
+[3,9,20,15,7]
+```
+
+### 题解
+
+#### 层次遍历
+
+使用队列来存储每一层的节点进行层次遍历，将节点值暂存在集合中，返回前再将集合转成数组
+
+```java
+    public int[] levelOrder(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<>();//队列
+        if (root != null)
+            queue.add(root);
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            list.add(node.val);
+            if (node.left != null) {//添加左节点
+                queue.add(node.left);
+            }
+            if (node.right != null) {//添加右节点
+                queue.add(node.right);
+            }
+        }
+        int[] result = new int[list.size()];
+        int index = 0;
+        for (Integer num : list) {//集合转数组
+            result[index++] = num;
+        }
+        return result;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度 O(N) ： N 为二叉树的节点数量，每一个节点都会访问到
+
+空间复杂度 O(N) ： 最差情况下，即当树为平衡二叉树时，最多有 N/2 个树节点同时在 queue 中，使用 O(N)大小的额外空间，数组的空间不算
+
+## 剑指 Offer 32 - II. 从上到下打印二叉树 II
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/cong-shang-dao-xia-da-yin-er-cha-shu-ii-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/PrintABinaryTreeFromTopToBottomII.java)
+
+从上到下按层打印二叉树，同一层的节点按从左到右的顺序打印，每一层打印到一行。
+
+ 
+
+例如:
+给定二叉树: `[3,9,20,null,null,15,7]`,
+
+```
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+
+返回其层次遍历结果：
+
+```
+[
+  [3],
+  [9,20],
+  [15,7]
+]
+```
+
+ 
+
+**提示：**
+
+1. `节点总数 <= 1000`
+
+### 题解
+
+#### 层次遍历（计数+迭代）
+
+与普通的层次遍历不同，根据题目要求我们需要分层。所以可以设置一个变量来记录队列的元素个数进而来维护每一层的节点个数，根据这个变量去迭代，取元素，添加新的元素就可以达到分层的目的。
+
+```java
+    public List<List<Integer>> levelOrder2(TreeNode root) {
+        List<List<Integer>> list = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<>();//队列
+        if (root != null)
+            queue.add(root);
+        while (!queue.isEmpty()){//队列不为空
+            int size = queue.size();//队列元素个数（一层的元素个数）
+            List<Integer> nums = new ArrayList<>();
+            for (int i = 0; i < size; i++) {//遍历这一层
+                TreeNode node = queue.poll();
+                nums.add(node.val);
+                //添加下一层的元素
+                if(node.left!=null){
+                    queue.add(node.left);
+                }
+                if(node.right!=null){
+                    queue.add(node.right);
+                }
+            }
+            list.add(nums);//添加这一层的元素
+        }
+        return list;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度： O(n)，每个点进队出队各一次。
+空间复杂度：O(n)，队列中元素的个数不超过 n 个
+
+也可以维护两个队列firstQueue与secondQueue，firstQueue表示这一层节点用于遍历，secondQueue来表示下一层节点用于添加元素，当firstQueue为空时，添加元素集合到返回集合中并交换两个队列的句柄
+
+```java
+public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> list = new ArrayList<>();
+        List<Integer> nums = new ArrayList<>();
+        Queue<TreeNode> firstQueue = new LinkedList<>();//用于遍历
+        Queue<TreeNode> secondQueue = new LinkedList<>();//用于添加元素
+        if (root != null)
+            firstQueue.add(root);
+        while (!firstQueue.isEmpty()) {
+            TreeNode node = firstQueue.poll();
+            nums.add(node.val);
+            if (node.left != null) {
+                secondQueue.add(node.left);
+            }
+            if (node.right != null) {
+                secondQueue.add(node.right);
+            }
+            if (firstQueue.isEmpty()) {
+                list.add(new ArrayList<>(nums));
+                nums.clear();
+                //交换队列
+                Queue<TreeNode> t = firstQueue;
+                firstQueue = secondQueue;
+                secondQueue = t;
+            }
+        }
+        return list;
+    }
+```
+
+这个方法不管是时间复杂度还是空间复杂度都要比上一种的高。使用了两个队列并且`list.add(new ArrayList<>(nums));`需要进行数组拷贝
+
