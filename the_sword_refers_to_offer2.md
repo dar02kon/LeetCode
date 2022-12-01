@@ -1425,6 +1425,7 @@ push(5), pop() -> 5, pop() -> 3, pop() -> 2, pop() -> 1
 **复杂度分析：**
 
 时间复杂度： O(n)，每个点进队出队各一次。
+
 空间复杂度：O(n)，队列中元素的个数不超过 n 个
 
 也可以维护两个队列firstQueue与secondQueue，firstQueue表示这一层节点用于遍历，secondQueue来表示下一层节点用于添加元素，当firstQueue为空时，添加元素集合到返回集合中并交换两个队列的句柄
@@ -1461,3 +1462,132 @@ public List<List<Integer>> levelOrder(TreeNode root) {
 
 这个方法不管是时间复杂度还是空间复杂度都要比上一种的高。使用了两个队列并且`list.add(new ArrayList<>(nums));`需要进行数组拷贝
 
+## 剑指 Offer 32 - III. 从上到下打印二叉树 III
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/cong-shang-dao-xia-da-yin-er-cha-shu-iii-lcof/description/)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/PrintABinaryTreeFromTopToBottomIII.java)
+
+请实现一个函数按照之字形顺序打印二叉树，即第一行按照从左到右的顺序打印，第二层按照从右到左的顺序打印，第三行再按照从左到右的顺序打印，其他行以此类推。
+
+ 
+
+例如:
+给定二叉树: `[3,9,20,null,null,15,7]`,
+
+```
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+
+返回其层次遍历结果：
+
+```
+[
+  [3],
+  [20,9],
+  [15,7]
+]
+```
+
+ 
+
+**提示：**
+
+1. `节点总数 <= 1000`
+
+### 题解
+
+#### 广度优先遍历
+
+与层次遍历类似，不过相邻两层打印顺序相反，第一层按照从左到右的顺序打印，第二层按照从右到左的顺序打印...
+
+我们可以在保存每一层数据时来实现区分，如从左往右遍历，则将数据从尾部插入；从右往左遍历，则将数据从头部插入
+
+```java
+    public List<List<Integer>> levelOrder2(TreeNode root) {
+        List<List<Integer>> list = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        if (root != null) {
+            queue.offer(root);
+        }
+        boolean flag = true;//标记打印顺序，true为从左往右
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            Deque<Integer> deque = new LinkedList<>();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                if (flag) {
+                    deque.offerLast(node.val);//尾插
+                } else {
+                    deque.offerFirst(node.val);//头插
+                }
+                //添加下一层节点
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+            list.add(new LinkedList<>(deque));
+            flag = !flag;//改变方向
+        }
+        return list;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(N)，其中 N 为二叉树的节点数。每个节点会且仅会被遍历一次。
+
+空间复杂度：O(N)，我们需要维护存储节点的队列和存储节点值的双端队列，空间复杂度为 O(N)
+
+同样也可以在通过改变遍历的方向来实现，不过改变遍历方向的同时也需要相应的改变添加下一层节点的位置
+
+```java
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<TreeNode> linkedList = new LinkedList<>();
+        List<List<Integer>> list = new ArrayList<>();
+        boolean flag = true;
+        if (root != null)
+            linkedList.add(root);
+        while (!linkedList.isEmpty()) {
+            int size = linkedList.size();
+            List<Integer> nums = new ArrayList<>();
+            for (int i = 0; i < size; i++) {
+                TreeNode node;
+                if (flag) {//从左往右
+                    node = linkedList.remove(0);//获取并删除头节点
+                    //添加下一层节点
+                    if (node.left != null) {
+                        linkedList.add(node.left);
+                    }
+                    if (node.right != null) {
+                        linkedList.add(node.right);
+                    }
+                } else {//从右往左
+                    node = linkedList.remove(size - i - 1);//获取并删除尾部节点
+                    //添加下一层节点，头插
+                    if (node.right != null) {
+                        linkedList.add(size - i - 1, node.right);
+                    }
+                    if (node.left != null) {
+                        linkedList.add(size - i - 1, node.left);
+                    }
+                }
+                nums.add(node.val);
+            }
+            list.add(nums);
+            flag = !flag;//改变方向
+        }
+        return list;
+    }
+```
+
+时间复杂度和空间复杂度比上一种方法都要高一些，`linkedList.add(size - i - 1, node.left);`会产生额外的复杂度，不过不会太多
