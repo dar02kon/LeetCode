@@ -1591,3 +1591,121 @@ public List<List<Integer>> levelOrder(TreeNode root) {
 ```
 
 时间复杂度和空间复杂度比上一种方法都要高一些，`linkedList.add(size - i - 1, node.left);`会产生额外的复杂度，不过不会太多
+
+## 剑指 Offer 33. 二叉搜索树的后序遍历序列
+
+### 题目描述
+
+### 题解
+
+[原题链接](https://leetcode.cn/problems/er-cha-sou-suo-shu-de-hou-xu-bian-li-xu-lie-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/PostOrderTraversalSequenceOfBinarySearchTree.java)
+
+输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历结果。如果是则返回 `true`，否则返回 `false`。假设输入的数组的任意两个数字都互不相同。
+
+ 
+
+参考以下这颗二叉搜索树：
+
+```
+     5
+    / \
+   2   6
+  / \
+ 1   3
+```
+
+**示例 1：**
+
+```
+输入: [1,6,3,2,5]
+输出: false
+```
+
+**示例 2：**
+
+```
+输入: [1,3,2,6,5]
+输出: true
+```
+
+ 
+
+**提示：**
+
+1. `数组长度 <= 1000`
+
+#### 递归分治
+
+对于二叉搜索树的后序遍历，最后访问的节点一定是根节点，我们可以根据这个根节点将数组划分为左子树与右子树两个区域，左子树区域所有节点值一定小于根节点，右子树的所有节点值一定大于根节点的值。同样对于左子树与右子树区域也存在同样的性质，区域内数组的最后一个元素为根节点，左子树与右子树同样也是二叉搜索树。
+
+所以我们要做的就是
+
+* 找到区域数组最后一个元素即为根节点
+* 从左往右遍历区域内的数组找到边界（可以以第一个大于根节点的元素为边界）
+* 根据边界划分出两个区域，判断这两个区域是否合法，左区域节点值应小于根节点，右区域节点值应大于根节点
+* 同样的方法递归判断这两个区域
+
+```java
+    public boolean verifyPostorder(int[] postorder) {
+        return check(postorder,0,postorder.length-1);
+    }
+
+    public boolean check(int[] postorder,int start,int end){
+        if(start>=end){//划分的区域只有一个元素或者越界了
+            return true;
+        }
+        int index = start;
+        while (postorder[index]<postorder[end]){//从左往右寻找边界
+            index++;
+        }
+        int i = index;
+        while (postorder[i]>postorder[end]){//判断右区域是否合法
+            i++;
+        }
+        return i==end&&check(postorder,start,index-1)&&check(postorder,index,end-1);//递归判断划分的两个区域
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(N^2)， 每次调用 `check()` 减去一个根节点，因此递归占用 O(N) ；最差情况下（即当树退化为链表），每轮递归都需遍历树所有节点，占用 O(N)
+
+空间复杂度 ：O(N)最差情况下（即当树退化为链表），递归深度将达到 N 
+
+#### 辅助栈
+
+利用一个栈空间来尝试根据后序后序遍历数组构建一二叉搜索树。
+
+后序遍历，访问顺序为左->右->中，不利于我们构建。如果倒序遍历数组，则访问顺序为中->右->左，我们可以很方便的找到先找到根节点（遍历的第一个元素就是），并且如果后一个元素大于根节点，则他一定为右子树的根节点，如果他小于根节点则一定位于左子树。
+
+对于二叉搜索树，往右子树遍历的过程，value是越来越大的，一旦出现了value小于栈顶元素value的时候，就表示要开始进入左子树了（如果不是，就应该继续进入右子树，否则不满足二叉搜索树的定义），但是这个左子树是从哪个节点开始的呢
+
+我们可以用一个栈来记录了这些节点，当遇见value小于栈顶元素value的时候，我们就弹栈来寻找父节点，只要栈顶元素还比当前节点大，就表示还是右子树，要移除，因为我们要找到这个左孩子节点直接连接的父节点，也就是找到这个子树的根，只要栈顶元素还大于当前节点，就要一直弹出，直到栈顶元素小于节点，或者栈为空。栈顶的上一个元素就是子树节点的根。
+
+接下来，数组继续往前遍历，之后的左子树的每个节点，都要比子树的根要小，才能满足二叉搜索树，否则就不是二叉搜索树。
+
+```java
+    public boolean verifyPostorder2(int[] postorder) {
+        Stack<Integer> stack = new Stack<>();
+        //表示上一个根节点的元素
+        int root = Integer.MAX_VALUE;
+        for (int i = postorder.length - 1; i >= 0; i--) {
+            if (postorder[i] > root) return false;//左子树的每个节点，都要比子树的根要小
+            while (!stack.isEmpty() && stack.peek() > postorder[i])
+                // 数组元素小于单调栈的元素了，表示往左子树走了，记录下上个根节点
+                // 找到这个左子树对应的根节点，之前右子树全部弹出，不再记录，因为不可能在往根节点的右子树走
+                root = stack.pop();
+            stack.add(postorder[i]);//这个新元素入栈
+        }
+        return true;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(N)，遍历 postorder 所有节点，各节点均入栈 / 出栈一次，使用 O(N) 时间
+
+空间复杂度：O(N)， 最差情况下，单调栈 stack 存储所有节点，使用 O(N) 额外空间
+
