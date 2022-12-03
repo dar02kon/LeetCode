@@ -1709,3 +1709,146 @@ public List<List<Integer>> levelOrder(TreeNode root) {
 
 空间复杂度：O(N)， 最差情况下，单调栈 stack 存储所有节点，使用 O(N) 额外空间
 
+## 剑指 Offer 34. 二叉树中和为某一值的路径
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/er-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/ABinaryTreeIsAPathWithAValue.java)
+
+给你二叉树的根节点 `root` 和一个整数目标和 `targetSum` ，找出所有 **从根节点到叶子节点** 路径总和等于给定目标和的路径。
+
+**叶子节点** 是指没有子节点的节点。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2021/01/18/pathsumii1.jpg)
+
+```
+输入：root = [5,4,8,11,null,13,4,7,2,null,null,5,1], targetSum = 22
+输出：[[5,4,11,2],[5,8,4,5]]
+```
+
+**示例 2：**
+
+![img](https://assets.leetcode.com/uploads/2021/01/18/pathsum2.jpg)
+
+```
+输入：root = [1,2,3], targetSum = 5
+输出：[]
+```
+
+**示例 3：**
+
+```
+输入：root = [1,2], targetSum = 0
+输出：[]
+```
+
+ 
+
+**提示：**
+
+- 树中节点总数在范围 `[0, 5000]` 内
+- `-1000 <= Node.val <= 1000`
+- `-1000 <= targetSum <= 1000`
+
+### 题解
+
+#### 深度优先（递归）
+
+先序遍历每一个节点，当达到叶子节点时判断路径是否符合要求，回溯后需要恢复到初始条件
+
+```java
+public List<List<Integer>> pathSum(TreeNode root, int target) {
+        route(root, target);
+        return list;
+    }
+
+    int sum;//路径和
+    List<List<Integer>> list = new ArrayList<>();//路径节点信息
+    List<Integer> record = new ArrayList<>();//返回结果
+
+    public void route(TreeNode root, int target) {
+        if (root == null) {
+            return;
+        }
+        //添加节点
+        sum += root.val;
+        record.add(root.val);
+        if (root.left == null && root.right == null) {//叶子节点
+            if (sum == target) {//符合要求
+                list.add(new ArrayList<>(record));
+            }
+            return;
+        }
+        if (root.left != null) {//先序遍历左子树
+            route(root.left, target);
+            //恢复初始条件
+            sum -= root.left.val;
+            record.remove(record.size() - 1);
+        }
+        if (root.right != null) {//先序遍历右子树
+            route(root.right, target);
+            //恢复初始条件
+            sum -= root.right.val;
+            record.remove(record.size() - 1);
+        }
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(N^2)，其中 N 是树的节点数。在最坏情况下，树的上半部分为链状，下半部分为完全二叉树，并且从根节点到每一个叶子节点的路径都符合题目要求。此时，路径的数目为 O(N)，并且每一条路径的节点个数也为 O(N)，因此要将这些路径全部添加进答案中，时间复杂度为 O(N^2)
+
+空间复杂度：O(N)，其中 N 是树的节点数。空间复杂度主要取决于栈空间的开销，栈中的元素个数不会超过树的节点数。
+
+#### 广度优先
+
+参考：[宫水三叶](https://leetcode.cn/problems/er-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing-lcof/solutions/1721944/by-ac_oier-3ehr/)
+
+使用 BFS 的话，我们需要封装一个类/结构体 Node，该结构体存储所对应的原始节点 node，到达 node 所经过的路径 list，以及对应的路径和 tot。
+
+由于 BFS 过程并非按照路径进行（即相邻出队的节点并非在同一路径），因此我们每次创建新的 Node 对象时，需要对路径进行拷贝操作。
+
+```java
+    class Node {
+        TreeNode node;
+        List<Integer> list;//到达 node 所经过的路径
+        int tot;//对应路径的和
+
+        Node(TreeNode _node, List<Integer> _list, int _tot) {//路径拷贝
+            node = _node;
+            list = new ArrayList<>(_list);
+            tot = _tot;
+            list.add(node.val);
+            tot += node.val;
+        }
+    }
+
+    public List<List<Integer>> pathSum2(TreeNode root, int target) {
+        List<List<Integer>> ans = new ArrayList<>();
+        Deque<Node> d = new ArrayDeque<>();
+        if (root != null)
+            d.addLast(new Node(root, new ArrayList<>(), 0));
+        while (!d.isEmpty()) {
+            Node t = d.pollFirst();
+            if (t.tot == target && t.node.left == null && t.node.right == null)
+                ans.add(t.list);
+            if (t.node.left != null)
+                d.addLast(new Node(t.node.left, t.list, t.tot));
+            if (t.node.right != null)
+                d.addLast(new Node(t.node.right, t.list, t.tot));
+        }
+        return ans;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(N^2)，其中 N 是树的节点数
+
+空间复杂度：O(N)，其中 N 是树的节点数
