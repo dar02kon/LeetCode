@@ -1852,3 +1852,164 @@ public List<List<Integer>> pathSum(TreeNode root, int target) {
 时间复杂度：O(N^2)，其中 N 是树的节点数
 
 空间复杂度：O(N)，其中 N 是树的节点数
+
+## 剑指 Offer 35. 复杂链表的复制
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/fu-za-lian-biao-de-fu-zhi-lcof/description/?favorite=xb9nqhhg)
+
+请实现 `copyRandomList` 函数，复制一个复杂链表。在复杂链表中，每个节点除了有一个 `next` 指针指向下一个节点，还有一个 `random` 指针指向链表中的任意节点或者 `null`。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/01/09/e1.png)
+
+```
+输入：head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
+输出：[[7,null],[13,0],[11,4],[10,2],[1,0]]
+```
+
+**示例 2：**
+
+![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/01/09/e2.png)
+
+```
+输入：head = [[1,1],[2,1]]
+输出：[[1,1],[2,1]]
+```
+
+**示例 3：**
+
+**![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/01/09/e3.png)**
+
+```
+输入：head = [[3,null],[3,0],[3,null]]
+输出：[[3,null],[3,0],[3,null]]
+```
+
+**示例 4：**
+
+```
+输入：head = []
+输出：[]
+解释：给定的链表为空（空指针），因此返回 null。
+```
+
+ 
+
+**提示：**
+
+- `-10000 <= Node.val <= 10000`
+- `Node.random` 为空（null）或指向链表中的节点。
+- 节点数目不超过 1000 。
+
+### 题解
+
+#### 哈希表
+
+第一次遍历使用哈希表来存储目标链表节点与新链表节点的映射关系，第二次遍历根据哈希表存储的映射关系组装节点
+
+```java
+    Map<Node, Node> map = new HashMap<>();//哈希表存储映射关系
+    public Node copyRandomList(Node head) {
+        Node p = head;
+        while (p != null) {
+            map.put(p, new Node(p.val));//添加映射关系
+            p = p.next;
+        }
+        p = head;
+        while (p != null) {//组装节点
+            Node node = map.get(p);
+            node.next = map.get(p.next);
+            node.random = map.get(p.random);
+            p = p.next;
+        }
+        return map.get(head);//返回头指针
+    }
+
+```
+
+**复杂度分析：**
+
+时间复杂度：O(n)，其中 n 是链表的长度
+
+空间复杂度：O(n)，其中 n 是链表的长度。为哈希表的空间开销
+
+同样，我们也可以用哈希表+递归的方式来实现。在创建节点前我们需要判断是否已经创建了相关节点
+
+```java
+    Map<Node, Node> map = new HashMap<>();//哈希表存储映射关系
+    public Node copyRandomList2(Node head) {
+        if (head == null) {//为空直接返回
+            return null;
+        }
+
+        if (!map.containsKey(head)) {//哈希表中没有对应的映射关系
+            Node node = new Node(head.val);//创建新节点
+            map.put(head, node);//添加映射关系
+            node.next = copyRandomList2(head.next);//递归构建相关的next指针指向的节点
+            node.random = copyRandomList2(head.random);//递归构建相关的random指针指向的节点
+        }
+        return map.get(head);//返回创建的节点
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(n)，其中 n 是链表的长度。对于每个节点，我们至多访问其「后继节点」和「随机指针指向的节点」各一次，均摊每个点至多被访问两次
+
+空间复杂度：O(n)，其中 n 是链表的长度。为哈希表的空间开销
+
+#### 迭代 + 节点拆分
+
+我们使用哈希表是为了保存旧节点与新节点的映射关系，方便为next指针与random赋值时能通过旧节点找到新节点。
+
+有没有办法不使用哈希表？
+
+我们可以将创建的新节点链接到对应的旧旧节点后，保证旧节点的next指针指向的是对应的新节点，新节点的next指针指向的是旧节点后的那一个旧节点。简单来说就是在旧节点之间插入一个新节点
+
+采用官方的图
+
+![](https://dar-1305869431.cos.ap-shanghai.myqcloud.com/algorithm/Snipaste_2022-12-04_13-41-01.png)
+
+![](https://dar-1305869431.cos.ap-shanghai.myqcloud.com/algorithm/Snipaste_2022-12-04_13-43-36.png)
+
+![](https://dar-1305869431.cos.ap-shanghai.myqcloud.com/algorithm/Snipaste_2022-12-04_13-41-37.png)
+
+![](https://dar-1305869431.cos.ap-shanghai.myqcloud.com/algorithm/Snipaste_2022-12-04_13-41-44.png)
+
+```java
+    public Node copyRandomList3(Node head) {
+        if (head == null) {
+            return null;
+        }
+
+        for (Node node = head; node != null; node = node.next.next) {//插入新节点
+            Node newNode = new Node(node.val);
+            newNode.next = node.next;
+            node.next = newNode;
+        }
+
+        for (Node node = head; node != null; node = node.next.next) {//更新random指针
+            Node newNode = node.next;
+            newNode.random = node.random == null ? null : node.random.next;
+        }
+
+        Node newHead = head.next;
+        for (Node node = head; node != null; node = node.next) {//连接新节点
+            Node nodeNew = node.next;
+            node.next = node.next.next;
+            nodeNew.next = (nodeNew.next != null) ? nodeNew.next.next : null;
+        }
+        return newHead;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(n)，其中 n 是链表的长度。我们只需要遍历该链表三次
+
+空间复杂度：O(1)，返回值不计入空间复杂度
