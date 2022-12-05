@@ -1859,6 +1859,8 @@ public List<List<Integer>> pathSum(TreeNode root, int target) {
 
 [原题链接](https://leetcode.cn/problems/fu-za-lian-biao-de-fu-zhi-lcof/description/?favorite=xb9nqhhg)
 
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/ReplicationOfComplexLinkedLists.java)
+
 请实现 `copyRandomList` 函数，复制一个复杂链表。在复杂链表中，每个节点除了有一个 `next` 指针指向下一个节点，还有一个 `random` 指针指向链表中的任意节点或者 `null`。
 
  
@@ -2013,3 +2015,104 @@ public List<List<Integer>> pathSum(TreeNode root, int target) {
 时间复杂度：O(n)，其中 n 是链表的长度。我们只需要遍历该链表三次
 
 空间复杂度：O(1)，返回值不计入空间复杂度
+
+## 剑指 Offer 36. 二叉搜索树与双向链表
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao-lcof/description/)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/BinarySearchTreesAndBidirectionalLinkedLists.java)
+
+输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的循环双向链表。要求不能创建任何新的节点，只能调整树中节点指针的指向。
+
+ 
+
+为了让您更好地理解问题，以下面的二叉搜索树为例：
+
+ 
+
+![img](https://assets.leetcode.com/uploads/2018/10/12/bstdlloriginalbst.png)
+
+ 
+
+我们希望将这个二叉搜索树转化为双向循环链表。链表中的每个节点都有一个前驱和后继指针。对于双向循环链表，第一个节点的前驱是最后一个节点，最后一个节点的后继是第一个节点。
+
+下图展示了上面的二叉搜索树转化成的链表。“head” 表示指向链表中有最小元素的节点。
+
+ 
+
+![img](https://assets.leetcode.com/uploads/2018/10/12/bstdllreturndll.png)
+
+ 
+
+特别地，我们希望可以就地完成转换操作。当转化完成以后，树中节点的左指针需要指向前驱，树中节点的右指针需要指向后继。还需要返回链表中的第一个节点的指针。
+
+### 题解
+
+### 中序遍历
+
+二叉搜索树的中序遍历结果就是从小到大的排序，可以先进行一次中序遍历并使用集合将节点存储起来，然后再遍历集合连接节点
+
+```java
+    public Node treeToDoublyList(Node root) {
+        transfer(root);
+        for (int i = 0; i < list.size(); i++) {//连接节点
+            Node node = list.get(i);
+            node.left = i - 1 == -1 ? list.get(list.size() - 1) : list.get(i - 1);
+            node.right = i + 1 == list.size() ? list.get(0) : list.get(i + 1);
+        }
+        return list.size() == 0 ? null : list.get(0);
+    }
+
+    List<Node> list = new ArrayList<>();
+
+    public void transfer(Node root) {//中序遍历
+        if (root == null) {
+            return;
+        }
+        transfer(root.left);//访问左子树
+        list.add(root);//访问根节点
+        transfer(root.right);//访问右子树
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(N)
+
+空间复杂度：O(N) 
+
+也可以不使用集合存储节点，不过需要使用两个变量来记录前驱和头节点
+
+```java
+    Node head, pre;//记录头节点和前驱
+    public Node treeToDoublyList2(Node root) {
+        transfer2(root);
+        //头尾相连
+        head.left = pre;
+        pre.right = head;
+        return head;
+    }
+
+    public void transfer2(Node root) {//中序遍历
+        if (root == null) {
+            return;
+        }
+        transfer2(root.left);//访问左子树
+        if (pre == null) {//为空说明是头节点
+            head = root;
+        } else {//连接节点
+            root.left = pre;
+            pre.right = root;
+        }
+        pre = root;//更新前驱节点指针
+        transfer2(root.right);//访问右子树
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(N)，N 为二叉树的节点数，中序遍历需要访问所有节点
+
+空间复杂度：O(N)，最差情况下，即树退化为链表时，递归深度达到 N，系统使用 O(N) 栈空间
