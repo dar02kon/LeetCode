@@ -6,7 +6,11 @@
 
 ### 剑指offer
 
-[笔记链接](https://github.com/dar02kon/LeetCode/blob/master/the_sword_refers_to_offer.md)
+[笔记链接1](https://github.com/dar02kon/LeetCode/blob/master/the_sword_refers_to_offer.md)
+
+[笔记链接2](https://github.com/dar02kon/LeetCode/blob/master/the_sword_refers_to_offer2.md)
+
+[笔记链接3](https://github.com/dar02kon/LeetCode/blob/master/the_sword_refers_to_offer3.md)
 
 ### 简单
 
