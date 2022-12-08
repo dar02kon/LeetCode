@@ -296,3 +296,88 @@
 时间复杂度：O(n)
 
 空间复杂度：O(1)
+
+## 剑指 Offer 40. 最小的k个数
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/zui-xiao-de-kge-shu-lcof/description/)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/TheSmallestKNumber.java)
+
+输入整数数组 `arr` ，找出其中最小的 `k` 个数。例如，输入4、5、1、6、2、7、3、8这8个数字，则最小的4个数字是1、2、3、4。
+
+ 
+
+**示例 1：**
+
+```
+输入：arr = [3,2,1], k = 2
+输出：[1,2] 或者 [2,1]
+```
+
+**示例 2：**
+
+```
+输入：arr = [0,1,2,1], k = 1
+输出：[0]
+```
+
+ 
+
+**限制：**
+
+- `0 <= k <= arr.length <= 10000`
+- `0 <= arr[i] <= 10000`
+
+### 题解
+
+#### 排序
+
+将数组进行按升序排序后取前k个数
+
+```java
+    public int[] getLeastNumbers(int[] arr, int k) {
+        Arrays.sort(arr);
+        return Arrays.copyOfRange(arr, 0, k);
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(nlog⁡n)，其中 n 是数组 arr 的长度。算法的时间复杂度即排序的时间复杂度
+
+空间复杂度：O(log⁡n)，排序所需额外的空间复杂度为 O(log⁡n)
+
+#### 堆
+
+用一个大根堆实时维护数组的前 k 小值。首先将前 k 个数插入大根堆中，随后从第 k+1个数开始遍历，如果当前遍历到的数比大根堆的堆顶的数要小，就把堆顶的数弹出，再插入当前遍历到的数。最后将大根堆里的数存入数组返回即可。
+
+```java
+    public int[] getLeastNumbers2(int[] arr, int k) {
+        int[] result = new int[k];
+        if (k == 0) { // 排除 0 的情况
+            return result;
+        }
+        PriorityQueue<Integer> queue = new PriorityQueue<Integer>((num1, num2) -> num2 - num1);//降序排列
+        for (int i = 0; i < k; i++) {//插入前k个数
+            queue.offer(arr[i]);
+        }
+        for (int i = k; i < arr.length; i++) {
+            if (arr[i] < queue.peek()) {//当前遍历到的数比大根堆的堆顶的数要小
+                queue.poll();//弹出
+                queue.offer(arr[i]);//插入
+            }
+        }
+        for (int i = 0; i < k; i++) {
+            result[i] = queue.poll();
+        }
+        return result;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(nlog⁡k)，其中 n 是数组 arr 的长度。由于大根堆实时维护前 k 小值，所以插入删除都是 O(log⁡k) 的时间复杂度，最坏情况下数组里 n 个数都会插入，所以一共需要 O(nlog⁡k) 的时间复杂度
+
+空间复杂度：O(k)，因为大根堆里最多 k 个数
