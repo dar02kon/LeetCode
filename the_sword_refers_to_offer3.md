@@ -236,3 +236,63 @@
 
 空间复杂度：O(1)，返回值不计入空间复杂度
 
+## 剑指 Offer 39. 数组中出现次数超过一半的数字
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/shu-zu-zhong-chu-xian-ci-shu-chao-guo-yi-ban-de-shu-zi-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/ANumberThatAppearsMoreThanHalfTheTimeInTheArray.java)
+
+数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。
+
+ 
+
+你可以假设数组是非空的，并且给定的数组总是存在多数元素。
+
+ 
+
+**示例 1:**
+
+```
+输入: [1, 2, 3, 2, 2, 2, 5, 4, 2]
+输出: 2
+```
+
+ 
+
+**限制：**
+
+```
+1 <= 数组长度 <= 50000
+```
+
+ 
+
+### 题解
+
+#### Boyer-Moore 投票算法
+
+具体思路可以参考：[多数元素](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/MajorityElement.java)
+
+将数组元素看作获得选票的人，只要有超过一半选票的人就能获胜。设置一变量记录当前得票最高的人，一变量记录有效票数（相同票加1，不同票减1，票数为0时换人）则遍历结束后超过一半选票的人一定会获胜
+
+```java
+    public int majorityElement(int[] nums) {
+        int result = 0;//获得选票的人
+        int count = 0;//当前票数
+        for (int num : nums) {
+            if (count == 0) {//为0换人
+                result = num;
+            }
+            count = result == num ? count + 1 : count - 1;//相同票加1，不同票减1
+        }
+        return result;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(n)
+
+空间复杂度：O(1)
