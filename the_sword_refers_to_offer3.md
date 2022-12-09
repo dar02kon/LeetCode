@@ -381,3 +381,92 @@
 时间复杂度：O(nlog⁡k)，其中 n 是数组 arr 的长度。由于大根堆实时维护前 k 小值，所以插入删除都是 O(log⁡k) 的时间复杂度，最坏情况下数组里 n 个数都会插入，所以一共需要 O(nlog⁡k) 的时间复杂度
 
 空间复杂度：O(k)，因为大根堆里最多 k 个数
+
+## 剑指 Offer 41. 数据流中的中位数
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/shu-ju-liu-zhong-de-zhong-wei-shu-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/TheMedianInTheDataStream.java)
+
+如何得到一个数据流中的中位数？如果从数据流中读出奇数个数值，那么中位数就是所有数值排序之后位于中间的数值。如果从数据流中读出偶数个数值，那么中位数就是所有数值排序之后中间两个数的平均值。
+
+例如，
+
+[2,3,4] 的中位数是 3
+
+[2,3] 的中位数是 (2 + 3) / 2 = 2.5
+
+设计一个支持以下两种操作的数据结构：
+
+- void addNum(int num) - 从数据流中添加一个整数到数据结构中。
+- double findMedian() - 返回目前所有元素的中位数。
+
+**示例 1：**
+
+```
+输入：
+["MedianFinder","addNum","addNum","findMedian","addNum","findMedian"]
+[[],[1],[2],[],[3],[]]
+输出：[null,null,null,1.50000,null,2.00000]
+```
+
+**示例 2：**
+
+```
+输入：
+["MedianFinder","addNum","findMedian","addNum","findMedian"]
+[[],[2],[],[3],[]]
+输出：[null,null,2.00000,null,2.50000]
+```
+
+ 
+
+**限制：**
+
+- 最多会对 `addNum、findMedian` 进行 `50000` 次调用。
+
+### 题解
+
+#### 优先队列
+
+使用两个优先队列minQueue，maxQueue。minQueue用来保存小于或者等于中位数的数值，降序排列。maxQueue来保存大于中位数的数值，升序排列。添加元素始终要保证中位数可以由队头获取，即需要维持两个队列数量上的平衡，minQueue的元素数量可以比maxQueue多一个（奇数情况）或者两者相同（偶数情况）
+
+```java
+class MedianFinder2 {
+    PriorityQueue<Integer> minQueue;//大顶堆
+    PriorityQueue<Integer> maxQueue;//小顶堆
+
+    public MedianFinder2() {
+        minQueue =  new PriorityQueue<Integer>((a,b)->(b-a));//降序
+        maxQueue =  new PriorityQueue<Integer>((a,b)->(a-b));//升序
+    }
+    public void addNum(int num) {
+        if(minQueue.isEmpty()||num<=minQueue.peek()){//需要添加的数值小于或等于minQueue队头
+            minQueue.offer(num);//添加到minQueue
+            if(minQueue.size()>maxQueue.size()+1){//调整，维持平衡
+                maxQueue.offer(minQueue.poll());
+            }
+        } else {//需要添加的数值大于minQueue队头
+            maxQueue.offer(num);//添加到maxQueue
+            if(minQueue.size()<maxQueue.size()){//调整，维持平衡
+                minQueue.offer(maxQueue.poll());
+            }
+        }
+
+    }
+    public double findMedian() {//返回中位数
+        return minQueue.size()<=maxQueue.size()?(minQueue.peek()+maxQueue.peek())/2.0:minQueue.peek();
+    }
+}
+```
+
+**复杂度分析：**
+
+时间复杂度：
+
+addNum： O(logn)，其中 n 为累计添加的数的数量。findMedian：O(1)。
+
+空间复杂度：O(n)，主要为优先队列的开销
+
