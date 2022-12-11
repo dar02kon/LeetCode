@@ -522,3 +522,85 @@ addNum： O(logn)，其中 n 为累计添加的数的数量。findMedian：O(1)�
 时间复杂度：O(n)，其中 n 为 nums 数组的长度。只需要遍历一遍数组即可求得答案
 
 空间复杂度：O(1)，只需要常数空间存放若干变量
+
+## 剑指 Offer 43. 1～n 整数中 1 出现的次数
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/1nzheng-shu-zhong-1chu-xian-de-ci-shu-lcof/)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/NumberOfTimesThatOneOccursInTheIntegerFromOneToN.java)
+
+输入一个整数 `n` ，求1～n这n个整数的十进制表示中1出现的次数。
+
+例如，输入12，1～12这些整数中包含1 的数字有1、10、11和12，1一共出现了5次。
+
+ 
+
+**示例 1：**
+
+```
+输入：n = 12
+输出：5
+```
+
+**示例 2：**
+
+```
+输入：n = 13
+输出：6
+```
+
+ 
+
+**限制：**
+
+- `1 <= n < 2^31`
+
+### 题解
+
+#### 动态规划
+
+设置数组dp[]，dp[i]表示 i 位数字一共能包含多少1，dp[1] 表示 [1,9]，1出现的次数为1；dp[2] 表示[10,99]，1出现的次数为20……。我们可以发现一些规律：`数字1—99中 1 出现的次数 = （1—9 中 1 出现的次数） + （X0—X9 中 1 出现的次数）+ 10，其中X属于[1,9]，10 表示首位为1的数字`，。递推关系为`dp[i] = dp[i-1]*10+Math.pow(10,i-1)`，因为题目限制了输入数字为 int 类型，我们可以提前将dp数组求出。
+
+求一个具体数字我们可以将这个数字按位分解进行统计，思路与上面类似
+
+例如 1~451中1出现的次数 = 1~400中中1出现的次数 + 1 + 1~50中1出现的次数 + 1~1中1出现的次数
+
+```java
+  long[] dp;//dp数组，分别记录1，10，10……中1出现的次数
+    public int countDigitOne(int n) {
+        dp = new long[11];
+        dp[0]=0;
+        dp[1]=1;
+        for (int i = 2; i < 10; i++) {
+            dp[i] = (long) (dp[i-1]*10+Math.pow(10,i-1));//先求出dp数组
+        }
+        int digits = 0;
+        int result = 0;
+        int pre = 0;//后面的数字，例如451，4后面的数字为51，用于处理数字1
+        while (n>0){//从个位开始
+            digits++;//记录数字所在位数
+            result+=count(n%10,digits,pre);//求解该位数字对应数值有多少个1
+            pre += n%10*Math.pow(10,digits-1);//更新后面数字
+            n/=10;
+        }
+        return result;
+    }
+
+    public int count(int num,int n,int pre){//计算对应位整数1的个数
+        int result = (int) (num*dp[n-1]);
+        if(num>1){//大于1，需要对1为首位的数字进行额外处理
+            result+=Math.pow(10,n-1);
+        } else if(num==1){//等于1需要加上后面数字与自己
+            result+=pre+1;
+        }
+        return result;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(log⁡n)。n包含的数位个数与 n 呈对数关系，因为int类型数字位数不可能超过10，时间复杂度接近O(1)
+
+空间复杂度：O(1)
