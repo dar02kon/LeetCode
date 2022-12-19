@@ -834,6 +834,70 @@ addNum： O(logn)，其中 n 为累计添加的数的数量。findMedian：O(1)�
 
 空间复杂度：O(n)，如果原地修改使用常数大小的额外空间
 
+## 剑指 Offer 48. 最长不含重复字符的子字符串
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/zui-chang-bu-han-zhong-fu-zi-fu-de-zi-zi-fu-chuan-lcof/description/)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/TheLongestSubstringWithoutRepeatingCharacters.java)
+
+### 题解
+
+#### 滑动窗口
+
+使用哈希表来存储节点。使用两个指针left和right，一开始均指向第一个字符，先固定左指针，向右移动右指针，若右指针指向的字符未出现在哈希表中则添加字符后继续移动；若出现则移动左指针（移动前先删除在哈希表中对应的值）
+
+```java
+    public int lengthOfLongestSubstring(String s) {
+        Set<Character> set = new HashSet<>();
+        int left = 0;
+        int right = 0;
+        int max = 0;
+        while (left<=right&&right<s.length()){
+            while (right<s.length()&&!set.contains(s.charAt(right))){//移动右指针
+                set.add(s.charAt(right));
+                right++;
+            }
+            max = Math.max(max,set.size());//记录最大值
+            //移动左指针
+            set.remove(s.charAt(left));
+            left++;
+        }
+        return max;
+    }
+```
+
+也可以用队列来代替哈希表
+
+```java
+    public int lengthOfLongestSubstring2(String s) {
+        Queue<Character> queue = new LinkedList<>();
+        int max = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if(queue.contains(c)){
+                max = Math.max(queue.size(),max);
+                while (queue.peek()!=c){
+                    queue.poll();
+                }
+                queue.remove(c);
+            }
+            queue.add(c);
+        }
+        max = Math.max(queue.size(),max);
+        return max;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(N)，其中 N 是字符串的长度。左指针和右指针分别会遍历整个字符串一次
+
+空间复杂度：O(∣Σ∣)，其中 Σ 表示字符集（即字符串中可以出现的字符），∣Σ∣ 表示字符集的大小。在本题中没有明确说明字符集，因此可以默认为所有 ASCII 码在[0,128) 内的字符，即 ∣Σ∣=128。我们需要用到哈希集合来存储出现过的字符，而字符最多有 ∣Σ∣个，因此空间复杂度为 O(∣Σ∣)
+
+
+
 ## 剑指 Offer 50. 第一个只出现一次的字符
 
 ### 题目描述
