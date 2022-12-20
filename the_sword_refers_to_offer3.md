@@ -1283,3 +1283,76 @@ public int missingNumber2(int[] nums) {
 时间复杂度： O(log⁡n)
 
 空间复杂度：O(1)
+
+## 剑指 Offer 54. 二叉搜索树的第k大节点
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/er-cha-sou-suo-shu-de-di-kda-jie-dian-lcof/description/)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/TheKTHLargestNodeOfTheBinarySearchTree.java)
+
+给定一棵二叉搜索树，请找出其中第 `k` 大的节点的值。
+
+ 
+
+**示例 1:**
+
+```
+输入: root = [3,1,4,null,2], k = 1
+   3
+  / \
+ 1   4
+  \
+   2
+输出: 4
+```
+
+**示例 2:**
+
+```
+输入: root = [5,3,6,2,4,null,null,1], k = 3
+       5
+      / \
+     3   6
+    / \
+   2   4
+  /
+ 1
+输出: 4
+```
+
+ 
+
+**限制：**
+
+- 1 ≤ k ≤ 二叉搜索树元素个数
+
+### 题解
+
+二叉搜索树的 **中序遍历倒序** 为 **递减序列** 。因此，求 “二叉搜索树第 k 大的节点” 可转化为求 “此树的中序遍历倒序的第 k 个节点”
+
+```java
+    int res, k;
+    public int kthLargest(TreeNode root, int k) {
+        this.k = k;
+        dfs(root);
+        return res;
+    }
+    void dfs(TreeNode root) {
+        if(root == null)
+            return;
+        dfs(root.right);
+        if(k == 0)
+            return;
+        if(--k == 0)
+            res = root.val;
+        dfs(root.left);
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(N)，当树退化为链表时（全部为右子节点），无论 k 的值大小，递归深度都为 N ，占用 O(N) 时间。
+
+空间复杂度：O(N)，当树退化为链表时（全部为右子节点），系统使用 O(N) 大小的栈空间。
