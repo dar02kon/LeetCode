@@ -1356,3 +1356,94 @@ public int missingNumber2(int[] nums) {
 时间复杂度：O(N)，当树退化为链表时（全部为右子节点），无论 k 的值大小，递归深度都为 N ，占用 O(N) 时间。
 
 空间复杂度：O(N)，当树退化为链表时（全部为右子节点），系统使用 O(N) 大小的栈空间。
+
+## 剑指 Offer 55 - I. 二叉树的深度
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/er-cha-shu-de-shen-du-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/TheDepthOfTheBinaryTree.java)
+
+输入一棵二叉树的根节点，求该树的深度。从根节点到叶节点依次经过的节点（含根、叶节点）形成树的一条路径，最长路径的长度为树的深度。
+
+例如：
+
+给定二叉树 `[3,9,20,null,null,15,7]`，
+
+```
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+
+返回它的最大深度 3 。
+
+ 
+
+**提示：**
+
+1. `节点总数 <= 10000`
+
+### 题解
+
+#### 深度优先搜索
+
+对于一个节点，如果我们知道其左子树的深度left以及右子树的深度right，则以这个节点为根节点树的深度为`Math,max(left,right)+1`;
+
+```java
+    public int maxDepth(TreeNode root) {
+        if(root==null){
+            return 0;
+        }
+        int left = maxDepth(root.left);//左子树的深度
+        int right = maxDepth(root.right);//右子树的深度
+        return Math.max(left,right)+1;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(n)，其中 n 为二叉树节点的个数。每个节点在递归中只被遍历一次
+
+空间复杂度：O(height)，其中 height 表示二叉树的高度。递归函数需要栈空间，而栈空间取决于递归的深度，因此空间复杂度等价于二叉树的高度
+
+#### 广度优先搜索
+
+层次遍历，使用一变量来记录深度，每遍历一层变量值就加1
+
+广度优先搜索的队列里存放的是「当前层的所有节点」。每次拓展下一层的时候，不同于广度优先搜索的每次只从队列里拿出一个节点，我们需要将队列里的所有节点都拿出来进行拓展，这样能保证每次拓展完的时候队列里存放的是当前层的所有节点。
+
+```java
+    public int maxDepth2(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        if(root==null){
+            return 0;
+        }
+        int count = 0;
+        queue.add(root);
+        while (!queue.isEmpty()){
+            int size = queue.size();
+            while (size>0){
+                TreeNode poll = queue.poll();
+                if(poll.left!=null){
+                    queue.add(poll.left);
+                }
+                if(poll.right!=null){
+                    queue.add(poll.right);
+                }
+                size--;
+            }
+            count++;
+        }
+        return count;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(n)，其中 n 为二叉树的节点个数。每个节点只会被访问一次
+
+空间复杂度：此方法空间的消耗取决于队列存储的元素数量，其在最坏情况下会达到 O(n)
