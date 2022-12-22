@@ -1447,3 +1447,81 @@ public int missingNumber2(int[] nums) {
 时间复杂度：O(n)，其中 n 为二叉树的节点个数。每个节点只会被访问一次
 
 空间复杂度：此方法空间的消耗取决于队列存储的元素数量，其在最坏情况下会达到 O(n)
+
+## 剑指 Offer 55 - II. 平衡二叉树
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/ping-heng-er-cha-shu-lcof/description/)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/BalancedBinaryTree.java)
+
+输入一棵二叉树的根节点，判断该树是不是平衡二叉树。如果某二叉树中任意节点的左右子树的深度相差不超过1，那么它就是一棵平衡二叉树。
+
+ 
+
+**示例 1:**
+
+给定二叉树 `[3,9,20,null,null,15,7]`
+
+```
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+
+返回 `true` 。
+
+**示例 2:**
+
+给定二叉树 `[1,2,2,3,3,null,null,4,4]`
+
+```
+       1
+      / \
+     2   2
+    / \
+   3   3
+  / \
+ 4   4
+```
+
+返回 `false` 。
+
+ 
+
+**限制：**
+
+- `0 <= 树的结点个数 <= 10000`
+
+### 题解
+
+#### 自底向上递归
+
+思路其实与`二叉树的深度`相同，判断左子树与右子树深度差，超过 1 则不满足平衡二叉树的要求
+
+```java
+    public boolean isBalanced(TreeNode root) {
+        return depth(root)> -1;
+    }
+
+    public int depth(TreeNode root){
+        if(root==null){
+            return 0;
+        }
+        int left = depth(root.left);
+        int right = depth(root.right);
+        if(left-right>1||right-left>1||left==-1||right==-1){
+            return -1;
+        }
+        return Math.max(left,right)+1;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(n)，其中 nnn 是二叉树中的节点个数。使用自底向上的递归，每个节点的计算高度和判断是否平衡都只需要处理一次，最坏情况下需要遍历二叉树中的所有节点，因此时间复杂度是 O(n)
+
+空间复杂度：O(n)，其中 nnn 是二叉树中的节点个数。空间复杂度主要取决于递归调用的层数，递归调用的层数不会超过 n
