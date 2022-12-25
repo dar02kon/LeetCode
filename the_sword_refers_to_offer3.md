@@ -1526,6 +1526,79 @@ public int missingNumber2(int[] nums) {
 
 空间复杂度：O(n)，其中 nnn 是二叉树中的节点个数。空间复杂度主要取决于递归调用的层数，递归调用的层数不会超过 n
 
+## 剑指 Offer 56 - I. 数组中数字出现的次数
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/TheNumberOfTimesANumberAppearsInTheArray.java)
+
+一个整型数组 `nums` 里除两个数字之外，其他数字都出现了两次。请写程序找出这两个只出现一次的数字。要求时间复杂度是O(n)，空间复杂度是O(1)。
+
+ 
+
+**示例 1：**
+
+```
+输入：nums = [4,1,4,6]
+输出：[1,6] 或 [6,1]
+```
+
+**示例 2：**
+
+```
+输入：nums = [1,2,10,4,1,4,3,3]
+输出：[2,10] 或 [10,2]
+```
+
+ 
+
+**限制：**
+
+- `2 <= nums.length <= 10000`
+
+ 
+
+### 题解
+
+#### 分组异或
+
+如果只有一个数字只出现一次，则可以设置一个变量result，初始值为0，遍历这个数组nums，`result^=num`，最终result的结果便是这个只出现一次的数字。任何数与0异或结果都为任何数，任何数与自身异或结果都为0，且异或具有交换性，即出现两次的数字会抵消为0，只剩下只出现一次的数字。
+
+现在有两个这样只出现一次的数字，则按照上面的方法result为这两个数字异或的结果。
+
+需要将这些元素进行分组，使这两个数字分离开再使用上述方法。可以根据这两个数字异或的结果进行分组（记结果为result），二进制异或的特点：相同为0，不同为1，我们只有找到 result 为1的那一位即可，在这一位上，需要求的这两个数字肯定不同，根据这个不同进行分组异或即可求出这两个数字
+
+```java
+    public int[] singleNumbers(int[] nums) {
+        int result = 0;
+        for (int num : nums) {
+            result ^= num;
+        }
+        int dividingLine = 1;
+        while ((result & dividingLine) == 0) {
+            dividingLine <<= 1;
+        }
+
+        int a = 0, b = 0;
+        for (int num : nums) {
+            if((num&dividingLine)==0){
+                a^=num;
+            } else {
+                b^=num;
+            }
+        }
+        return new int[]{a,b};
+    }
+```
+
+**复杂度分析：**
+
+- 时间复杂度：O(n)，我们只需要遍历数组两次
+
+- 空间复杂度：O(1)，只需要常数的空间存放若干变量
+
 ## 剑指 Offer 57. 和为s的两个数字
 
 ### 题目描述
