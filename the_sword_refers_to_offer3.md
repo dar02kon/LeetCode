@@ -1699,9 +1699,114 @@ public int missingNumber2(int[] nums) {
 
 **复杂度分析：**
 
-- 时间复杂度：O(n)，我们只需要遍历数组两次
+时间复杂度：O(n)，我们只需要遍历数组两次
 
-- 空间复杂度：O(1)，只需要常数的空间存放若干变量
+空间复杂度：O(1)，只需要常数的空间存放若干变量
+
+## 剑指 Offer 56 - II. 数组中数字出现的次数 II
+
+### 题目描述
+
+[题目链接](https://leetcode.cn/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-ii-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/NumberOfOccurrencesOfANumberInTheArrayII.java)
+
+在一个数组 `nums` 中除一个数字只出现一次之外，其他数字都出现了三次。请找出那个只出现一次的数字。
+
+ 
+
+**示例 1：**
+
+```
+输入：nums = [3,4,3,3]
+输出：4
+```
+
+**示例 2：**
+
+```
+输入：nums = [9,1,7,9,7,9,7]
+输出：1
+```
+
+ 
+
+**限制：**
+
+- `1 <= nums.length <= 10000`
+- `1 <= nums[i] < 2^31`
+
+### 题解
+
+#### 有限状态自动机
+
+**参考：** [面试题56 - II. 数组中数字出现的次数 II（位运算 + 有限状态自动机，清晰图解）](https://leetcode.cn/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-ii-lcof/solutions/215895/mian-shi-ti-56-ii-shu-zu-zhong-shu-zi-chu-xian-d-4/)
+
+考虑数字的二进制形式，对于出现三次的数字，各 二进制位 出现的次数都是 3 的倍数。 因此，统计所有数字的各二进制位中 1 的出现次数，并对 3 求余，结果则为只出现一次的数字。
+
+![](https://pic.leetcode-cn.com/28f2379be5beccb877c8f1586d8673a256594e0fc45422b03773b8d4c8418825-Picture1.png)
+
+我们只考虑其中一位，在相加过程中对3求余中可能出现的结果为 0，1，2。2无法用一位二进制来表示，所以我们用两位来表示。0，1，2对应的表示方式为 00，01，10。在相加过程中这一位如果需要加0，则状态不变，加1则00—>01，01—>10，10—>00
+
+![](https://pic.leetcode-cn.com/0a7ea5bca055b095673620d8bb4c98ef6c610a22f999294ed11ae35d43621e93-Picture3.png)
+
+对于one的改变可以由以下代码控制
+
+```
+if two == 0
+  if n == 0
+    one = one
+  if n == 1
+    one = ~one
+if two == 1
+    one = 0
+```
+
+其中
+
+```
+  if n == 0
+    one = one
+  if n == 1
+```
+
+可以采用位运算简写为`one^n`，任何数与0异或值不变，与1异或值取反
+
+控制代码可改为
+
+```
+if two == 0
+	one=one^n
+if two == 1
+    one = 0
+```
+
+可以采用位运算简写为`one = (one^num)&(~two);`，之所以要采用位运算来替代代码控制是因为位运算可以扩展到多位
+
+对于two的求法，可以发现与one的求法相同（此时one的值已经更新）
+
+![](https://pic.leetcode-cn.com/6ba76dba1ac98ee2bb982e011fdffd1df9a6963f157b2780461dbce453f0ded3-Picture5.png)
+
+即`two = (two^num)&(~one);`
+
+对所有位相加对3求余的最终结果可以发现，不会出现10，只会出现00，01。就结果而言two的值不重要，只需要用one来表示（0或1取决于目标数字对应位上的值）。所以只出现一次的数字的二进制由one构成。
+
+```java
+    public int singleNumber(int[] nums) {
+        int two=0,one=0;//多个位的组合
+        for (int num : nums) {
+            one = (one^num)&(~two);
+            two = (two^num)&(~one);
+        }
+        return one;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(N)，其中 N 为数组 nums 的长度，遍历数组占用 O(N)，每轮中的常数个位运算操作占用O(1) 
+
+空间复杂度：O(1)
 
 ## 剑指 Offer 57. 和为s的两个数字
 
