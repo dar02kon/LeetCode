@@ -896,7 +896,111 @@ addNum： O(logn)，其中 n 为累计添加的数的数量。findMedian：O(1)�
 
 空间复杂度：O(∣Σ∣)，其中 Σ 表示字符集（即字符串中可以出现的字符），∣Σ∣ 表示字符集的大小。在本题中没有明确说明字符集，因此可以默认为所有 ASCII 码在[0,128) 内的字符，即 ∣Σ∣=128。我们需要用到哈希集合来存储出现过的字符，而字符最多有 ∣Σ∣个，因此空间复杂度为 O(∣Σ∣)
 
+## 剑指 Offer 49. 丑数
 
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/chou-shu-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/UglyNumber.java)
+
+我们把只包含质因子 2、3 和 5 的数称作丑数（Ugly Number）。求按从小到大的顺序的第 n 个丑数。
+
+ 
+
+**示例:**
+
+```
+输入: n = 10
+输出: 12
+解释: 1, 2, 3, 4, 5, 6, 8, 9, 10, 12 是前 10 个丑数。
+```
+
+**说明:** 
+
+1. `1` 是丑数。
+2. `n` **不超过**1690。
+
+### 题解
+
+#### 最小堆
+
+可以用最小堆来维护丑数顺序，堆顶是最小丑数。每次循环取出堆顶元素，记为x，则2x，3x，5x同样也为丑数，加入堆中，为了去重可用使用哈希表来存储之前丑数，将元素放入堆中之前先判断是否已存在。
+
+在排除重复元素的情况下，第 n 次从最小堆中取出的元素即为第 n 个丑数。
+
+```java
+    public int nthUglyNumber(int n) {
+        Set<Long> set = new HashSet<>();//哈希表
+        int[] adds = new int[]{2,3,5};
+        PriorityQueue<Long> priorityQueue = new PriorityQueue<>();//最小堆，默认堆顶为最小元素
+        set.add(1L);
+        priorityQueue.offer(1L);
+        int result = 0;
+        for (int i = 0; i < n; i++) {
+            long poll = priorityQueue.poll();
+            result = (int)poll;
+            for (int add : adds) {//将 2x，3x，5x入堆
+                Long num = add*poll;
+                if(!set.contains(num)){
+                    set.add(num);
+                    priorityQueue.add(num);
+                }
+            }
+        }
+        return result;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(nlog⁡n)。得到第 n 个丑数需要进行 n 次循环，每次循环都要从最小堆中取出 1 个元素以及向最小堆中加入最多 3 个元素，因此每次循环的时间复杂度是 O(log⁡(3n)+3log⁡(3n))，总时间复杂度是O(nlogn)
+
+空间复杂度：O(n)。空间复杂度主要取决于最小堆和哈希集合的大小，最小堆和哈希集合的大小都不会超过 3n
+
+#### 动态规划
+
+第一个丑数是1，将1与2，3，5分别做乘法获得下一批丑数，将这些丑数做同样的操作又可以获得一批丑数。不考虑数量与顺序的情况下，每一个丑数都需要与2，3，5做乘法。
+
+但我们需要考虑顺序，可以设置三个指针p1，p2，p3分别表示与2，3，5做乘法。设 dp[i] 表示第 i-1 个丑数，dp[0]=1
+
+则有`dp[i]=Math.min(Math.min(dp[p1]*2,dp[p2]*3),dp[p3]*5);`，同时还需要确定dp[i]是哪个（或哪些）指针计算的结果，将相应的指针进行后移
+
+```
+     2 		3  		4  		5		6		8		9		10
+p1   1*2 	2*2		2*2		3*2		3*2		4*2		5*2		5*2
+p2   1*3	1*3		2*3		2*3		2*3		3*3		3*3		4*3
+p3   1*5 	1*5		1*5		1*5		2*5		2*5		2*5		2*5
+```
+
+```java
+    public int nthUglyNumber2(int n) {
+        int[] dp = new int[n];
+        dp[0] = 1;
+        int p1 = 0,p2=0,p3=0;
+        for (int i = 1; i <n ; i++) {
+            int num1 = dp[p1]*2,num2 = dp[p2]*3,num3 = dp[p3]*5;
+            int num = Math.min(Math.min(num1,num2),num3);
+            dp[i]=num;
+            if(num1==dp[i]){
+                p1++;
+            }
+            if(num2==dp[i]){
+                p2++;
+            }
+            if(num3==dp[i]){
+                p3++;
+            }
+        }
+        return dp[n-1];
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(n)。需要计算数组 dp 中的 n 个元素，每个元素的计算都可以在 O(1) 的时间内完成
+
+空间复杂度：O(n)。空间复杂度主要取决于数组 dp 的大小
 
 ## 剑指 Offer 50. 第一个只出现一次的字符
 
