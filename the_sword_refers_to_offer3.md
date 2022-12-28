@@ -1091,6 +1091,86 @@ p3   1*5 	1*5		1*5		1*5		2*5		2*5		2*5		2*5
 
 空间复杂度：O(∣Σ∣)，其中 Σ 是字符集，在本题中 s 只包含小写字母，因此 ∣Σ∣≤26。我们需要 O(∣Σ∣) 的空间存储哈希映射
 
+## 剑指 Offer 51. 数组中的逆序对
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/shu-zu-zhong-de-ni-xu-dui-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/ReversePairsInAnArray.java)
+
+在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。输入一个数组，求出这个数组中的逆序对的总数。
+
+ 
+
+**示例 1:**
+
+```
+输入: [7,5,6,4]
+输出: 5
+```
+
+ 
+
+**限制：**
+
+```
+0 <= 数组长度 <= 50000
+```
+
+### 题解
+
+#### 归并排序
+
+**参考：**[剑指 Offer 51. 数组中的逆序对（归并排序，清晰图解）](https://leetcode.cn/problems/shu-zu-zhong-de-ni-xu-dui-lcof/solutions/622496/jian-zhi-offer-51-shu-zu-zhong-de-ni-xu-pvn2h/)
+
+数组 `[7,3,2,6,0,1,5,4] `的归并排序过程如下
+
+![](https://pic.leetcode-cn.com/1614274007-nBQbZZ-Picture1.png)
+
+我们可以在合并过程中来统计逆序对，例如合并`[2,3,6,7]`与`[0,1,4,5]`，设置两个指针i，j分别指向两数组首部，2比0大，则i指针后面的元素都比0大（这两个数组都是已经排序的），也就是说指针 i 指向的2以及其后面的元素与0都能组成逆序对，其它元素的比较同理。可以由此来统计归并过程中产生的逆序对
+
+![](https://pic.leetcode-cn.com/1614274007-rtFHbG-Picture2.png)
+
+```java
+    int[] temp;
+    public int reversePairs(int[] nums) {
+        temp = new int[nums.length];
+        return mergeSort(0, nums.length - 1, nums);
+    }
+
+    public int mergeSort(int left, int right, int[] nums) {
+        if (left >= right) {
+            return 0;
+        }
+        int mid = (left + right) / 2;
+        int count = mergeSort(left, mid, nums) + mergeSort(mid + 1, right, nums);
+        System.arraycopy(nums, left, temp, left, right - left + 1);//初始化辅助数组
+        int i = left, j = mid + 1;
+        //合并两个数组
+        for (int k = left; k <= right; k++) {
+            if (i == mid + 1) {//第一个数组已经添加完成
+                nums[k] = temp[j++];//只用添加第二个数组的元素
+            } else if (j == right + 1 || temp[i] <= temp[j]) {//第二个数组添加完成或左指针指向的元素比右指针小，则添加第一个数组的元素
+                nums[k] = temp[i++];
+            } else {//出现左指针指向的值大于右指针指向的值
+                nums[k] = temp[j++];//添加第二个数组的元素
+                // 统计逆序对
+                // 左指针指向的值以及其后的元素都比右指针指向的值大（两个数组各自已经排序好了），
+                // 所以左指针指向的值以及其后的元素都可以与右指针指向的值构成逆序对
+                count += mid - i + 1;
+            }
+        }
+        return count;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(nlog⁡n)，其中 n 为数组长度；归并排序使用 O(nlog⁡n) 时间
+
+空间复杂度：O(n)，辅助数组 tmp 占用 O(n) 大小的额外空间
+
 ## 剑指 Offer 52. 两个链表的第一个公共节点
 
 ### 题目描述
