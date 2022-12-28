@@ -1951,3 +1951,73 @@ if two == 1
 时间复杂度：O(N)，N 为数组 nums 的长度；最坏情况下双指针共同线性遍历整个数组
 
 空间复杂度：O(1)
+
+## 剑指 Offer 57 - II. 和为s的连续正数序列
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/he-wei-sde-lian-xu-zheng-shu-xu-lie-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/AndIsAContinuousSequenceOfPositiveNumbersForS.java)
+
+输入一个正整数 `target` ，输出所有和为 `target` 的连续正整数序列（至少含有两个数）。
+
+序列内的数字由小到大排列，不同序列按照首个数字从小到大排列。
+
+ 
+
+**示例 1：**
+
+```
+输入：target = 9
+输出：[[2,3,4],[4,5]]
+```
+
+**示例 2：**
+
+```
+输入：target = 15
+输出：[[1,2,3,4,5],[4,5,6],[7,8]]
+```
+
+ 
+
+**限制：**
+
+- `1 <= target <= 10^5`
+
+### 题解
+
+#### 双指针
+
+滑动窗口的思想，设置两指针left，right初始值分别为1，2。计算left到right的和（求和可以用等差数列求和公式或者设置一变量来记录和），如果大于目标值移动左指针，小于目标值移动右指针，等于目标值时，可以根据循环条件选择移动1个或2个指针
+
+```java
+    public int[][] findContinuousSequence(int target) {
+        List<int[]> list = new ArrayList<>();
+        int left = 1,right = 2,num = 3;//num记录和
+        while (left<right){
+            if(num==target){//保存数据，从left到right
+                int[] nums = new int[right-left+1];
+                for (int i = left; i <=right ; i++) {
+                    nums[i-left]=i;
+                }
+                list.add(nums);
+            }
+            if(num<=target){//小于或者等于目标值都移动右指针
+                right++;
+                num+=right;//更新和
+            } else {//大于目标值移动左指针
+                num-=left;//更新和，需要提前更新
+                left++;
+            }
+        }
+        return list.toArray(new int[list.size()][]);
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(target) ，由于两个指针移动均单调不减，且最多移动 target/2 次
+
+空间复杂度：O(1) ，除了答案数组只需要常数的空间存放若干变量
