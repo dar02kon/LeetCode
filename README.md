@@ -12,6 +12,8 @@
 
 [笔记链接3](https://github.com/dar02kon/LeetCode/blob/master/the_sword_refers_to_offer3.md)
 
+[笔记链接4](https://github.com/dar02kon/LeetCode/blob/master/the_sword_refers_to_offer4.md)
+
 ### 简单
 
 * [二进制求和](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/AddBinary.java)
