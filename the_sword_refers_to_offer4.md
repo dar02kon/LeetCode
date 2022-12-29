@@ -97,3 +97,65 @@
 
 空间复杂度：O(n)
 
+## 剑指 Offer 58 - II. 左旋转字符串
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/zuo-xuan-zhuan-zi-fu-chuan-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/LeftRotatedString.java)
+
+字符串的左旋转操作是把字符串前面的若干个字符转移到字符串的尾部。请定义一个函数实现字符串左旋转操作的功能。比如，输入字符串"abcdefg"和数字2，该函数将返回左旋转两位得到的结果"cdefgab"。
+
+ 
+
+**示例 1：**
+
+```
+输入: s = "abcdefg", k = 2
+输出: "cdefgab"
+```
+
+**示例 2：**
+
+```
+输入: s = "lrloseumgh", k = 6
+输出: "umghlrlose"
+```
+
+ 
+
+**限制：**
+
+- `1 <= k < s.length <= 10000`
+
+### 题解
+
+#### 字符分割
+
+可以使用`substring`方法获取分割的字符串进行拼接，或者遍历拼接（使用`StringBuilder`保存结果，先遍历后一部分，再遍历前一部分）
+
+```java
+    public String reverseLeftWords(String s, int n) {
+        return s.substring(n + 1, s.length()) + s.substring(0, n + 1);
+    }
+```
+
+```java
+    public String reverseLeftWords2(String s, int n) {
+        StringBuilder result = new StringBuilder();
+        for (int i = n; i < s.length(); i++) {
+            result.append(s.charAt(i));
+        }
+        for (int i = 0; i < n; i++) {
+            result.append(s.charAt(i));
+        }
+        return result.toString();
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(n)
+
+空间复杂度：O(n)
