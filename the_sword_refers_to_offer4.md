@@ -299,3 +299,80 @@
 
 空间复杂度：O(n)
 
+## 剑指 Offer 62. 圆圈中最后剩下的数字
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/yuan-quan-zhong-zui-hou-sheng-xia-de-shu-zi-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/TheLastNumberLeftInTheCircle.java)
+
+0,1,···,n-1这n个数字排成一个圆圈，从数字0开始，每次从这个圆圈里删除第m个数字（删除后从下一个数字开始计数）。求出这个圆圈里剩下的最后一个数字。
+
+例如，0、1、2、3、4这5个数字组成一个圆圈，从数字0开始每次删除第3个数字，则删除的前4个数字依次是2、0、4、1，因此最后剩下的数字是3。
+
+ 
+
+**示例 1：**
+
+```
+输入: n = 5, m = 3
+输出: 3
+```
+
+**示例 2：**
+
+```
+输入: n = 10, m = 17
+输出: 2
+```
+
+ 
+
+**限制：**
+
+- `1 <= n <= 10^5`
+- `1 <= m <= 10^6`
+
+### 题解
+
+#### 自底向上分析
+
+```
+设 n = 5, m = 3
+
+n = 5， 0, 1, 2, 3, 4 => 0, 1, 2, 3, 4
+n = 4， 3, 4, 0, 1     => 3, 4, 0, 1
+n = 3， 1, 3, 4         => 1, 3, 4
+n = 2， 1, 3             => 1, 3
+n = 1， 3                 => END
+```
+
+n为数字个数，由于每趟从被删除元素之后开始数，把被删除的元素都移到数组中的第一个位序。那么，可以观察到被删除的总是下标为`(0 + m) mod n`的元素;删除元素后，其他的元素都向前移动了`m`位，最终坐落在坐标为`(index - m) mod (n -1)`的位置上(index为元素未移动前的坐标)
+
+从下往上推导，可以肯定的是最后一趟(即n=1时), 只有一个数，而且其**坐标一定为0**，由于相比上一趟所有元素都移动了3位,那么应该往后挪3位才能推到原来的位置上。
+
+所以有：
+
+```
+index2 = (index1 + 3) mod 2 = (0 + 3) mod 2 = 1
+index3 = (index2 + 3) mod 3 = (1 + 3) mod 3 = 1
+index4 = (index3 + 3) mod 4 = (1 + 3) mod 4 = 0
+index5 = (index4 + 3) mod 5 = (0 + 3) mod 5 = 3
+```
+
+```java
+    public int lastRemaining(int n, int m) {
+        int result = 0;
+        for (int i = 2; i != n + 1; ++i) {
+            result = (m + result) % i;
+        }
+        return result;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(n)
+
+空间复杂度：O(1)
