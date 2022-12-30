@@ -159,3 +159,143 @@
 时间复杂度：O(n)
 
 空间复杂度：O(n)
+
+## 剑指 Offer 59 - I. 滑动窗口的最大值
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/hua-dong-chuang-kou-de-zui-da-zhi-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/TheMaximumValueOfTheSlidingWindow.java)
+
+给定一个数组 `nums` 和滑动窗口的大小 `k`，请找出所有滑动窗口里的最大值。
+
+**示例:**
+
+```
+输入: nums = [1,3,-1,-3,5,3,6,7], 和 k = 3
+输出: [3,3,5,5,6,7] 
+解释: 
+
+  滑动窗口的位置                最大值
+---------------               -----
+[1  3  -1] -3  5  3  6  7       3
+ 1 [3  -1  -3] 5  3  6  7       3
+ 1  3 [-1  -3  5] 3  6  7       5
+ 1  3  -1 [-3  5  3] 6  7       5
+ 1  3  -1  -3 [5  3  6] 7       6
+ 1  3  -1  -3  5 [3  6  7]      7
+```
+
+ 
+
+**提示：**
+
+你可以假设 *k* 总是有效的，在输入数组 **不为空** 的情况下，`1 ≤ k ≤ nums.length`。
+
+### 题解
+
+#### 大顶堆
+
+使用大顶堆来存储窗口中的元素，需要存储元素值和下标值，保证堆顶元素值最大的同时下标最大（值最大保证是窗口中最大的元素，下标最大保证该元素尽可能停留在窗口中），添加元素后需要判断堆顶元素是否在窗口中，不在则弹出直到堆顶元素在窗口中
+
+```java
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        int[] result = new int[nums.length - k + 1];
+        PriorityQueue<int[]> priorityQueue = new PriorityQueue<>((o1, o2) -> o2[0] != o1[0] ? o2[0] - o1[0] : o2[1] - o1[1]);
+        for (int i = 0; i < k; i++) {
+            priorityQueue.add(new int[]{nums[i], i});
+        }
+        result[0] = priorityQueue.peek()[0];
+        for (int i = k; i < nums.length; i++) {
+            priorityQueue.add(new int[]{nums[i], i});
+            while (priorityQueue.peek()[1] <= i - k) {
+                priorityQueue.poll();
+            }
+            result[i - k + 1] = priorityQueue.peek()[0];
+        }
+        return result;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(nlog⁡n)，其中 n 是数组 nums 的长度。在最坏情况下，数组 nums 中的元素单调递增，那么最终优先队列中包含了所有元素，没有元素被移除。由于将一个元素放入优先队列的时间复杂度为 O(log⁡n)，因此总时间复杂度为 O(nlog⁡n)
+
+空间复杂度：O(n)，即为优先队列需要使用的空间。这里所有的空间复杂度分析都不考虑返回的答案需要的 O(n) 空间，只计算额外的空间使用
+
+#### 双端队列
+
+使用双端队列来存储窗口下标，添加元素前总是先判断队尾元素是否小于需要添加的元素，小于则弹出队尾元素直到条件不满足，才王队列中添加元素，始终确保新添加的并且值最大的元素驻留在队列中，之前那些比较小的元素就没有必要存在了。
+
+从队首取窗口中的最大元素的下标，在此之前先判断对首元素是否在窗口中，不在则弹出直到元素位于窗口中
+
+```java
+    public int[] maxSlidingWindow2(int[] nums, int k) {
+        int[] result = new int[nums.length - k + 1];
+        Deque<Integer> deque = new LinkedList<>();
+        for (int i = 0; i < k; i++) {
+            while (!deque.isEmpty() && nums[deque.peekLast()] <= nums[i]) {
+                deque.pollLast();
+            }
+            deque.offerLast(i);
+        }
+        result[0] = nums[deque.peekFirst()];
+        for (int i = k; i < nums.length; i++) {
+            while (!deque.isEmpty() && nums[deque.peekLast()] <= nums[i]) {
+                deque.pollLast();
+            }
+            deque.offerLast(i);
+            while (deque.peekFirst() <= i - k) {
+                deque.pollFirst();
+            }
+            result[i - k + 1] = nums[deque.peekFirst()];
+        }
+        return result;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(n)，其中 nnn 是数组 nums 的长度。每一个下标恰好被放入队列一次，并且最多被弹出队列一次，因此时间复杂度为 O(n)
+
+空间复杂度：O(k)，「不断从队首弹出元素」保证了队列中最多不会有超过 k+1 个元素，因此队列使用的空间为 O(k)
+
+#### 分块处理
+
+根据k值将数组进行分块，`[0,k)，[k,2k)...`，使用两个数组前缀数组和后缀数组来存储预先处理的结果。前缀数组`prefix[i]`表示上一块边界到 i 的最大元素，后缀数组`suffix[i]`表示 i 到下一块边界的最大元素。
+
+在预处理完成之后，对于 nums[i]到 nums[i+k−1] 的所有元素，如果 i 不是 k 的倍数，那么窗口中的最大值为 suffix[i]与 prefix[i+k−1] 中的较大值；如果 i 是 k 的倍数，那么此时窗口恰好对应一整个分组，suffix[i] 和 prefix[i+k−1]都等于分组中的最大值，因此无论窗口属于哪一种情况，`Math.max(prefix[i + k - 1], suffix[i])`即为结果
+
+```java
+    public int[] maxSlidingWindow3(int[] nums, int k) {
+        int[] prefix = new int[nums.length];
+        int[] suffix = new int[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            if (i % k == 0) {
+                prefix[i] = nums[i];
+            } else {
+                prefix[i] = Math.max(nums[i], prefix[i - 1]);
+            }
+        }
+        for (int i = nums.length - 1; i >= 0; i--) {
+            if (i == nums.length - 1 || (i + 1) % k == 0) {
+                suffix[i] = nums[i];
+            } else {
+                suffix[i] = Math.max(nums[i], suffix[i + 1]);
+            }
+        }
+        int[] result = new int[nums.length - k + 1];
+        for (int i = 0; i < nums.length - k + 1; i++) {
+            result[i] = Math.max(prefix[i + k - 1], suffix[i]);
+        }
+        return result;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(n)，其中 n 是数组 nums 的长度。我们需要 O(n) 的时间预处理出数组 prefix和suffix 以及计算答案
+
+空间复杂度：O(n)
+
