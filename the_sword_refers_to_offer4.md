@@ -461,6 +461,67 @@ index5 = (index4 + 3) mod 5 = (0 + 3) mod 5 = 3
 
 空间复杂度：O(1)
 
+## 剑指 Offer 63. 股票的最大利润
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/gu-piao-de-zui-da-li-run-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/TheMaximumProfitOfTheStock.java)
+
+假设把某股票的价格按照时间先后顺序存储在数组中，请问买卖该股票一次可能获得的最大利润是多少？
+
+ 
+
+**示例 1:**
+
+```
+输入: [7,1,5,3,6,4]
+输出: 5
+解释: 在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。
+     注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格。
+```
+
+**示例 2:**
+
+```
+输入: [7,6,4,3,1]
+输出: 0
+解释: 在这种情况下, 没有交易完成, 所以最大利润为 0。
+```
+
+ 
+
+**限制：**
+
+```
+0 <= 数组长度 <= 10^5
+```
+
+### 题解
+
+#### 动态规划
+
+`dp[i]`来表示第i天的最大利润，`minPrice`来记录前 i 天股票价格的最小值，则`dp[i]=Math.max(dp[i-1],prices[i]-minPrice)`，遍历数组进行计算即可获得最大利润
+
+```java
+    public int maxProfit(int[] prices) {
+        int minPrice = Integer.MAX_VALUE;//记录当前最小价格
+        int profit = 0;//记录最大利润
+        for (int price : prices) {
+            minPrice = Math.min(minPrice,price);
+            profit = Math.max(profit,price-minPrice);
+        }
+        return profit;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(n)
+
+空间复杂度：O(1)
+
 ## 剑指 Offer 65. 不用加减乘除做加法
 
 ### 题目描述
