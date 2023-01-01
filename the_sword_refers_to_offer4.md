@@ -460,3 +460,62 @@ index5 = (index4 + 3) mod 5 = (0 + 3) mod 5 = 3
 时间复杂度：O(n)
 
 空间复杂度：O(1)
+
+## 剑指 Offer 65. 不用加减乘除做加法
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/bu-yong-jia-jian-cheng-chu-zuo-jia-fa-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/AddWithoutAdditionSubtractionMultiplicationAndDivision.java)
+
+写一个函数，求两个整数之和，要求在函数体内不得使用 “+”、“-”、“*”、“/” 四则运算符号。
+
+ 
+
+**示例:**
+
+```
+输入: a = 1, b = 1
+输出: 2
+```
+
+ 
+
+**提示：**
+
+- `a`, `b` 均可能是负数或 0
+- 结果不会溢出 32 位整数
+
+### 题解
+
+#### 位运算
+
+模拟二进制运算
+
+```
+	1	0	1
+	0	0	1
+本位 1   0   0
+进位 0   1   0
+结果 1   1   0
+```
+
+本位值可以看作是异或产生的结果（相同为0，否则为1），进位可以看作是且运算后左移一位（进位肯定是往前进一位），结果由进位+本位产生（重复上述操作直到进位为0）
+
+```java
+    public int add(int a, int b) {
+        while (b!=0){
+            int temp = b;
+            b = (a&b)<<1;//进位
+            a = a^temp;//本位
+        }
+        return a;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(1)
+
+空间复杂度：O(1)
