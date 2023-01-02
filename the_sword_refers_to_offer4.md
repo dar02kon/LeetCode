@@ -522,6 +522,57 @@ index5 = (index4 + 3) mod 5 = (0 + 3) mod 5 = 3
 
 空间复杂度：O(1)
 
+## 剑指 Offer 64. 求1+2+…+n
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/qiu-12n-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/SumOfNumbers.java)
+
+求 `1+2+...+n` ，要求不能使用乘除法、for、while、if、else、switch、case等关键字及条件判断语句（A?B:C）。
+
+ 
+
+**示例 1：**
+
+```
+输入: n = 3
+输出: 6
+```
+
+**示例 2：**
+
+```
+输入: n = 9
+输出: 45
+```
+
+ 
+
+**限制：**
+
+- `1 <= n <= 10000`
+
+### 题解
+
+#### 递归，短路
+
+递归来代替循环，短路来代替 if 判断...如果使用求和公式即`n*(n+1)/2`，`/2`可以用`>>1`来代替，乘法用倍增思想来编写，因为不能用循环就只能面向题目硬写语句即把循环要干的事直接朴实无华的写出来，，，
+
+```java
+    public int sumNums(int n) {
+        boolean b = n > 0 && (n += sumNums(n - 1)) > 0;
+        return n;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(n)
+
+空间复杂度：O(n)，递归需要用到栈空间
+
 ## 剑指 Offer 65. 不用加减乘除做加法
 
 ### 题目描述
