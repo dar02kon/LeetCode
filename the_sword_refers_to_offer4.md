@@ -631,3 +631,95 @@ index5 = (index4 + 3) mod 5 = (0 + 3) mod 5 = 3
 时间复杂度：O(1)
 
 空间复杂度：O(1)
+
+## 剑指 Offer 66. 构建乘积数组
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/gou-jian-cheng-ji-shu-zu-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/BuildProductArray.java)
+
+给定一个数组 `A[0,1,…,n-1]`，请构建一个数组 `B[0,1,…,n-1]`，其中 `B[i]` 的值是数组 `A` 中除了下标 `i` 以外的元素的积, 即 `B[i]=A[0]×A[1]×…×A[i-1]×A[i+1]×…×A[n-1]`。不能使用除法。
+
+ 
+
+**示例:**
+
+```
+输入: [1,2,3,4,5]
+输出: [120,60,40,30,24]
+```
+
+ 
+
+**提示：**
+
+- 所有元素乘积之和不会溢出 32 位整数
+- `a.length <= 100000`
+
+### 题解
+
+#### 分批计算
+
+不能用除法，可以设置两数组 left与right，`left[i] = left[i-1]*a[i-1]`，`left[i]`记录从0到i-1的乘积（不包括i），`right[i] = right[i+1]*a[i+1];`，`right[i]`记录从i到a.length的乘积，这样结果就为`result[i] = left[i]*right[i];`
+
+```java
+    public int[] constructArr(int[] a) {
+        int[] result = new int[a.length];
+        if (a.length == 0) {
+            return result;
+        }
+        int[] left = new int[a.length];
+        left[0] = 1;
+        int[] right = new int[a.length];
+        right[a.length - 1] = 1;
+        //记录从左到右的乘积
+        for (int i = 1; i < a.length; i++) {
+            left[i] = left[i - 1] * a[i - 1];
+        }
+        //记录从右到左的乘积
+        for (int i = a.length - 2; i >= 0; i--) {
+            right[i] = right[i + 1] * a[i + 1];
+        }
+
+        for (int i = 0; i < a.length; i++) {
+            result[i] = left[i] * right[i];
+        }
+        return result;
+    }
+```
+
+**时间复杂度：**
+
+时间复杂度：O(n)
+
+空间复杂度：O(n)
+
+也可以不用额外数组提前存储乘积，先使用数组result记录从左到右的乘积，再从左往右遍历设置一变量left记录从左到右对应的乘积，随着遍历去更新，最终结果`result[i] = left * result[i];`
+
+```java
+    public int[] constructArr2(int[] a) {
+        int[] result = new int[a.length];
+        if (a.length == 0) {
+            return result;
+        }
+        result[a.length - 1] = 1;
+        //记录从右往左的乘积
+        for (int i = a.length - 2; i >= 0; i--) {
+            result[i] = result[i + 1] * a[i + 1];
+        }
+        int left = 1;//记录从左往右的乘积
+        for (int i = 0; i < a.length; i++) {
+            result[i] = left * result[i];//更新结果数组
+            left *= a[i];//更新left
+        }
+        return result;
+    }
+```
+
+**时间复杂度：**
+
+时间复杂度：O(n)
+
+空间复杂度：O(1)
