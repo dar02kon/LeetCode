@@ -1021,3 +1021,67 @@ index5 = (index4 + 3) mod 5 = (0 + 3) mod 5 = 3
 时间复杂度：O(mn)
 
 空间复杂度：O(mn)
+
+## 面试题45. 把数组排成最小的数
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/ba-shu-zu-pai-cheng-zui-xiao-de-shu-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/ArrangeTheArrayAsTheSmallestNumberAsPossible.java)
+
+输入一个非负整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。
+
+ 
+
+**示例 1:**
+
+```
+输入: [10,2]
+输出: "102"
+```
+
+**示例 2:**
+
+```
+输入: [3,30,34,5,9]
+输出: "3033459"
+```
+
+ 
+
+**提示:**
+
+- `0 < nums.length <= 100`
+
+**说明:**
+
+- 输出结果可能非常大，所以你需要返回一个字符串而不是整数
+- 拼接起来的数字可能会有前导 0，最后结果不需要去掉前导 0
+
+### 题解
+
+#### 排序
+
+对于两个字符串x，y，若要x，y组成比较小的字符串，只需要考虑x+y与y+x谁小，若x+y<y+x，则将x放在y前面即可，对于多个字符串同样如此，将比较条件从（x<y）改为(x+y<y+x)，若x+y>y+x，x与y的位置需要发生改变（y在x前面）
+
+```java
+    public String minNumber(int[] nums) {
+        String[] temp = new String[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            temp[i] = nums[i]+"";
+        }
+        Arrays.sort(temp,(x,y)->(x+y).compareTo(y+x));
+        StringBuilder result = new StringBuilder();
+        for (String s : temp) {
+            result.append(s);
+        }
+        return result.toString();
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(nlogn)，使用快排或者内置函数排序的平均时间复杂度为O(nlogn)，最差为O(n^2)
+
+空间复杂度：O(n)
