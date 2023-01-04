@@ -900,3 +900,124 @@ index5 = (index4 + 3) mod 5 = (0 + 3) mod 5 = 3
 时间复杂度：O(n)
 
 空间复杂度：O(n)
+
+## 面试题13. 机器人的运动范围
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/TheRangeOfMotionOfTheRobot.java)
+
+地上有一个m行n列的方格，从坐标 `[0,0]` 到坐标 `[m-1,n-1]` 。一个机器人从坐标 `[0, 0] `的格子开始移动，它每次可以向左、右、上、下移动一格（不能移动到方格外），也不能进入行坐标和列坐标的数位之和大于k的格子。例如，当k为18时，机器人能够进入方格 [35, 37] ，因为3+5+3+7=18。但它不能进入方格 [35, 38]，因为3+5+3+8=19。请问该机器人能够到达多少个格子？
+
+ 
+
+**示例 1：**
+
+```
+输入：m = 2, n = 3, k = 1
+输出：3
+```
+
+**示例 2：**
+
+```
+输入：m = 3, n = 1, k = 0
+输出：1
+```
+
+**提示：**
+
+- `1 <= n,m <= 100`
+- `0 <= k <= 20`
+
+### 题解
+
+#### 广度优先搜索
+
+可以使用队列来存储可达位置，每次循环取出一个位置，对于一个位置只需要考虑向右走和向下走，向左或者向上肯定会重复。向右走和向下走同样也会出现重复，可以使用标记数组来记录已经出现的位置
+
+```java
+    public int movingCount(int m, int n, int k) {
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[]{0,0});
+        boolean[][] visited = new boolean[m][n];
+        int count = 0;
+        visited[0][0]=true;
+        while (!queue.isEmpty()){
+            int[] poll = queue.poll();
+            int x = poll[0],y=poll[1];
+            count++;
+            if(x+1<m&&!visited[x+1][y]&&check(x+1,y,k)){//向右走
+                queue.add(new int[]{x+1,y});
+                visited[x+1][y] = true;
+            }
+            if(y+1<n&&!visited[x][y+1]&&check(x,y+1,k)){//向下走
+                queue.add(new int[]{x,y+1});
+                visited[x][y+1] = true;
+            }
+        }
+        return count;
+    }
+
+    public boolean check(int a,int b,int k){//判断坐标位数和与k的关系
+        int count = 0;
+        while (a>0){
+            count+=a%10;
+            a/=10;
+        }
+        while (b>0){
+            count+=b%10;
+            b/=10;
+        }
+        return count <= k;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(mn)
+
+空间复杂度：O(mn)
+
+#### 递推
+
+对于标记数组`visited[i][j]`，如果i，j位数和不大于k且 位置`(i-1,j)`或`(i,j-1)`有一处可达，则`(i,j)`也可达，可以利用这个递推关系来编写代码
+
+```java
+    public int movingCount2(int m, int n, int k){
+        boolean[][] visited = new boolean[m][n];
+        visited[0][0] = true;
+        int count = 1;
+        for (int i = 0; i <m ; i++) {
+            for (int j = 0; j <n ; j++) {
+                if((i==0&&j==0)||check2(i)+check2(j)>k){
+                    continue;
+                }
+                if(i-1>=0){
+                    visited[i][j] |= visited[i-1][j];//从(i-1,j)向右移动抵达(i,j)
+                }
+                if(j-1>=0){
+                    visited[i][j] |= visited[i][j-1];//从(i,j-1)向下移动抵达(i,j)
+                }
+                count+=visited[i][j]?1:0;
+            }
+        }
+        return count;
+    }
+    public int check2(int a){
+        int count = 0;
+        while (a>0){
+            count+=a%10;
+            a/=10;
+        }
+        return count;
+    }
+```
+
+**复杂度分析：**
+
+时间复杂度：O(mn)
+
+空间复杂度：O(mn)
