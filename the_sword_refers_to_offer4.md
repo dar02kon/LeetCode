@@ -1085,3 +1085,95 @@ index5 = (index4 + 3) mod 5 = (0 + 3) mod 5 = 3
 时间复杂度：O(nlogn)，使用快排或者内置函数排序的平均时间复杂度为O(nlogn)，最差为O(n^2)
 
 空间复杂度：O(n)
+
+## 面试题59 - II. 队列的最大值
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/dui-lie-de-zui-da-zhi-lcof/description/?favorite=xb9nqhhg)
+
+[测试代码](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/the_sword_refers_to_offer/MaximumValueOfQueue.java)
+
+请定义一个队列并实现函数 `max_value` 得到队列里的最大值，要求函数`max_value`、`push_back` 和 `pop_front` 的**均摊**时间复杂度都是O(1)。
+
+若队列为空，`pop_front` 和 `max_value` 需要返回 -1
+
+**示例 1：**
+
+```
+输入: 
+["MaxQueue","push_back","push_back","max_value","pop_front","max_value"]
+[[],[1],[2],[],[],[]]
+输出: [null,null,null,2,1,2]
+```
+
+**示例 2：**
+
+```
+输入: 
+["MaxQueue","pop_front","max_value"]
+[[],[],[]]
+输出: [null,-1,-1]
+```
+
+ 
+
+**限制：**
+
+- `1 <= push_back,pop_front,max_value的总操作数 <= 10000`
+- `1 <= value <= 10^5`
+
+### 题解
+
+#### 双端队列
+
+使用两个队列，一个为普通队列用于存储队列元素，另一个为双端队列用于存储对应的最大值
+
+队列有先进先出的特点，后面添加的元素对最大值可能有贡献，删除队列元素同样会对最大值有影响。后面添加的元素如果比前面添加的元素都大，则很长一段时间即使有出队操作，最大值都不变。后面添加的元素如果比前面的都小，则只有当前面的元素都弹出时它才会成为最大值，并且如果后面再添加的元素比它大，那它永远不可能为最大值
+
+可以用双端队列的队头来表示当前队列中的最大值，如果新添加的元素比队尾元素大，则将队尾元素弹出，直到队尾元素不比新添加的元素小，再添加新元素；出队操作时，如果从对头删除的元素恰好为当前队列的最大值，则将双端队列的队头弹出；这样做可以保证队头始终为当前队列的最大值。
+
+```java
+class MaxQueue {
+    private final Queue<Integer> queue;
+    private final Deque<Integer> maxQueue;
+
+    public MaxQueue() {
+        this.queue = new LinkedList<>();
+        this.maxQueue = new LinkedList<>();
+    }
+
+    public int max_value() {
+        if (maxQueue.isEmpty()) {
+            return -1;
+        }
+        return maxQueue.peekFirst();
+    }
+
+    public void push_back(int value) {
+        while (!maxQueue.isEmpty()&&maxQueue.peekLast()<value){//弹出队尾比较小的元素
+            maxQueue.pollLast();
+        }
+        maxQueue.offerLast(value);
+        queue.offer(value);
+
+    }
+
+    public int pop_front() {
+        if(queue.isEmpty()){
+            return -1;
+        }
+        int poll = queue.poll();
+        if(poll==maxQueue.peekFirst()){//弹出的为当前队列的最大值
+            maxQueue.pollFirst();
+        }
+        return poll;
+    }
+}
+```
+
+**复杂度分析：**
+
+时间复杂度：O(1)，插入操作虽然有循环，但对于每一个元素都只有一次出队机会，均摊下来时间复杂度为O(1)
+
+空间复杂度：O(n)
