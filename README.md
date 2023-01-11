@@ -18,7 +18,9 @@
 
 [笔记链接4](https://github.com/dar02kon/LeetCode/blob/master/the_sword_refers_to_offer4.md)
 
-### 简单
+### 随缘刷题
+
+#### 简单
 
 * [二进制求和](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/AddBinary.java)
 * [最后一个单词的长度](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/LengthOfLastWord.java)
@@ -69,7 +71,7 @@
 * [最长回文串](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/LongestPalindrome.java)
 * [计数二进制子串](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/simple/CountBinarySubstrings.java)
 
-### 中等
+#### 中等
 
 * [两数相加](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/AddTwoNumbers.java)
 * [无重复字符的最长子串](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/LongestSubstringWithoutRepeatingCharacters.java)
@@ -102,7 +104,7 @@
 * [旋转图像](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/RotateImage.java)
 * [回文子串](https://github.com/dar02kon/LeetCode/blob/master/src/com/dar/leetcode/medium/PalindromicSubstrings.java)
 
-### 困难
+#### 困难
 
 ## 算法
 
