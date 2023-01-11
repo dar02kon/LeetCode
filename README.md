@@ -4,7 +4,11 @@
 
 ## 已刷算法题
 
-### 剑指offer
+### 算法集训
+
+[笔记链接1](https://github.com/dar02kon/LeetCode/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3%E9%9B%86%E8%AE%AD1.md)：二分查找，贪心思想，双指针
+
+### 剑指offer（已完成）
 
 [笔记链接1](https://github.com/dar02kon/LeetCode/blob/master/the_sword_refers_to_offer.md)
 
