@@ -8,7 +8,7 @@
 
 [笔记链接1](https://github.com/dar02kon/LeetCode/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3%E9%9B%86%E8%AE%AD1.md)：二分查找，贪心思想，双指针，排序（快速排序，堆排序，桶排序）
 
-[笔记链接2](https://github.com/dar02kon/LeetCode/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3%E9%9B%86%E8%AE%AD2.md)：搜索（BFS，DFS）
+[笔记链接2](https://github.com/dar02kon/LeetCode/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3%E9%9B%86%E8%AE%AD2.md)：搜索（BFS，DFS），回溯
 
 ### 剑指offer（已完成）
 
