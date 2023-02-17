@@ -12,7 +12,7 @@
 
 [笔记链接3](https://github.com/dar02kon/LeetCode/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3%E9%9B%86%E8%AE%AD3.md)：动态规划
 
-[笔记链接4](https://github.com/dar02kon/LeetCode/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3%E9%9B%86%E8%AE%AD4.md)：数据结构相关（栈和队列，哈希表）
+[笔记链接4](https://github.com/dar02kon/LeetCode/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3%E9%9B%86%E8%AE%AD4.md)：数据结构相关（栈和队列，哈希表，字符串）
 
 ### 剑指offer（已完成）
 
