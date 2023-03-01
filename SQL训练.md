@@ -2,9 +2,11 @@
 
 ## 基础查询
 
-### 查询所有列
+### 基础查询
 
-#### 题目描述
+#### 查询所有列
+
+##### 题目描述
 
 [原题链接](https://www.nowcoder.com/practice/f9f82607cac44099a77154a80266234a?tpId=199&tqId=1971219&ru=/exam/oj&qru=/ta/sql-quick-study/question-ranking&sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26tab%3DSQL%25E7%25AF%2587%26topicId%3D199)
 
@@ -60,7 +62,7 @@ INSERT INTO user_profile VALUES(5,5432,'male',25,'山东大学','Shandong');
 5|5432|male|25|山东大学|Shandong
 ```
 
-#### 题解
+##### 题解
 
 对于全列查询尽量还是使用列名进行查询
 
@@ -68,9 +70,9 @@ INSERT INTO user_profile VALUES(5,5432,'male',25,'山东大学','Shandong');
 SELECT id,device_id,gender,age,university,province FROM user_profile
 ```
 
-### 查询多列
+#### 查询多列
 
-#### 题目描述
+##### 题目描述
 
 [原题链接](https://www.nowcoder.com/practice/499b6d01eae342b2aaeaf4d0da61cab0?tpId=199&tags=&title=&difficulty=0&judgeStatus=0&rp=0&sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26tab%3DSQL%25E7%25AF%2587%26topicId%3D199)
 
@@ -127,7 +129,7 @@ device_id|gender|age|university
 5432|male|25|山东大学
 ```
 
-#### 题解
+##### 题解
 
 查询需要的列即可
 
@@ -135,9 +137,11 @@ device_id|gender|age|university
 SELECT device_id,gender,age,university FROM user_profile
 ```
 
-### 查询结果去重
+### 简单处理查询结果
 
-#### 题目描述
+#### 查询结果去重
+
+##### 题目描述
 
 [原题链接](https://www.nowcoder.com/practice/82ebd89f12cf48efba0fecb392e193dd?tpId=199&tags=&title=&difficulty=0&judgeStatus=0&rp=0&sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26tab%3DSQL%25E7%25AF%2587%26topicId%3D199)
 
@@ -191,7 +195,7 @@ INSERT INTO user_profile VALUES(5,5432,'male',25,'山东大学','Shandong');
 山东大学
 ```
 
-#### 题解
+##### 题解
 
 使用`DISTINCT`关键字进行去重，`DISTINCT`必须放在要查询字段的开头，表示对后面的所有参数的拼接取不重复的记录，即查出的参数拼接每行记录都是唯一的
 
@@ -213,9 +217,9 @@ GROUP BY
     university
 ```
 
-### 查询结果限制返回行数
+#### 查询结果限制返回行数
 
-#### 题目描述
+##### 题目描述
 
 [原题链接](https://www.nowcoder.com/practice/c7ad0e2df4f647dfa5278e99894a7561?tpId=199&tags=&title=&difficulty=0&judgeStatus=0&rp=0&sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26tab%3DSQL%25E7%25AF%2587%26topicId%3D199)
 
@@ -265,7 +269,7 @@ INSERT INTO user_profile VALUES(5,5432,'male',25,'山东大学','Shandong');
 3214
 ```
 
-#### 题解
+##### 题解
 
 使用`LIMIT`限制结果集，`LIMIT` 子句可以被用于强制 `SELECT` 语句返回指定的记录数。
 `LIMIT` 接受一个或两个数字参数。参数必须是一个整数常量。
@@ -296,9 +300,9 @@ LIMIT
     0, 2
 ```
 
-### 将查询后的列重新命名
+#### 将查询后的列重新命名
 
-#### 题目描述
+##### 题目描述
 
 [原题链接](https://www.nowcoder.com/practice/0d8f49aeaf7a4e1cb7fecec980712113?tpId=199&tags=&title=&difficulty=0&judgeStatus=0&rp=0&sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26tab%3DSQL%25E7%25AF%2587%26topicId%3D199)
 
@@ -348,7 +352,7 @@ INSERT INTO user_profile VALUES(5,5432,'male',25,'山东大学','Shandong');
 3214
 ```
 
-#### 题解
+##### 题解
 
 取别名（`AS`加不加都可以）
 
@@ -361,3 +365,461 @@ LIMIT
     2
 ```
 
+## 条件查询
+
+### 基础排序
+
+####  查找后排序
+
+##### 题目描述
+
+[原题链接](https://www.nowcoder.com/practice/cd4c5f3a64b4411eb4810e28afed6f54?tpId=199&tqId=2002632&ru=/exam/oj&qru=/ta/sql-quick-study/question-ranking&sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26tab%3DSQL%25E7%25AF%2587%26topicId%3D199)
+
+题目：现在运营想要取出用户信息表中的用户年龄，请取出相应数据，并按照年龄升序排序。
+
+示例：user_profile
+
+| id   | device_id | gender | age  | university   | gpa  |
+| ---- | --------- | ------ | ---- | ------------ | ---- |
+| 1    | 2138      | male   | 21   | 北京大学     | 3.4  |
+| 2    | 3214      | male   | 23   | 复旦大学     | 4    |
+| 3    | 6543      | female | 20   | 北京大学     | 3.2  |
+| 4    | 2315      | female | 23   | 浙江大学     | 3.6  |
+| 5    | 5432      | male   | 25   | 山东大学     | 3.8  |
+| 6    | 2131      | male   | 28   | 北京师范大学 | 3.3  |
+
+根据示例，你的查询应返回以下结果：
+
+| device_id | age  |
+| --------- | ---- |
+| 6534      | 20   |
+| 2138      | 21   |
+| 3214      | 23   |
+| 2315      | 23   |
+| 5432      | 25   |
+| 2131      | 28   |
+
+示例1
+
+输入：
+
+```sql
+drop table if exists user_profile;
+CREATE TABLE `user_profile` (
+`id` int NOT NULL,
+`device_id` int NOT NULL,
+`gender` varchar(14) NOT NULL,
+`age` int ,
+`university` varchar(32) NOT NULL,
+`gpa` float);
+INSERT INTO user_profile VALUES(1,2138,'male',21,'北京大学',3.4);
+INSERT INTO user_profile VALUES(2,3214,'male',23,'复旦大学',4.0);
+INSERT INTO user_profile VALUES(3,6543,'female',20,'北京大学',3.2);
+INSERT INTO user_profile VALUES(4,2315,'female',23,'浙江大学',3.6);
+INSERT INTO user_profile VALUES(5,5432,'male',25,'山东大学',3.8);
+INSERT INTO user_profile VALUES(6,2131,'male',28,'北京师范大学',3.3);
+```
+
+输出：
+
+```
+6543|20
+2138|21
+3214|23
+2315|23
+5432|25
+2131|28
+```
+
+##### 题解
+
+使用`ORDER BY`进行排序，`ASC`为升序（默认），`DESC`为降序
+
+```sql
+SELECT
+    device_id,
+    age
+FROM
+    user_profile
+ORDER BY
+    age ASC
+```
+
+#### 查找后多列排序
+
+##### 题目描述
+
+[原题链接](https://www.nowcoder.com/practice/39f74706f8d94d37865a82ffb7ba67d3?tpId=199&tags=&title=&difficulty=0&judgeStatus=0&rp=0&sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26tab%3DSQL%25E7%25AF%2587%26topicId%3D199)
+
+用户信息表：user_profile
+
+| id   | device_id | gender | age  | university   | gpa  |
+| ---- | --------- | ------ | ---- | ------------ | ---- |
+| 1    | 2138      | male   | 21   | 北京大学     | 3.4  |
+| 2    | 3214      | male   | 23   | 复旦大学     | 4    |
+| 3    | 6543      | female | 20   | 北京大学     | 3.2  |
+| 4    | 2315      | female | 23   | 浙江大学     | 3.6  |
+| 5    | 5432      | male   | 25   | 山东大学     | 3.8  |
+| 6    | 2131      | male   | 28   | 北京师范大学 | 3.3  |
+
+你的查询应返回以下结果：
+
+| device_id | gpa  | age  |
+| --------- | ---- | ---- |
+| 6534      | 3.2  | 20   |
+| 2131      | 3.3  | 28   |
+| 2138      | 3.4  | 21   |
+| 2315      | 3.6  | 23   |
+| 5432      | 3.8  | 25   |
+| 3214      | 4    | 23   |
+
+示例1
+
+输入：
+
+```sql
+drop table if exists user_profile;
+CREATE TABLE `user_profile` (
+`id` int NOT NULL,
+`device_id` int NOT NULL,
+`gender` varchar(14) NOT NULL,
+`age` int ,
+`university` varchar(32) NOT NULL,
+`gpa` float);
+INSERT INTO user_profile VALUES(1,2138,'male',21,'北京大学',3.4);
+INSERT INTO user_profile VALUES(2,3214,'male',23,'复旦大学',4.0);
+INSERT INTO user_profile VALUES(3,6543,'female',20,'北京大学',3.2);
+INSERT INTO user_profile VALUES(4,2315,'female',23,'浙江大学',3.6);
+INSERT INTO user_profile VALUES(5,5432,'male',25,'山东大学',3.8);
+INSERT INTO user_profile VALUES(6,2131,'male',28,'北京师范大学',3.3);
+```
+
+输出：
+
+```
+6543|3.200|20
+2131|3.300|28
+2138|3.400|21
+2315|3.600|23
+5432|3.800|25
+3214|4.000|23
+```
+
+##### 题解
+
+使用`ORDER BY`进行多列排序
+
+```sql
+SELECT
+    device_id,
+    gpa,
+    age
+FROM
+    user_profile
+ORDER BY
+    gpa,
+    age
+```
+
+#### 查找后降序排列
+
+##### 题目描述
+
+[原题链接](https://www.nowcoder.com/practice/d023ae0191e0414ca1b19451099a39f1?tpId=199&tags=&title=&difficulty=0&judgeStatus=0&rp=0&sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26tab%3DSQL%25E7%25AF%2587%26topicId%3D199)
+
+题目：现在运营想要取出用户信息表中对应的数据，并先按照gpa、年龄降序排序输出，请取出相应数据。
+
+示例 user_profile：
+
+| id   | device_id | gender | age  | university   | gpa  |
+| ---- | --------- | ------ | ---- | ------------ | ---- |
+| 1    | 2138      | male   | 21   | 北京大学     | 3.4  |
+| 2    | 3214      | male   | 23   | 复旦大学     | 4    |
+| 3    | 6543      | female | 20   | 北京大学     | 3.2  |
+| 4    | 2315      | female | 23   | 浙江大学     | 3.6  |
+| 5    | 5432      | male   | 25   | 山东大学     | 3.8  |
+| 6    | 2131      | male   | 28   | 北京师范大学 | 3.3  |
+
+根据示例，你的查询应返回以下结果：
+
+| device_id | gpa  | age  |
+| --------- | ---- | ---- |
+| 3214      | 4    | 23   |
+| 5432      | 3.8  | 25   |
+| 2315      | 3.6  | 23   |
+| 2138      | 3.4  | 21   |
+| 2131      | 3.3  | 28   |
+| 6543      | 3.2  | 20   |
+
+示例1
+
+输入：
+
+```sql
+drop table if exists user_profile;
+CREATE TABLE `user_profile` (
+`id` int NOT NULL,
+`device_id` int NOT NULL,
+`gender` varchar(14) NOT NULL,
+`age` int ,
+`university` varchar(32) NOT NULL,
+`gpa` float);
+INSERT INTO user_profile VALUES(1,2138,'male',21,'北京大学',3.4);
+INSERT INTO user_profile VALUES(2,3214,'male',23,'复旦大学',4.0);
+INSERT INTO user_profile VALUES(3,6543,'female',20,'北京大学',3.2);
+INSERT INTO user_profile VALUES(4,2315,'female',23,'浙江大学',3.6);
+INSERT INTO user_profile VALUES(5,5432,'male',25,'山东大学',3.8);
+INSERT INTO user_profile VALUES(6,2131,'male',28,'北京师范大学',3.3);
+```
+
+输出：
+
+```
+3214|4.0|23
+5432|3.8|25
+2315|3.6|23
+2138|3.4|21
+2131|3.3|28
+6543|3.2|20
+```
+
+##### 题解
+
+使用`ORDER BY`+`DESC`即可完成降序排序
+
+```sql
+SELECT
+    device_id,
+    gpa,
+    age
+FROM
+    user_profile
+ORDER BY
+    gpa DESC,
+    age DESC
+```
+
+#### 基础操作符
+
+#### 查找学校是北大的学生信息
+
+##### 题目描述
+
+[原题链接](https://www.nowcoder.com/practice/7858f3e234bc4d85b81b9a6c3926f49f?tpId=199&tqId=1971248&ru=%2Fpractice%2Fb8f30b239b454ed490367b53ea95607d&qru=%2Fta%2Fsql-quick-study%2Fquestion-ranking&sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26tab%3DSQL%25E7%25AF%2587%26topicId%3D199)
+
+题目：现在运营想要筛选出所有北京大学的学生进行用户调研，请你从用户信息表中取出满足条件的数据，结果返回设备id和学校。
+
+示例：user_profile
+
+| id   | device_id | gender | age  | university | province |
+| ---- | --------- | ------ | ---- | ---------- | -------- |
+| 1    | 2138      | male   | 21   | 北京大学   | Beijing  |
+| 2    | 3214      | male   |      | 复旦大学   | Shanghai |
+| 3    | 6543      | female | 20   | 北京大学   | Beijing  |
+| 4    | 2315      | female | 23   | 浙江大学   | ZheJiang |
+| 5    | 5432      | male   | 25   | 山东大学   | Shandong |
+
+根据示例，你的查询应返回以下结果：
+
+| device_id | university |
+| --------- | ---------- |
+| 2138      | 北京大学   |
+| 6543      | 北京大学   |
+
+示例1
+
+输入：
+
+```sql
+drop table if exists user_profile;
+CREATE TABLE `user_profile` (
+`id` int NOT NULL,
+`device_id` int NOT NULL,
+`gender` varchar(14) NOT NULL,
+`age` int ,
+`university` varchar(32) NOT NULL,
+`province` varchar(32)  NOT NULL);
+INSERT INTO user_profile VALUES(1,2138,'male',21,'北京大学','BeiJing');
+INSERT INTO user_profile VALUES(2,3214,'male',null,'复旦大学','Shanghai');
+INSERT INTO user_profile VALUES(3,6543,'female',20,'北京大学','BeiJing');
+INSERT INTO user_profile VALUES(4,2315,'female',23,'浙江大学','ZheJiang');
+INSERT INTO user_profile VALUES(5,5432,'male',25,'山东大学','Shandong');
+```
+
+输出：
+
+```
+2138|北京大学
+6543|北京大学
+```
+
+##### 题解
+
+根据条件进行查询即可
+
+```sql
+SELECT
+    device_id,
+    university
+FROM
+    user_profile
+WHERE
+    university = '北京大学'
+```
+
+因为`university`其实是固定值，所以可以直接给出
+
+```sql
+SELECT
+    device_id,
+    '北京大学' university
+FROM
+    user_profile
+WHERE
+    university = '北京大学'
+```
+
+## 综合练习
+
+### 综合练习
+
+#### 21年8月份练题总数
+
+##### 题目描述
+
+[原题链接](https://www.nowcoder.com/practice/b8f30b239b454ed490367b53ea95607d?tpId=199&tags=&title=&difficulty=0&judgeStatus=0&rp=0&sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26tab%3DSQL%25E7%25AF%2587%26topicId%3D199)
+
+题目： 现在运营想要了解2021年8月份所有练习过题目的总用户数和练习过题目的总次数，请取出相应结果
+
+示例：question_practice_detail
+
+| id   | device_id | question_id | result | date       |
+| ---- | --------- | ----------- | ------ | ---------- |
+| 1    | 2138      | 111         | wrong  | 2021-05-03 |
+| 2    | 3214      | 112         | wrong  | 2021-05-09 |
+| 3    | 3214      | 113         | wrong  | 2021-06-15 |
+| 4    | 6543      | 111         | right  | 2021-08-13 |
+| 5    | 2315      | 115         | right  | 2021-08-13 |
+| 6    | 2315      | 116         | right  | 2021-08-14 |
+| 7    | 2315      | 117         | wrong  | 2021-08-15 |
+| ……   |           |             |        |            |
+
+根据的示例，你的查询应返回以下结果：
+
+| did_cnt | question_cnt |
+| ------- | ------------ |
+| 3       | 12           |
+
+示例1
+
+输入：
+
+```sql
+drop table if exists `user_profile`;
+drop table if  exists `question_practice_detail`;
+CREATE TABLE `user_profile` (
+`id` int NOT NULL,
+`device_id` int NOT NULL,
+`gender` varchar(14) NOT NULL,
+`age` int ,
+`university` varchar(32) NOT NULL,
+`gpa` float,
+`active_days_within_30` int ,
+`question_cnt` int ,
+`answer_cnt` int 
+);
+CREATE TABLE `question_practice_detail` (
+`id` int NOT NULL,
+`device_id` int NOT NULL,
+`question_id`int NOT NULL,
+`result` varchar(32) NOT NULL,
+`date` date NOT NULL
+);
+
+INSERT INTO user_profile VALUES(1,2138,'male',21,'北京大学',3.4,7,2,12);
+INSERT INTO user_profile VALUES(2,3214,'male',null,'复旦大学',4.0,15,5,25);
+INSERT INTO user_profile VALUES(3,6543,'female',20,'北京大学',3.2,12,3,30);
+INSERT INTO user_profile VALUES(4,2315,'female',23,'浙江大学',3.6,5,1,2);
+INSERT INTO user_profile VALUES(5,5432,'male',25,'山东大学',3.8,20,15,70);
+INSERT INTO user_profile VALUES(6,2131,'male',28,'山东大学',3.3,15,7,13);
+INSERT INTO user_profile VALUES(7,4321,'male',28,'复旦大学',3.6,9,6,52);
+INSERT INTO question_practice_detail VALUES(1,2138,111,'wrong','2021-05-03');
+INSERT INTO question_practice_detail VALUES(2,3214,112,'wrong','2021-05-09');
+INSERT INTO question_practice_detail VALUES(3,3214,113,'wrong','2021-06-15');
+INSERT INTO question_practice_detail VALUES(4,6543,111,'right','2021-08-13');
+INSERT INTO question_practice_detail VALUES(5,2315,115,'right','2021-08-13');
+INSERT INTO question_practice_detail VALUES(6,2315,116,'right','2021-08-14');
+INSERT INTO question_practice_detail VALUES(7,2315,117,'wrong','2021-08-15');
+INSERT INTO question_practice_detail VALUES(8,3214,112,'wrong','2021-05-09');
+INSERT INTO question_practice_detail VALUES(9,3214,113,'wrong','2021-08-15');
+INSERT INTO question_practice_detail VALUES(10,6543,111,'right','2021-08-13');
+INSERT INTO question_practice_detail VALUES(11,2315,115,'right','2021-08-13');
+INSERT INTO question_practice_detail VALUES(12,2315,116,'right','2021-08-14');
+INSERT INTO question_practice_detail VALUES(13,2315,117,'wrong','2021-08-15');
+INSERT INTO question_practice_detail VALUES(14,3214,112,'wrong','2021-08-16');
+INSERT INTO question_practice_detail VALUES(15,3214,113,'wrong','2021-08-18');
+INSERT INTO question_practice_detail VALUES(16,6543,111,'right','2021-08-13');
+```
+
+输出：
+
+```
+3|12
+```
+
+##### 题解
+
+查询练习过题目的总用户数需要对用户进行去重，查询练习过题目的总次数不需要去重，一个题目可以被重复练习
+
+对于日期的判断
+
+* 使用`BETWEEN '2021-08-01' AND '2021-08-31'`
+
+  ```sql
+  SELECT
+      COUNT(DISTINCT device_id) AS did_cnt,
+      COUNT(question_id)
+  FROM
+      question_practice_detail
+  WHERE
+      DATE(date) BETWEEN '2021-08-01' AND '2021-08-31'
+  ```
+
+* 使用日期函数`Year()`与`Month()`
+
+  ```sql
+  SELECT
+      COUNT(DISTINCT device_id) AS did_cnt,
+      COUNT(question_id)
+  FROM
+      question_practice_detail
+  WHERE
+      Year (date) = 2021
+      AND Month (date) = 8
+  ```
+
+* 使用`LIKE`进行匹配
+
+  ```sql
+  SELECT
+      COUNT(DISTINCT device_id) AS did_cnt,
+      COUNT(question_id)
+  FROM
+      question_practice_detail
+  WHERE
+      date LIKE '2021-08%'
+  ```
+
+* 使用`DATE_FORMAT()`函数对日期进行格式化
+
+  ```sql
+  SELECT
+      COUNT(DISTINCT device_id) AS did_cnt,
+      COUNT(question_id)
+  FROM
+      question_practice_detail
+  WHERE
+      DATE_FORMAT (date, '%Y-%m') = '2021-08'
+  ```
+
+`DATE()`函数返回日期时间的日期部分
