@@ -599,7 +599,7 @@ ORDER BY
     age DESC
 ```
 
-#### 基础操作符
+### 基础操作符
 
 #### 查找学校是北大的学生信息
 
@@ -678,6 +678,289 @@ FROM
 WHERE
     university = '北京大学'
 ```
+
+####  查找年龄大于24岁的用户信息
+
+##### 题目描述
+
+[原题链接](https://www.nowcoder.com/practice/2ae16bf2fd54415f99344e6024470d57?tpId=199&tqId=1971384&ru=/exam/oj&qru=/ta/sql-quick-study/question-ranking&sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26tab%3DSQL%25E7%25AF%2587%26topicId%3D199)
+
+题目：现在运营想要针对24岁以上的用户开展分析，请你取出满足条件的设备ID、性别、年龄、学校。
+
+用户信息表：user_profile
+
+| id   | device_id | gender | age  | university | province |
+| ---- | --------- | ------ | ---- | ---------- | -------- |
+| 1    | 2138      | male   | 21   | 北京大学   | Beijing  |
+| 2    | 3214      | male   |      | 复旦大学   | Shanghai |
+| 3    | 6543      | female | 20   | 北京大学   | Beijing  |
+| 4    | 2315      | female | 23   | 浙江大学   | ZheJiang |
+| 5    | 5432      | male   | 25   | 山东大学   | Shandong |
+
+
+
+根据输入，你的 查询应返回以下结果：
+
+| device_id | gender | age  | university |
+| --------- | ------ | ---- | ---------- |
+| 5432      | male   | 25   | 山东大学   |
+
+示例1
+
+输入：
+
+```
+drop table if exists user_profile;
+CREATE TABLE `user_profile` (
+`id` int NOT NULL,
+`device_id` int NOT NULL,
+`gender` varchar(14) NOT NULL,
+`age` int ,
+`university` varchar(32) NOT NULL,
+`province` varchar(32)  NOT NULL);
+INSERT INTO user_profile VALUES(1,2138,'male',21,'北京大学','BeiJing');
+INSERT INTO user_profile VALUES(2,3214,'male',null,'复旦大学','Shanghai');
+INSERT INTO user_profile VALUES(3,6543,'female',20,'北京大学','BeiJing');
+INSERT INTO user_profile VALUES(4,2315,'female',23,'浙江大学','ZheJiang');
+INSERT INTO user_profile VALUES(5,5432,'male',25,'山东大学','Shandong');
+```
+
+输出：
+
+```
+5432|male|25|山东大学
+```
+
+##### 题解
+
+使用`WHERE`过滤条件即可
+
+```sql
+SELECT
+    device_id,
+    gender,
+    age,
+    university
+FROM
+    user_profile
+WHERE
+    age > 24
+```
+
+#### 查找某个年龄段的用户信息
+
+##### 题目描述
+
+[原题链接](https://www.nowcoder.com/practice/be54223075cc43ceb20e4ce8a8e3e340?tpId=199&tags=&title=&difficulty=0&judgeStatus=0&rp=0&sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26tab%3DSQL%25E7%25AF%2587%26topicId%3D199)
+
+题目：现在运营想要针对20岁及以上且23岁及以下的用户开展分析，请你取出满足条件的设备ID、性别、年龄。
+
+用户信息表：user_profile
+
+| id   | device_id | gender | age  | university | province |
+| ---- | --------- | ------ | ---- | ---------- | -------- |
+| 1    | 2138      | male   | 21   | 北京大学   | Beijing  |
+| 2    | 3214      | male   |      | 复旦大学   | Shanghai |
+| 3    | 6543      | female | 20   | 北京大学   | Beijing  |
+| 4    | 2315      | female | 23   | 浙江大学   | ZheJiang |
+| 5    | 5432      | male   | 25   | 山东大学   | Shandong |
+
+根据输入，你的查询应返回以下结果：
+
+| device_id | gender | age  |
+| --------- | ------ | ---- |
+| 2138      | male   | 21   |
+| 6543      | female | 20   |
+| 2315      | female | 23   |
+
+示例1
+
+输入：
+
+```
+drop table if exists user_profile;
+CREATE TABLE `user_profile` (
+`id` int NOT NULL,
+`device_id` int NOT NULL,
+`gender` varchar(14) NOT NULL,
+`age` int ,
+`university` varchar(32) NOT NULL,
+`province` varchar(32)  NOT NULL);
+INSERT INTO user_profile VALUES(1,2138,'male',21,'北京大学','BeiJing');
+INSERT INTO user_profile VALUES(2,3214,'male',null,'复旦大学','Shanghai');
+INSERT INTO user_profile VALUES(3,6543,'female',20,'北京大学','BeiJing');
+INSERT INTO user_profile VALUES(4,2315,'female',23,'浙江大学','ZheJiang');
+INSERT INTO user_profile VALUES(5,5432,'male',25,'山东大学','Shandong');
+```
+
+输出：
+
+```
+2138|male|21
+6543|female|20
+2315|female|23
+```
+
+##### 题解
+
+使用`BETWEEN AND`进行范围控制即可（包括自身）
+
+```sql
+SELECT
+    device_id,
+    gender,
+    age
+FROM
+    user_profile
+WHERE
+    age BETWEEN 20 AND 23
+```
+
+#### 查找除复旦大学的用户信息
+
+##### 题目描述
+
+[原题链接](https://www.nowcoder.com/practice/c12a056497404d1ea782308a7b821f9c?tpId=199&tags=&title=&difficulty=0&judgeStatus=0&rp=0&sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26tab%3DSQL%25E7%25AF%2587%26topicId%3D199)
+
+题目：现在运营想要查看除复旦大学以外的所有用户明细，请你取出相应数据
+
+示例：user_profile
+
+| id   | device_id | gender | age  | university | province |
+| ---- | --------- | ------ | ---- | ---------- | -------- |
+| 1    | 2138      | male   | 21   | 北京大学   | Beijing  |
+| 2    | 3214      | male   |      | 复旦大学   | Shanghai |
+| 3    | 6543      | female | 20   | 北京大学   | Beijing  |
+| 4    | 2315      | female | 23   | 浙江大学   | ZheJiang |
+| 5    | 5432      | male   | 25   | 山东大学   | Shandong |
+
+根据输入，你的查询应返回以下结果：
+
+| device_id | gender | age  | university |
+| --------- | ------ | ---- | ---------- |
+| 2138      | male   | 21   | 北京大学   |
+| 6543      | female | 20   | 北京大学   |
+| 2315      | female | 23   | 浙江大学   |
+| 5432      | male   | 25   | 山东大学   |
+
+示例1
+
+输入：
+
+```
+drop table if exists user_profile;
+CREATE TABLE `user_profile` (
+`id` int NOT NULL,
+`device_id` int NOT NULL,
+`gender` varchar(14) NOT NULL,
+`age` int ,
+`university` varchar(32) NOT NULL,
+`province` varchar(32)  NOT NULL);
+INSERT INTO user_profile VALUES(1,2138,'male',21,'北京大学','BeiJing');
+INSERT INTO user_profile VALUES(2,3214,'male',null,'复旦大学','Shanghai');
+INSERT INTO user_profile VALUES(3,6543,'female',20,'北京大学','BeiJing');
+INSERT INTO user_profile VALUES(4,2315,'female',23,'浙江大学','ZheJiang');
+INSERT INTO user_profile VALUES(5,5432,'male',25,'山东大学','Shandong');
+```
+
+输出：
+
+```
+2138|male|21|北京大学
+6543|female|20|北京大学
+2315|female|23|浙江大学
+5432|male|25|山东大学
+```
+
+##### 题解
+
+使用不等条件即可
+
+```sql
+SELECT
+    device_id,
+    gender,
+    age,
+    university
+FROM
+    user_profile
+WHERE
+    university != '复旦大学'
+```
+
+#### 用where过滤空值练习
+
+##### 题目描述
+
+[原题链接](https://www.nowcoder.com/practice/08c9846a423540319eea4be44e339e35?tpId=199&tags=&title=&difficulty=0&judgeStatus=0&rp=0&sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26tab%3DSQL%25E7%25AF%2587%26topicId%3D199)
+
+题目：现在运营想要对用户的年龄分布开展分析，在分析时想要剔除没有获取到年龄的用户，请你取出所有年龄值不为空的用户的设备ID，性别，年龄，学校的信息。
+
+示例：user_profile
+
+| id   | device_id | gender | age  | university | province |
+| ---- | --------- | ------ | ---- | ---------- | -------- |
+| 1    | 2138      | male   | 21   | 北京大学   | Beijing  |
+| 2    | 3214      | male   |      | 复旦大学   | Shanghai |
+| 3    | 6543      | female | 20   | 北京大学   | Beijing  |
+| 4    | 2315      | female | 23   | 浙江大学   | ZheJiang |
+| 5    | 5432      | male   | 25   | 山东大学   | Shandong |
+
+根据输入，你的 查询应返回以下结果：
+
+| device_id | gender | age  | university |
+| --------- | ------ | ---- | ---------- |
+| 2138      | male   | 21   | 北京大学   |
+| 6543      | female | 20   | 北京大学   |
+| 2315      | female | 23   | 浙江大学   |
+| 5432      | male   | 25   | 山东大学   |
+
+示例1
+
+输入：
+
+```
+drop table if exists user_profile;
+CREATE TABLE `user_profile` (
+`id` int NOT NULL,
+`device_id` int NOT NULL,
+`gender` varchar(14) NOT NULL,
+`age` int ,
+`university` varchar(32) NOT NULL,
+`province` varchar(32)  NOT NULL);
+INSERT INTO user_profile VALUES(1,2138,'male',21,'北京大学','BeiJing');
+INSERT INTO user_profile VALUES(2,3214,'male',null,'复旦大学','Shanghai');
+INSERT INTO user_profile VALUES(3,6543,'female',20,'北京大学','BeiJing');
+INSERT INTO user_profile VALUES(4,2315,'female',23,'浙江大学','ZheJiang');
+INSERT INTO user_profile VALUES(5,5432,'male',25,'山东大学','Shandong');
+```
+
+输出：
+
+```
+2138|male|21|北京大学
+6543|female|20|北京大学
+2315|female|23|浙江大学
+5432|male|25|山东大学
+```
+
+##### 题解
+
+`IS NULL`可用于判空，`IS NOT NULL`可用于查询非空列
+
+```sql
+SELECT
+    device_id,
+    gender,
+    age,
+    university
+FROM
+    user_profile
+WHERE
+    age IS NOT NULL
+```
+
+
 
 ## 综合练习
 
