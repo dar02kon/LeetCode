@@ -960,7 +960,379 @@ WHERE
     age IS NOT NULL
 ```
 
+### 高级操作符
 
+#### 高级操作符练习(1)
+
+##### 题目描述
+
+[原题链接](https://www.nowcoder.com/practice/2d2e37474197488fbdf8f9206f66651c?tpId=199&tqId=1971781&ru=/exam/oj&qru=/ta/sql-quick-study/question-ranking&sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26tab%3DSQL%25E7%25AF%2587%26topicId%3D199)
+
+题目：现在运营想要找到男性且GPA在3.5以上(不包括3.5)的用户进行调研，请你取出相关数据。
+
+**示例：user_profile**
+
+| id   | device_id | gender | age  | university | gpa  |
+| ---- | --------- | ------ | ---- | ---------- | ---- |
+| 1    | 2138      | male   | 21   | 北京大学   | 3.4  |
+| 2    | 3214      | male   |      | 复旦大学   | 4.0  |
+| 3    | 6543      | female | 20   | 北京大学   | 3.2  |
+| 4    | 2315      | female | 23   | 浙江大学   | 3.6  |
+| 5    | 5432      | male   | 25   | 山东大学   | 3.8  |
+
+根据输入，你的查询应返回以下结果：
+
+| device_id | gender | age  | university | gpa  |
+| --------- | ------ | ---- | ---------- | ---- |
+| 3214      | male   |      | 复旦大学   | 4.0  |
+| 5432      | male   | 25   | 山东大学   | 3.8  |
+
+示例1
+
+输入：
+
+```java
+drop table if exists user_profile;
+CREATE TABLE `user_profile` (
+`id` int NOT NULL,
+`device_id` int NOT NULL,
+`gender` varchar(14) NOT NULL,
+`age` int ,
+`university` varchar(32) NOT NULL,
+`province` varchar(32)  NOT NULL,
+`gpa` float);
+INSERT INTO user_profile VALUES(1,2138,'male',21,'北京大学','BeiJing',3.4);
+INSERT INTO user_profile VALUES(2,3214,'male',null,'复旦大学','Shanghai',4.0);
+INSERT INTO user_profile VALUES(3,6543,'female',20,'北京大学','BeiJing',3.2);
+INSERT INTO user_profile VALUES(4,2315,'female',23,'浙江大学','ZheJiang',3.6);
+INSERT INTO user_profile VALUES(5,5432,'male',25,'山东大学','Shandong',3.8);
+```
+
+输出：
+
+```
+3214|male|None|复旦大学|4.0
+5432|male|25|山东大学|3.8
+```
+
+##### 题解
+
+根据条件查询即可
+
+```sql
+SELECT
+    device_id,
+    gender,
+    age,
+    university,
+    gpa
+FROM
+    user_profile
+WHERE
+    gpa > 3.5
+    AND gender = 'male'
+```
+
+#### 高级操作符练习(2）
+
+##### 题目描述
+
+[原题链接](https://www.nowcoder.com/practice/25bcf6924eff417d90c8988f55675122?tpId=199&tags=&title=&difficulty=0&judgeStatus=0&rp=0&sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26tab%3DSQL%25E7%25AF%2587%26topicId%3D199)
+
+题目：现在运营想要找到学校为北大或GPA在3.7以上(不包括3.7)的用户进行调研，请你取出相关数据（使用OR实现）
+
+示例：user_profile
+
+| id   | device_id | gender | age  | university | gpa  |
+| ---- | --------- | ------ | ---- | ---------- | ---- |
+| 1    | 2138      | male   | 21   | 北京大学   | 3.4  |
+| 2    | 3214      | male   |      | 复旦大学   | 4.0  |
+| 3    | 6543      | female | 20   | 北京大学   | 3.2  |
+| 4    | 2315      | female | 23   | 浙江大学   | 3.6  |
+| 5    | 5432      | male   | 25   | 山东大学   | 3.8  |
+
+根据输入，你的查询应返回以下结果：
+
+| device_id | gender | age  | university | gpa  |
+| --------- | ------ | ---- | ---------- | ---- |
+| 2138      | male   | 21   | 北京大学   | 3.4  |
+| 3214      | male   |      | 复旦大学   | 4.0  |
+| 6543      | female | 20   | 北京大学   | 3.2  |
+| 5432      | male   | 25   | 山东大学   | 3.8  |
+
+示例1
+
+输入：
+
+```java
+drop table if exists user_profile;
+CREATE TABLE `user_profile` (
+`id` int NOT NULL,
+`device_id` int NOT NULL,
+`gender` varchar(14) NOT NULL,
+`age` int ,
+`university` varchar(32) NOT NULL,
+`province` varchar(32)  NOT NULL,
+`gpa` float);
+INSERT INTO user_profile VALUES(1,2138,'male',21,'北京大学','BeiJing',3.4);
+INSERT INTO user_profile VALUES(2,3214,'male',null,'复旦大学','Shanghai',4.0);
+INSERT INTO user_profile VALUES(3,6543,'female',20,'北京大学','BeiJing',3.2);
+INSERT INTO user_profile VALUES(4,2315,'female',23,'浙江大学','ZheJiang',3.6);
+INSERT INTO user_profile VALUES(5,5432,'male',25,'山东大学','Shandong',3.8);
+```
+
+输出：
+
+```
+2138|male|21|北京大学|3.4
+3214|male|None|复旦大学|4.0
+6543|female|20|北京大学|3.2
+5432|male|25|山东大学|3.8
+```
+
+##### 题解
+
+根据条件进行查询即可
+
+```sql
+SELECT
+    device_id,
+    gender,
+    age,
+    university,
+    gpa
+FROM
+    user_profile
+WHERE
+    university = '北京大学'
+    OR gpa > '3.7'
+```
+
+#### Where in 和Not in
+
+##### 题目描述
+
+[原题链接](https://www.nowcoder.com/practice/0355033fc2244cdaa09b2bd6e794c762?tpId=199&tqId=1975665&ru=/exam/oj&qru=/ta/sql-quick-study/question-ranking&sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26tab%3DSQL%25E7%25AF%2587%26topicId%3D199)
+
+题目：现在运营想要找到学校为北大、复旦和山大的同学进行调研，请你取出相关数据。
+
+示例：user_profile
+
+| id   | device_id | gender | age  | university | gpa  |
+| ---- | --------- | ------ | ---- | ---------- | ---- |
+| 1    | 2138      | male   | 21   | 北京大学   | 3.4  |
+| 2    | 3214      | male   |      | 复旦大学   | 4.0  |
+| 3    | 6543      | female | 20   | 北京大学   | 3.2  |
+| 4    | 2315      | female | 23   | 浙江大学   | 3.6  |
+| 5    | 5432      | male   | 25   | 山东大学   | 3.8  |
+
+根据输入，你的查询应返回以下结果：
+
+| device_id | gender | age  | university | gpa  |
+| --------- | ------ | ---- | ---------- | ---- |
+| 2138      | male   | 21   | 北京大学   | 3.4  |
+| 3214      | male   |      | 复旦大学   | 4.0  |
+| 6543      | female | 20   | 北京大学   | 3.2  |
+| 5432      | male   | 25   | 山东大学   | 3.8  |
+
+示例1
+
+输入：
+
+```sql
+drop table if exists user_profile;
+CREATE TABLE `user_profile` (
+`id` int NOT NULL,
+`device_id` int NOT NULL,
+`gender` varchar(14) NOT NULL,
+`age` int ,
+`university` varchar(32) NOT NULL,
+`province` varchar(32)  NOT NULL,
+`gpa` float);
+INSERT INTO user_profile VALUES(1,2138,'male',21,'北京大学','BeiJing',3.4);
+INSERT INTO user_profile VALUES(2,3214,'male',null,'复旦大学','Shanghai',4.0);
+INSERT INTO user_profile VALUES(3,6543,'female',20,'北京大学','BeiJing',3.2);
+INSERT INTO user_profile VALUES(4,2315,'female',23,'浙江大学','ZheJiang',3.6);
+INSERT INTO user_profile VALUES(5,5432,'male',25,'山东大学','Shandong',3.8);
+```
+
+输出：
+
+```
+2138|male|21|北京大学|3.4
+3214|male|None|复旦大学|4.0
+6543|female|20|北京大学|3.2
+5432|male|25|山东大学|3.8
+```
+
+##### 题解
+
+`IN `操作符允许在 `WHERE` 子句中规定多个值。
+
+```sql
+SELECT
+    device_id,
+    gender,
+    age,
+    university,
+    gpa
+FROM
+    user_profile
+WHERE
+    university IN ('北京大学', '复旦大学', '山东大学')
+```
+
+#### 操作符混合运用
+
+##### 题目描述
+
+[原题链接](https://www.nowcoder.com/practice/d5ac4c878b63477fa5e5dfcb427d9102?tpId=199&tags=&title=&difficulty=0&judgeStatus=0&rp=0&sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26tab%3DSQL%25E7%25AF%2587%26topicId%3D199)
+
+题目：现在运营想要找到gpa在3.5以上(不包括3.5)的山东大学用户 或 gpa在3.8以上(不包括3.8)的复旦大学同学进行用户调研，请你取出相应数据
+
+示例：user_profile
+
+| id   | device_id | gender | age  | university | province | gpa  |
+| ---- | --------- | ------ | ---- | ---------- | -------- | ---- |
+| 1    | 2138      | male   | 21   | 北京大学   | BeiJing  | 3.4  |
+| 2    | 3214      | male   | NULL | 复旦大学   | Shanghai | 4    |
+| 3    | 6543      | female | 20   | 北京大学   | BeiJing  | 3.2  |
+| 4    | 2315      | female | 23   | 浙江大学   | ZheJiang | 3.6  |
+| 5    | 5432      | male   | 25   | 山东大学   | Shandong | 3.8  |
+
+根据输入，你的查询应返回以下结果：(该题对于小数点后面的0不需要计算与统计，后台系统会统一输出小数点后面1位)
+
+| device_id | gender | age  | university | gpa  |
+| --------- | ------ | ---- | ---------- | ---- |
+| 3214      | male   | NULL | 复旦大学   | 4    |
+| 5432      | male   | 25   | 山东大学   | 3.8  |
+
+示例1
+
+输入：
+
+```java
+drop table if exists user_profile;
+CREATE TABLE `user_profile` (
+`id` int NOT NULL,
+`device_id` int NOT NULL,
+`gender` varchar(14) NOT NULL,
+`age` int ,
+`university` varchar(32) NOT NULL,
+`province` varchar(32)  NOT NULL,
+`gpa` float);
+INSERT INTO user_profile VALUES(1,2138,'male',21,'北京大学','BeiJing',3.4);
+INSERT INTO user_profile VALUES(2,3214,'male',null,'复旦大学','Shanghai',4.0);
+INSERT INTO user_profile VALUES(3,6543,'female',20,'北京大学','BeiJing',3.2);
+INSERT INTO user_profile VALUES(4,2315,'female',23,'浙江大学','ZheJiang',3.6);
+INSERT INTO user_profile VALUES(5,5432,'male',25,'山东大学','Shandong',3.8);
+```
+
+输出：
+
+```
+3214|male|None|复旦大学|4.0
+5432|male|25|山东大学|3.8
+```
+
+##### 题解
+
+```sql
+SELECT
+    device_id,
+    gender,
+    age,
+    university,
+    gpa
+FROM
+    user_profile
+WHERE
+    (
+        gpa > 3.5
+        AND university = '山东大学'
+    )
+    OR (
+        gpa > 3.8
+        AND university = '复旦大学'
+    )
+```
+
+#### 查看学校名称中含北京的用户
+
+##### 题目描述
+
+[原题链接](https://www.nowcoder.com/practice/95d9922b1e2a49de80daa491889969ee?tpId=199&tags=&title=&difficulty=0&judgeStatus=0&rp=0&sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26tab%3DSQL%25E7%25AF%2587%26topicId%3D199)
+
+题目：现在运营想查看所有大学中带有北京的用户的信息，请你取出相应数据。
+
+示例：用户信息表：user_profile
+
+| id   | device_id | gender | age  | university   | gpa  |
+| ---- | --------- | ------ | ---- | ------------ | ---- |
+| 1    | 2138      | male   | 21   | 北京大学     | 3.4  |
+| 2    | 3214      | male   |      | 复旦大学     | 4.0  |
+| 3    | 6543      | female | 20   | 北京大学     | 3.2  |
+| 4    | 2315      | female | 23   | 浙江大学     | 3.6  |
+| 5    | 5432      | male   | 25   | 山东大学     | 3.8  |
+| 6    | 2131      | male   | 28   | 北京师范大学 | 3.3  |
+
+根据示例，你的查询应返回如下结果：
+
+| device_id | age  | university   |
+| --------- | ---- | ------------ |
+| 2138      | 21   | 北京大学     |
+| 6543      | 20   | 北京大学     |
+| 2131      | 28   | 北京师范大学 |
+
+示例1
+
+输入：
+
+```
+drop table if exists user_profile;
+CREATE TABLE `user_profile` (
+`id` int NOT NULL,
+`device_id` int NOT NULL,
+`gender` varchar(14) NOT NULL,
+`age` int ,
+`university` varchar(32) NOT NULL,
+`gpa` float);
+INSERT INTO user_profile VALUES(1,2138,'male',21,'北京大学',3.4);
+INSERT INTO user_profile VALUES(2,3214,'male',null,'复旦大学',4.0);
+INSERT INTO user_profile VALUES(3,6543,'female',20,'北京大学',3.2);
+INSERT INTO user_profile VALUES(4,2315,'female',23,'浙江大学',3.6);
+INSERT INTO user_profile VALUES(5,5432,'male',25,'山东大学',3.8);
+INSERT INTO user_profile VALUES(6,2131,'male',28,'北京师范大学',3.3);
+```
+
+输出：
+
+```
+2138|21|北京大学
+6543|20|北京大学
+2131|28|北京师范大学
+```
+
+##### 题解
+
+字符匹配 一般形式为：`列名 [NOT ] LIKE`
+
+匹配串中可包含如下四种通配符：
+`_`：匹配任意一个字符；
+`%`：匹配0个或多个字符；
+`[ ]`：匹配[ ]中的任意一个字符(若要比较的字符是连续的，则可以用连字符“-”表 达 )；
+`[^ ]`：不匹配[ ]中的任意一个字符。
+
+```sql
+SELECT
+    device_id,
+    age,
+    university
+FROM
+    user_profile
+WHERE
+    university LIKE '%北京%'
+```
 
 ## 综合练习
 
