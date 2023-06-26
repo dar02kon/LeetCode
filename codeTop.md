@@ -431,10 +431,10 @@ public class ReverseLinkedList {
     }
 
     /**
-     * 反转链表
+     * 反转链表 递归
      */
     public ListNode reverseList(ListNode head) {
-        if(head==null|| head.next==null){
+        if (head == null || head.next == null) {
             return head;
         }
         // 返回尾节点（反转后的头节点）
@@ -443,6 +443,29 @@ public class ReverseLinkedList {
         head.next.next = head;
         head.next = null;
         return newHead;
+    }
+
+    /**
+     * 反转链表 迭代
+     */
+    public ListNode reverseList2(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode before = null;
+        ListNode after = null;
+        // 从前往后依次反转
+        while (head != null) {
+            // 记录下一个节点位置
+            after = head.next;
+            // 反转
+            head.next = before;
+            // 前一个节点（反转后下一个节点的next）
+            before = head;
+            // 向后移动
+            head = after;
+        }
+        return before;
     }
 
     private static class ListNode {
@@ -462,6 +485,5 @@ public class ReverseLinkedList {
         }
     }
 }
-
 ```
 
