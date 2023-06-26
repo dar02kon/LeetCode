@@ -371,3 +371,97 @@ public class KthLargestElementInAnArray {
 }
 ```
 
+## 反转链表
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/reverse-linked-list/description/)
+
+给你单链表的头节点 `head` ，请你反转链表，并返回反转后的链表。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2021/02/19/rev1ex1.jpg)
+
+```
+输入：head = [1,2,3,4,5]
+输出：[5,4,3,2,1]
+```
+
+**示例 2：**
+
+![img](https://assets.leetcode.com/uploads/2021/02/19/rev1ex2.jpg)
+
+```
+输入：head = [1,2]
+输出：[2,1]
+```
+
+**示例 3：**
+
+```
+输入：head = []
+输出：[]
+```
+
+ 
+
+**提示：**
+
+- 链表中节点的数目范围是 `[0, 5000]`
+- `-5000 <= Node.val <= 5000`
+
+ 
+
+### 题解
+
+```java
+package com.dar.codetop;
+
+/**
+ * @author :wx
+ * @description : 206. 反转链表 https://leetcode.cn/problems/reverse-linked-list/description/
+ * @create :2023-06-26 22:03:00
+ */
+public class ReverseLinkedList {
+    public static void main(String[] args) {
+
+    }
+
+    /**
+     * 反转链表
+     */
+    public ListNode reverseList(ListNode head) {
+        if(head==null|| head.next==null){
+            return head;
+        }
+        // 返回尾节点（反转后的头节点）
+        ListNode newHead = reverseList(head.next);
+        // 反转链表，从后往前
+        head.next.next = head;
+        head.next = null;
+        return newHead;
+    }
+
+    private static class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode() {
+        }
+
+        ListNode(int val) {
+            this.val = val;
+        }
+
+        ListNode(int val, ListNode next) {
+            this.val = val;
+            this.next = next;
+        }
+    }
+}
+
+```
+
