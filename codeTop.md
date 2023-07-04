@@ -1505,3 +1505,101 @@ public class BinaryTreeZigzagLevelOrderTraversal {
 }
 ```
 
+## 二叉树的最近公共祖先
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree/)
+
+给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
+
+[百度百科](https://baike.baidu.com/item/最近公共祖先/8918834?fr=aladdin)中最近公共祖先的定义为：“对于有根树 T 的两个节点 p、q，最近公共祖先表示为一个节点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（**一个节点也可以是它自己的祖先**）。”
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2018/12/14/binarytree.png)
+
+```
+输入：root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1
+输出：3
+解释：节点 5 和节点 1 的最近公共祖先是节点 3 。
+```
+
+**示例 2：**
+
+![img](https://assets.leetcode.com/uploads/2018/12/14/binarytree.png)
+
+```
+输入：root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 4
+输出：5
+解释：节点 5 和节点 4 的最近公共祖先是节点 5 。因为根据定义最近公共祖先节点可以为节点本身。
+```
+
+**示例 3：**
+
+```
+输入：root = [1,2], p = 1, q = 2
+输出：1
+```
+
+ 
+
+**提示：**
+
+- 树中节点数目在范围 `[2, 105]` 内。
+- `-109 <= Node.val <= 109`
+- 所有 `Node.val` `互不相同` 。
+- `p != q`
+- `p` 和 `q` 均存在于给定的二叉树中。
+
+### 题解
+
+```java
+package com.dar.codetop;
+
+
+/**
+ * @author :wx
+ * @description : 236. 二叉树的最近公共祖先 https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree/
+ * @create :2023-07-04 21:41:00
+ */
+public class LowestCommonAncestorOfABinaryTree {
+
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        // root节点等于任意一个节点直接返回
+        if (root == null || root.val == p.val || root.val == q.val) {
+            return root;
+        }
+        // 从左子树中寻找目标节点
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        // 从右子树中寻找目标节点
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+        // 左子树若没有目标节点，右子树有，则目标节点都在右子树中，直接返回第一个找到的目标节点即可
+        // 右子树没有目标节点，左子树有，同上
+        // 左右子树都有，返回根节点root
+        return left == null ? right : (right == null ? left : root);
+    }
+
+    private static class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+
+        TreeNode() {
+        }
+
+        TreeNode(int val) {
+            this.val = val;
+        }
+
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
+    }
+}
+```
+
