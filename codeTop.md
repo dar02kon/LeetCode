@@ -2854,3 +2854,90 @@ public class RemoveDuplicatesFromSortedListII {
 }
 ```
 
+## 两数之和
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/two-sum/description/)
+
+给定一个整数数组 `nums` 和一个整数目标值 `target`，请你在该数组中找出 **和为目标值** *`target`* 的那 **两个** 整数，并返回它们的数组下标。
+
+你可以假设每种输入只会对应一个答案。但是，数组中同一个元素在答案里不能重复出现。
+
+你可以按任意顺序返回答案。
+
+ 
+
+**示例 1：**
+
+```
+输入：nums = [2,7,11,15], target = 9
+输出：[0,1]
+解释：因为 nums[0] + nums[1] == 9 ，返回 [0, 1] 。
+```
+
+**示例 2：**
+
+```
+输入：nums = [3,2,4], target = 6
+输出：[1,2]
+```
+
+**示例 3：**
+
+```
+输入：nums = [3,3], target = 6
+输出：[0,1]
+```
+
+ 
+
+**提示：**
+
+- `2 <= nums.length <= 104`
+- `-109 <= nums[i] <= 109`
+- `-109 <= target <= 109`
+- **只会存在一个有效答案**
+
+### 题解
+
+```java
+package com.dar.codetop;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * @author :wx
+ * @description : 1. 两数之和 https://leetcode.cn/problems/two-sum/description/
+ * @create :2023-07-19 21:16:00
+ */
+public class TwoSum {
+    /**
+     * 要返回对应的下标，不能排序后用双指针去寻找
+     * 可以用哈希表来存储值与位置的映射关系，从两头往中间找
+     * 一边存一边找
+     */
+    public int[] twoSum(int[] nums, int target) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int left = 0;
+        int right = nums.length - 1;
+        while (left <= right) {
+            if (map.containsKey(target - nums[left])) {
+                return new int[]{left, map.get(target - nums[left])};
+            } else {
+                map.put(nums[left], left);
+            }
+            if (map.containsKey(target - nums[right])) {
+                return new int[]{right, map.get(target - nums[right])};
+            } else {
+                map.put(nums[right], right);
+            }
+            left++;
+            right--;
+        }
+        return null;
+    }
+}
+```
+
