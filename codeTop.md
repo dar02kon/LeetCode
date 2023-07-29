@@ -2827,7 +2827,7 @@ public class RemoveDuplicatesFromSortedListII {
                 pre = pre.next;
             } else {
                 // 有重复，删除重复节点，
-                // pre指针不能移到，需要保证pre所在节点一定不充分
+                // pre指针不能移到，需要保证pre所在节点一定不重复
                 pre.next = cur.next;
             }
             cur = cur.next;
@@ -3352,6 +3352,107 @@ public class LongestIncreasingSubsequence {
             if (right == result) result++;
         }
         return result;
+    }
+}
+```
+
+## 二叉树中的最大路径和
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/binary-tree-maximum-path-sum/description/)
+
+二叉树中的 **路径** 被定义为一条节点序列，序列中每对相邻节点之间都存在一条边。同一个节点在一条路径序列中 **至多出现一次** 。该路径 **至少包含一个** 节点，且不一定经过根节点。
+
+**路径和** 是路径中各节点值的总和。
+
+给你一个二叉树的根节点 `root` ，返回其 **最大路径和** 。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2020/10/13/exx1.jpg)
+
+```
+输入：root = [1,2,3]
+输出：6
+解释：最优路径是 2 -> 1 -> 3 ，路径和为 2 + 1 + 3 = 6
+```
+
+**示例 2：**
+
+![img](https://assets.leetcode.com/uploads/2020/10/13/exx2.jpg)
+
+```
+输入：root = [-10,9,20,null,null,15,7]
+输出：42
+解释：最优路径是 15 -> 20 -> 7 ，路径和为 15 + 20 + 7 = 42
+```
+
+ 
+
+**提示：**
+
+- 树中节点数目范围是 `[1, 3 * 104]`
+- `-1000 <= Node.val <= 1000`
+
+### 题解
+
+```java
+package com.dar.codetop;
+
+/**
+ * @author :wx
+ * @description : 124. 二叉树中的最大路径和 https://leetcode.cn/problems/binary-tree-maximum-path-sum/
+ * @create :2023-07-29 18:38:00
+ */
+public class BinaryTreeMaximumPathSum {
+    /**
+     * 递归 寻找左子树与右子树中的最大路径和
+     * 对于一个节点返回给上一层时，只有三种情况：
+     * 左子树的最大路径+根节点，
+     * 左子树的最大路径+根节点，
+     * 根节点，
+     * 最坏情况就是不返回（负数，抛弃这个节点的分支）
+     */
+    public int maxPathSum(TreeNode root) {
+        search(root);
+        return max;
+    }
+
+    private int max = Integer.MIN_VALUE;
+
+    private int search(TreeNode node) {
+        if (node == null) return 0;
+        // 左子树路径
+        int left = search(node.left);
+        // 右子树路径
+        int right = search(node.right);
+        // 每返回到一个节点，需要更新最大路径和
+        max = Math.max(max, left + right + node.val);
+        // 返回到上一层需要返回和大的路径，实在不行就返回0，抛弃这个分支
+        if (node.val < 0) return Math.max(Math.max(left, right) + node.val, 0);
+        return Math.max(Math.max(left, right) + node.val, node.val);
+    }
+
+    private static class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+
+        TreeNode() {
+        }
+
+        TreeNode(int val) {
+            this.val = val;
+        }
+
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
     }
 }
 ```
