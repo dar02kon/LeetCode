@@ -3457,3 +3457,83 @@ public class BinaryTreeMaximumPathSum {
 }
 ```
 
+## 字符串相加
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/add-strings/description/)
+
+给定两个字符串形式的非负整数 `num1` 和`num2` ，计算它们的和并同样以字符串形式返回。
+
+你不能使用任何內建的用于处理大整数的库（比如 `BigInteger`）， 也不能直接将输入的字符串转换为整数形式。
+
+ 
+
+**示例 1：**
+
+```
+输入：num1 = "11", num2 = "123"
+输出："134"
+```
+
+**示例 2：**
+
+```
+输入：num1 = "456", num2 = "77"
+输出："533"
+```
+
+**示例 3：**
+
+```
+输入：num1 = "0", num2 = "0"
+输出："0"
+```
+
+### 题解
+
+```java
+package com.dar.codetop;
+
+/**
+ * @author :wx
+ * @description : 415. 字符串相加 https://leetcode.cn/problems/add-strings/description/
+ * @create :2023-07-30 19:39:00
+ */
+public class AddStrings {
+    /**
+     * 模拟加法即可
+     */
+    public String addStrings(String num1, String num2) {
+        // 存储结果
+        StringBuilder result = new StringBuilder();
+        // 进位
+        int temp = 0;
+        // 从后往前遍历
+        int index1 = num1.length() - 1;
+        int index2 = num2.length() - 1;
+        while (index1 >= 0 || index2 >= 0) {
+            int num = temp;
+            if (index1 >= 0) {
+                num += num1.charAt(index1) - '0';
+                index1--;
+            }
+            if (index2 >= 0) {
+                num += num2.charAt(index2) - '0';
+                index2--;
+            }
+            // 进位
+            temp = num / 10;
+            // 当前位
+            num = num % 10;
+            result.insert(0, num);
+        }
+        // 最后可能存在进位，不能忘了
+        if (temp != 0) {
+            result.insert(0, temp);
+        }
+        return result.toString();
+    }
+}
+```
+
