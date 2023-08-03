@@ -3719,3 +3719,94 @@ public class AddTwoNumbers {
 }
 ```
 
+## 删除链表的倒数第 N 个结点
+
+### 题目描述
+
+[原题链接](https://leetcode.cn/problems/remove-nth-node-from-end-of-list/description/)
+
+给你一个链表，删除链表的倒数第 `n` 个结点，并且返回链表的头结点。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2020/10/03/remove_ex1.jpg)
+
+```
+输入：head = [1,2,3,4,5], n = 2
+输出：[1,2,3,5]
+```
+
+**示例 2：**
+
+```
+输入：head = [1], n = 1
+输出：[]
+```
+
+**示例 3：**
+
+```
+输入：head = [1,2], n = 1
+输出：[1]
+```
+
+ 
+
+**提示：**
+
+- 链表中结点的数目为 `sz`
+- `1 <= sz <= 30`
+- `0 <= Node.val <= 100`
+- `1 <= n <= sz`
+
+### 题解
+
+```java
+package com.dar.codetop;
+
+/**
+ * @author :wx
+ * @description : 19. 删除链表的倒数第 N 个结点 https://leetcode.cn/problems/remove-nth-node-from-end-of-list/description/
+ * @create :2023-08-03 22:08:00
+ */
+public class RemoveNthNodeFromEndOfList {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode newHead = new ListNode();
+        newHead.next = head;
+        ListNode fast = head;
+        // slow从新节点开始，循环结束后，slow应位于要删除节点的前一个节点
+        ListNode slow = newHead;
+        // 让fast先走n位
+        for (int i = 0; i < n; i++) {
+            fast = fast.next;
+        }
+        // fast与slow一起走，fast为空时，slow位于要删除节点的前一个节点
+        while (fast != null) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+        slow.next = slow.next.next;
+        return newHead.next;
+    }
+
+    private static class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode() {
+        }
+
+        ListNode(int val) {
+            this.val = val;
+        }
+
+        ListNode(int val, ListNode next) {
+            this.val = val;
+            this.next = next;
+        }
+    }
+}
+```
+
